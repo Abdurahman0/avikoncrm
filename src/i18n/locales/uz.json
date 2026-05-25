@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "appName": "Avikontex",
     "loading": "Yuklanmoqda...",
@@ -428,7 +428,7 @@
       "status": "Holat",
       "operator": "Mas'ul operator",
       "notes": "Izoh",
-      "notesPlaceholder": "Lid bilan bog'liq qisqa izoh yozing",
+      "notesPlaceholder": "Murojaat bo'yicha ichki izoh yozing",
       "metadata": "Metadata (JSON)",
       "requiredError": "Majburiy maydonlarni to'ldiring.",
       "metadataError": "Metadata faqat JSON obyekt ko'rinishida bo'lishi kerak.",
@@ -439,21 +439,21 @@
       "editSubmit": "O'zgarishlarni saqlash"
     },
     "deleteDialog": {
-      "eyebrow": "Lidni o'chirish",
-      "title": "\"{{name}}\" lidini o'chirish",
-      "description": "Ushbu amal qaytarilmaydi. Lid tarixdan butunlay olib tashlanadi.",
+      "eyebrow": "Murojaatni o'chirish",
+      "title": "\"{{name}}\" murojaatini o'chirish",
+      "description": "Ushbu amal qaytarilmaydi. Murojaat tarixdan butunlay olib tashlanadi.",
       "deleting": "O'chirilmoqda...",
       "confirm": "Ha, o'chirish"
     },
     "detail": {
-      "ariaLabel": "Lid tafsilotlari",
-      "profile": "Lid profili",
-      "titleFallback": "Lid tafsilotlari",
-      "close": "Lid tafsilotlarini yopish",
-      "loadingTitle": "Lid tafsilotlari yuklanmoqda",
+      "ariaLabel": "Murojaat tafsilotlari",
+      "profile": "Murojaat profili",
+      "titleFallback": "Murojaat tafsilotlari",
+      "close": "Murojaat tafsilotlarini yopish",
+      "loadingTitle": "Murojaat tafsilotlari yuklanmoqda",
       "loadingDescription": "Profil va faollik ma'lumotlari olinmoqda.",
-      "errorTitle": "Lid mavjud emas",
-      "errorDescription": "Tanlangan lidni yuklab bo'lmadi.",
+      "errorTitle": "Murojaat mavjud emas",
+      "errorDescription": "Tanlangan murojaatni yuklab bo'lmadi.",
       "contactTitle": "Kontakt",
       "contactDescription": "Asosiy profil va biriktirish ma'lumotlari.",
       "phone": "Telefon",
@@ -468,7 +468,7 @@
       "updated": "Yangilangan",
       "lastContact": "So'nggi aloqa",
       "lastMessage": "So'nggi xabar",
-      "leadReplied": "Lid javob berdi",
+      "leadReplied": "Murojaat javob berdi",
       "dmSent": "Xabar yuborilgan",
       "notesTitle": "Izohlar",
       "notesDescription": "Keyingi aloqa oldidan kontekst.",
@@ -478,9 +478,9 @@
       "readOnlyHint": "Sizda murojaatni tahrirlash huquqi mavjud emas."
     },
     "sla": "SLA",
-    "slaOverdue": "Kechikkan",
-    "slaDueSoon": "Tez orada",
-    "slaOnTrack": "Muddat ichida",
+    "slaOverdue": "{{count}} daqiqa kechikkan",
+    "slaDueSoon": "Muddat: {{relative}}",
+    "slaOnTrack": "Muddat: {{relative}}",
     "chat": "Chat",
     "openChat": "Chatni ochish"
   },
@@ -851,14 +851,14 @@
       "price": "Narx",
       "stockQuantity": "Mahsulotlar soni",
       "currency": "Valyuta",
-        "activeProduct": "Faol mahsulot",
-        "activeProductHint": "Mahsulot operatsiyalarda ko'rinishini yoqing yoki o'chiring.",
-        "recommendedProduct": "Tavsiya etilgan mahsulot",
-        "recommendedProductHint": "Mahsulotni tavsiya qilingan sifatida belgilang.",
-        "subsidyEnabled": "Subsidiya yoqilgan",
-        "subsidyEnabledHint": "Ushbu mahsulot uchun subsidiyani yoqing yoki o'chiring.",
-        "reviewsEnabled": "Sharhlarni qabul qilish",
-        "reviewsEnabledHint": "Ushbu mahsulot uchun sharhlarni yoqing yoki o'chiring.",
+      "activeProduct": "Faol mahsulot",
+      "activeProductHint": "Mahsulot operatsiyalarda ko'rinishini yoqing yoki o'chiring.",
+      "recommendedProduct": "Tavsiya etilgan mahsulot",
+      "recommendedProductHint": "Mahsulotni tavsiya qilingan sifatida belgilang.",
+      "subsidyEnabled": "Subsidiya yoqilgan",
+      "subsidyEnabledHint": "Ushbu mahsulot uchun subsidiyani yoqing yoki o'chiring.",
+      "reviewsEnabled": "Sharhlarni qabul qilish",
+      "reviewsEnabledHint": "Ushbu mahsulot uchun sharhlarni yoqing yoki o'chiring.",
       "currentImages": "Joriy rasmlar",
       "images": "Rasmlar",
       "primaryImage": "Asosiy rasm",
@@ -2063,7 +2063,7 @@
       "ordering": "Saralash",
       "allStatuses": "Barcha holatlar",
       "allClients": "Barcha mijozlar",
-        "clientPlaceholder": "Mijoz nomi bo'yicha filtrlang"
+      "clientPlaceholder": "Mijoz nomi bo'yicha filtrlang"
     },
     "ordering": {
       "updatedNewest": "Yangilangan (yangi)",
@@ -2110,8 +2110,8 @@
       "saving": "Saqlanmoqda...",
       "createSubmit": "So'rov yaratish",
       "editSubmit": "O'zgarishlarni saqlash",
-        "clientPlaceholder": "Mijozni tanlang",
-        "contractPlaceholder": "Shartnomani tanlang"
+      "clientPlaceholder": "Mijozni tanlang",
+      "contractPlaceholder": "Shartnomani tanlang"
     },
     "detail": {
       "eyebrow": "Audit so'rovi profili",
@@ -2448,5 +2448,3 @@
     }
   }
 }
-
-

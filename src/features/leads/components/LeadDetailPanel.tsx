@@ -379,9 +379,9 @@ function LeadDetailPanel({
 												navigate(routePaths.chats)
 											}}
 										>
-											<p className={labelClassName}>{t('leads.chat', { defaultValue: 'Chat' })}</p>
+											<p className={labelClassName}>{t('leads.chat')}</p>
 											<p className={`mt-1 ${valueClassName}`}>
-												{t('leads.openChat', { defaultValue: 'Open chat' })}
+												{t('leads.openChat')}
 											</p>
 										</button>
 									</div>

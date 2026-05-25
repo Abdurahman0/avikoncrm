@@ -66,6 +66,12 @@ const tablePrimaryTextClassName =
 const tableSecondaryTextClassName =
 	'block max-w-[140px] truncate text-[12px] leading-[1.45] text-text-secondary min-[640px]:max-w-[220px]'
 
+const tablePrimaryFullTextClassName =
+	'block text-sm font-semibold leading-[1.35] text-text-primary whitespace-normal break-words'
+
+const tableDateFullTextClassName =
+	'block text-sm font-semibold leading-[1.35] text-text-primary whitespace-nowrap'
+
 const labelClassName =
 	'text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted'
 
@@ -210,7 +216,6 @@ function resolveSlaPresentation(
 	if (minutesLeft < 0) {
 		return {
 			label: t('leads.slaOverdue', {
-				defaultValue: `Overdue ${absMinutes} min`,
 				count: absMinutes,
 			}),
 			tone: 'danger',
@@ -220,7 +225,6 @@ function resolveSlaPresentation(
 	if (minutesLeft <= 30) {
 		return {
 			label: t('leads.slaDueSoon', {
-				defaultValue: `Due ${relative}`,
 				relative,
 			}),
 			tone: 'warning',
@@ -229,7 +233,6 @@ function resolveSlaPresentation(
 
 	return {
 		label: t('leads.slaOnTrack', {
-			defaultValue: `Due ${relative}`,
 			relative,
 		}),
 		tone: 'success',
@@ -644,7 +647,7 @@ function LeadsPage() {
 				label: t('leads.lead'),
 				render: lead => (
 					<div className='grid gap-0.5'>
-						<span className={tablePrimaryTextClassName}>
+						<span className={tablePrimaryFullTextClassName}>
 							{lead.full_name || t('leads.detail.titleFallback')}
 						</span>
 						<span className={tableSecondaryTextClassName}>
@@ -658,7 +661,7 @@ function LeadsPage() {
 				label: t('leads.contact'),
 				render: lead => (
 					<div className='grid gap-0.5'>
-						<span className={tablePrimaryTextClassName}>
+						<span className={tablePrimaryFullTextClassName}>
 							{lead.phone ?? t('leads.noPhone')}
 						</span>
 						{lead.manager_username ? (
@@ -681,8 +684,8 @@ function LeadsPage() {
 
 					return (
 						<div className='grid gap-0.5'>
-							<span className='inline-flex items-center gap-1.5 text-sm font-semibold text-text-primary'>
-							<span className='inline-flex h-5 min-w-5 items-center justify-center rounded-md bg-info-bg px-1 text-[10px] font-semibold text-info'>
+							<span className='inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold text-text-primary'>
+							<span className='inline-flex h-5 min-w-5 items-center justify-center whitespace-nowrap rounded-md bg-info-bg px-1 text-[10px] font-semibold text-info'>
 									{channelAbbreviation(normalizedSource)}
 								</span>
 								{getChannelLabel(t, normalizedSource)}
@@ -696,7 +699,7 @@ function LeadsPage() {
 			},
 			{
 				key: 'sla',
-				label: t('leads.sla', { defaultValue: 'SLA' }),
+				label: t('leads.sla'),
 				render: lead => {
 					const presentation = resolveSlaPresentation(
 						lead,
@@ -709,7 +712,7 @@ function LeadsPage() {
 						<div className='grid gap-0.5'>
 							<span
 								className={[
-									'inline-flex w-fit items-center rounded-pill px-2 py-0.5 text-[11px] font-semibold',
+									'inline-flex w-fit items-center whitespace-nowrap rounded-pill px-2 py-0.5 text-[11px] font-semibold',
 									presentation.tone === 'danger'
 										? 'bg-danger-bg text-danger'
 										: presentation.tone === 'warning'
@@ -764,7 +767,7 @@ function LeadsPage() {
 				label: t('leads.detail.created'),
 				render: lead => (
 					<div className='grid gap-0.5'>
-						<span className={tablePrimaryTextClassName}>
+						<span className={tableDateFullTextClassName}>
 							{formatDate(lead.created_at, locale, t('common.na'))}
 						</span>
 						<span className={tableSecondaryTextClassName}>
@@ -779,7 +782,7 @@ function LeadsPage() {
 			},
 			{
 				key: 'chatAction',
-				label: t('leads.chat', { defaultValue: 'Chat' }),
+				label: t('leads.chat'),
 				align: 'right',
 				render: lead => {
 					const linkedConversation = conversationByLeadId.get(lead.id)
@@ -797,9 +800,7 @@ function LeadsPage() {
 								}
 								navigate(routePaths.chats, { state: { sessionId } })
 							}}
-							aria-label={t('leads.openChat', {
-								defaultValue: 'Open chat',
-							})}
+							aria-label={t('leads.openChat')}
 						>
 							<FiMessageCircle className='h-3.5 w-3.5' />
 						</button>

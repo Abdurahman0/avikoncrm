@@ -8,7 +8,7 @@ interface StatusBadgeProps {
 
 const BADGE_BASE_CLASS_NAME = [
   'status-badge inline-flex min-h-7 items-center gap-1.5 rounded-pill px-2.5',
-  'text-[11px] font-semibold uppercase tracking-[0.08em] shadow-sm transition-[transform,box-shadow] duration-fast',
+  'whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.08em] shadow-sm transition-[transform,box-shadow] duration-fast',
 ].join(' ');
 
 const BADGE_TONE_CLASS_NAMES: Record<StatusBadgeTone, string> = {
