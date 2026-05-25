@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { FiEdit2, FiTrash2, FiDownload } from 'react-icons/fi'
+import { FiEdit2, FiTrash2 } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import {
 	DataTable,
@@ -60,36 +60,6 @@ function statusTone(status?: string): 'info' | 'warning' | 'accent' | 'success' 
 	}
 }
 
-/**
- * Converts a JSON array of clients to a CSV string.
- */
-function jsonToCsv(clients: Client[], isRu: boolean): string {
-	if (!clients?.length) {
-		return '';
-	}
-
-	const headers = isRu
-		? ['ID', 'Имя', 'Телефон', 'Регион', 'Адрес', 'Статус', 'Создан']
-		: ['ID', 'Ism', 'Telefon', 'Hudud', 'Manzil', 'Holat', 'Yaratilgan'];
-
-	const escape = (val: any) => {
-		const str = String(val ?? '').replace(/"/g, '""');
-		return `"${str}"`;
-	};
-
-	const rows = clients.map(c => [
-		escape(c.id),
-		escape(c.full_name),
-		escape(c.phone),
-		escape(c.region),
-		escape(c.address),
-		escape(c.status_label || c.status),
-		escape(c.created_at),
-	]);
-
-	return [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-}
-
 export function ClientsListView({
 	onRowClick,
 	onEditClient,
@@ -139,10 +109,6 @@ export function ClientsListView({
 				empty: 'Клиенты не найдены',
 				edit: 'Редактировать',
 				delete: 'Удалить',
-				export: 'Экспорт',
-				exportSuccess: 'Успешно экспортировано',
-				exportEmpty: 'Нет данных для экспорта',
-				exportError: 'Ошибка при экспорте',
 			}
 		: {
 				searchPlaceholder: 'Ism, telefon, hudud yoki izoh bo\'yicha qidiring...',
@@ -181,16 +147,11 @@ export function ClientsListView({
 				empty: 'Mijozlar topilmadi',
 				edit: 'Tahrirlash',
 				delete: 'O\'chirish',
-				export: 'Eksport',
-				exportSuccess: 'Eksport qilindi',
-				exportEmpty: 'Eksport qilish uchun ma\'lumot yo\'q',
-				exportError: 'Eksportda xatolik',
 			}
 
 	const [searchQuery, setSearchQuery] = useState('')
 	const [statusFilter, setStatusFilter] = useState<string>('all')
 	const [sourceFilter, setSourceFilter] = useState<string>('all')
-	const [isExporting, setIsExporting] = useState(false)
 	const [ordering, setOrdering] = useState<string>('-updated_at')
 	const [filters, setFilters] = useState<ClientsListParams>({
 		search: '',
@@ -216,37 +177,6 @@ export function ClientsListView({
 			loading: state.isLoading,
 		})
 	}, [onStatsChange, state.items.length, state.total, state.isLoading])
-
-	const handleExport = async () => {
-		try {
-			setIsExporting(true)
-			const blob = await services.clients.exportClients()
-			
-			if (!blob || blob.size === 0) {
-				alert(tx.exportEmpty)
-				return
-			}
-			
-			const filename = `clients-export_${new Date().toISOString().slice(0, 10)}.xlsx`
-			const url = window.URL.createObjectURL(blob)
-			
-			const a = document.createElement('a')
-			a.href = url
-			a.download = filename
-			document.body.appendChild(a)
-			a.click()
-			
-			// Clean up
-			a.remove()
-			window.URL.revokeObjectURL(url)
-			
-			setIsExporting(false)
-		} catch (error) {
-			console.error('Export failed', error)
-			alert(tx.exportError)
-			setIsExporting(false)
-		}
-	}
 
 	const statusOptions = useMemo<SelectOption[]>(
 		() => [
@@ -458,15 +388,6 @@ export function ClientsListView({
 						<h2 className='m-0 text-[1rem] font-semibold text-text-primary'>{tx.listTitle}</h2>
 						<span className='text-[12px] font-medium text-text-muted'>{tx.listHint}</span>
 					</div>
-					<button
-						type="button"
-						onClick={handleExport}
-						disabled={isExporting}
-						className="inline-flex items-center gap-2 rounded-lg bg-surface-card px-3 py-1.5 text-xs font-semibold text-text-secondary shadow-sm ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 disabled:cursor-not-allowed disabled:opacity-60"
-					>
-						<FiDownload className="h-3.5 w-3.5" />
-						{tx.export}
-					</button>
 				</div>
 
 				<div className='min-w-0 [&_.data-table__row--clickable:hover_.status-badge]:-translate-y-px'>
@@ -501,4 +422,3 @@ export function ClientsListView({
 		</div>
 	)
 }
-

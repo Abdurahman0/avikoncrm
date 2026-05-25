@@ -1790,6 +1790,8 @@
     },
     "leadStatus": {
       "new": "Новый",
+      "in_progress": "В процессе",
+      "closed": "Закрыт",
       "contacted": "Связались",
       "qualified": "Квалифицирован",
       "negotiating": "Переговоры",
@@ -1801,11 +1803,24 @@
       "all": "Все договоры",
       "contract": "Договор",
       "contracts": "Договоры",
+      "new": "Новый",
       "draft": "Черновик",
       "waiting_payment": "Ожидается оплата",
       "pending": "Ожидается",
       "confirmed": "Подтверждён",
+      "packing": "Сборка",
+      "shipped": "Отправлен",
+      "delivered": "Доставлен",
+      "closed": "Закрыт",
+      "audit_pending": "Аудит ожидается",
+      "audit_paid": "Аудит оплачен",
+      "moderation": "Модерация",
+      "contract_ready": "Договор готов",
+      "payment_pending": "Ожидает оплату",
       "paid": "Оплачен",
+      "sent": "Отправлен",
+      "signed": "Подписан",
+      "canceled": "Отменён",
       "completed": "Завершён",
       "cancelled": "Отменён"
     },
@@ -2151,6 +2166,10 @@
       "actions": "Действия"
     },
     "statuses": {
+      "new": "Новый",
+      "confirmed": "Подтвержден",
+      "packing": "Комплектуется",
+      "shipped": "Отправлен",
       "draft": "Черновик",
       "audit_pending": "Аудит ожидается",
       "audit_paid": "Аудит оплачен",
@@ -2159,6 +2178,7 @@
       "payment_pending": "Ожидает оплату",
       "paid": "Оплачен",
       "delivered": "Доставлен",
+      "closed": "Закрыт",
       "sent": "Отправлен",
       "signed": "Подписан",
       "canceled": "Отменен"
@@ -2435,4 +2455,3 @@
     }
   }
 }
-

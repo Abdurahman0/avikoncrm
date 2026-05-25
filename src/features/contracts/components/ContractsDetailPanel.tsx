@@ -688,7 +688,7 @@ export function ContractsDetailPanel({
 	onRecalculate,
 }: ContractsDetailPanelProps) {
 	const { i18n } = useTranslation()
-	const isRu = i18n.language === 'ru'
+	const isRu = i18n.language.toLowerCase().startsWith('ru')
 	const locale = isRu ? 'ru-RU' : 'uz-UZ'
 	const navigate = useNavigate()
 	const tx = isRu

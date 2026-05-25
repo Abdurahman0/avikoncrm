@@ -30,7 +30,6 @@ function ClientsPage() {
   };
   const importTx = {
     importClients: t('clients.importExport.importClients'),
-    exportClients: t('clients.importExport.exportClients'),
     importTitle: t('clients.importExport.importTitle'),
     importSubtitle: t('clients.importExport.importSubtitle'),
     uploadFile: t('clients.importExport.uploadFile'),
@@ -39,13 +38,10 @@ function ClientsPage() {
     startImport: t('clients.importExport.startImport'),
     importing: t('clients.importExport.importing'),
     close: t('clients.importExport.close'),
-    exportInProgress: t('clients.importExport.exportInProgress'),
     importFileReadError: t('clients.importExport.importFileReadError'),
     invalidImportJson: t('clients.importExport.invalidImportJson'),
     importNoValidRows: t('clients.importExport.importNoValidRows'),
-    exportFailed: t('clients.importExport.exportFailed'),
     importFailed: t('clients.importExport.importFailed'),
-    exportSuccess: t('clients.importExport.exportSuccess'),
     importResult: t('clients.importExport.importResult'),
   };
 
@@ -60,7 +56,6 @@ function ClientsPage() {
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [importPayload, setImportPayload] = useState('');
   const [isImporting, setIsImporting] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
   const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -199,41 +194,6 @@ function ClientsPage() {
     URL.revokeObjectURL(url);
   }
 
-  async function handleExportClients() {
-    setIsExporting(true);
-    setActionMessage(null);
-
-    try {
-      const blob = await services.clients.exportClients();
-
-      if (!blob || blob.size === 0) {
-        setActionMessage({ type: 'error', text: importTx.exportFailed });
-        return;
-      }
-
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      const date = new Date().toISOString().slice(0, 10);
-      anchor.href = url;
-      anchor.download = `clients-export-${date}.xlsx`;
-      document.body.append(anchor);
-      anchor.click();
-      anchor.remove();
-      URL.revokeObjectURL(url);
-
-      setActionMessage({
-        type: 'success',
-        // We don't know the exact exported row count from the XLSX response.
-        // Use the currently loaded total as a best-effort value for the template.
-        text: resolveTemplateMessage(importTx.exportSuccess, { count: stats.total }),
-      });
-    } catch {
-      setActionMessage({ type: 'error', text: importTx.exportFailed });
-    } finally {
-      setIsExporting(false);
-    }
-  }
-
   async function handleImportClients() {
     setIsImporting(true);
     setActionMessage(null);
@@ -339,19 +299,6 @@ function ClientsPage() {
             >
               <AppIcon name="plus" className="h-4 w-4" aria-hidden="true" />
               {tx.newClient}
-            </button>
-          ) : null}
-          {canManageClients ? (
-            <button
-              type="button"
-              className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-card px-3.5 text-sm font-semibold text-text-primary shadow-sm ring-1 ring-border-soft/70 transition duration-fast hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35 disabled:cursor-not-allowed disabled:opacity-65"
-              onClick={() => {
-                void handleExportClients();
-              }}
-              disabled={isExporting}
-            >
-              <AppIcon name="download" className="h-4 w-4" aria-hidden="true" />
-              {isExporting ? importTx.exportInProgress : importTx.exportClients}
             </button>
           ) : null}
           <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-success-bg px-3 text-[12px] font-semibold text-success">
@@ -489,4 +436,3 @@ function ClientsPage() {
 }
 
 export default ClientsPage;
-

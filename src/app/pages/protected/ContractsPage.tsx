@@ -75,7 +75,7 @@ function formatPricingAmount(
 
 function ContractsPage() {
 	const { t, i18n } = useTranslation()
-	const isRu = i18n.language === 'ru'
+	const isRu = i18n.language.toLowerCase().startsWith('ru')
 	const locale = isRu ? 'ru-RU' : 'uz-UZ'
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -112,25 +112,13 @@ function ContractsPage() {
 			actions: t('contractsPage.columns.actions'),
 		},
 		statuses: {
-			new: t('contractsPage.statuses.new', { defaultValue: isRu ? 'Новый' : 'Yangi' }),
-			confirmed: t('contractsPage.statuses.confirmed', {
-				defaultValue: isRu ? 'Подтвержден' : 'Tasdiqlandi',
-			}),
-			packing: t('contractsPage.statuses.packing', {
-				defaultValue: isRu ? 'Комплектуется' : "To'planyapti",
-			}),
-			shipped: t('contractsPage.statuses.shipped', {
-				defaultValue: isRu ? 'Отправлен' : "Jo'natildi",
-			}),
-			delivered: t('contractsPage.statuses.delivered', {
-				defaultValue: isRu ? 'Доставлен' : 'Yetkazildi',
-			}),
-			closed: t('contractsPage.statuses.closed', {
-				defaultValue: isRu ? 'Закрыт' : 'Yopildi',
-			}),
-			canceled: t('contractsPage.statuses.canceled', {
-				defaultValue: isRu ? 'Отменен' : 'Bekor qilindi',
-			}),
+			new: t('contractsPage.statuses.new'),
+			confirmed: t('contractsPage.statuses.confirmed'),
+			packing: t('contractsPage.statuses.packing'),
+			shipped: t('contractsPage.statuses.shipped'),
+			delivered: t('contractsPage.statuses.delivered'),
+			closed: t('contractsPage.statuses.closed'),
+			canceled: t('contractsPage.statuses.canceled'),
 		},
 		edit: t('contractsPage.edit'),
 		delete: t('contractsPage.delete'),

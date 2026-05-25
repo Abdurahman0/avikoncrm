@@ -335,7 +335,7 @@ export function ContractsFormPanel({
 	onSuccess,
 }: ContractsFormPanelProps) {
 	const { t, i18n } = useTranslation()
-	const isRu = i18n.language === 'ru'
+	const isRu = i18n.language.toLowerCase().startsWith('ru')
 	const isEditing = Boolean(contract)
 
 	const tx = isRu
@@ -1168,5 +1168,4 @@ export function ContractsFormPanel({
 		</div>
 	)
 }
-
 
