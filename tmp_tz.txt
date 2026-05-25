@@ -1,0 +1,131 @@
+TIJORAT TAKLIFI
+Avikontex uchun Internet Do'kon, AI Agent va CRM Tizimi
+Toshkent,  20 may 2026 yil
+ 
+Xaridorga: «Avikontex»
+1.  LOYIHA HAQIDA
+Ushbu tijorat taklifi «Avikontex» uchun oltita o'zaro bog'liq tizimni yagona platforma 
+sifatida ishlab chiqish va joriy etish bo'yicha taqdim etilmoqda: internet do'kon, sklad 
+integratsiyasi, to'lov tizimlari, AI sotuvchi agent, ichki CRM va ijtimoiy tarmoqlarda 
+ishlovchi AI agent.
+Tizimlar bir-biri bilan to'liq integratsiya qilinadi: Instagram yoki Telegramdan 
+keladigan mijoz ma'lumotlari avtomatik CRM ga tushadi, internet do'kondagi 
+buyurtmalar ham shu CRM da ko'rinadi, sklad o'zgarishlari esa saytda real vaqtda 
+yangilanadi.
+MODULLAR BATAFSIL TA VSIFI
+Internet Do'kon (Veb-Sayt)
+Avikontex mahsulotlarini onlayn sotish uchun to'liq funksional internet do'kon. Sklad 
+tizimi bilan real vaqtda sinxronlanadi. Mobil va kompyuter versiyalari to'liq 
+moslashtirilgan.
+Tovarlar va Katalog:
+—  Kategoriyalar va ichki kategoriyalar tuzilmasi
+—  Har bir tovar uchun: bir nechta rasm, batafsil tavsif, texnik xususiyatlar jadvali
+—  Narx, chegirma narxi va ombordagi qoldiq ko'rsatkichi
+—  'Tugadi' holati — ombor bo'shasa buyurtma berib bo'lmaydi
+—  Qidiruv: tovar nomi, kategoriya, narx oralig'i bo'yicha filtr
+Savatcha va Buyurtma:
+—  Savatcha: tovar qo'shish, miqdorni o'zgartirish, o'chirish
+—  Buyurtma berish: ism, telefon, yetkazib berish manzili, to'lov usulini tanlash
+—  Buyurtma tasdiqlanishi haqida mijozga SMS yoki Telegram xabari
+«TASDIQLAYMAN» 
+Tashkilot rahbari 
+____________  ________________ 
+(imzo)              (F .I.O.) 
+«____» __________ 2026 yil 
+M.O.
+
+—  Buyurtma holati sahifasi — mijoz o'z buyurtmasini kuzatib boradi
+3.2.  Sklad Integratsiyasi
+Mavjud sklad tizimi bilan ikki tomonlama avtomatik sinxronizatsiya. Operator saytga 
+alohida kirmasdan ham tovarlar avtomatik yangilanib turadi.
+—  Tovar qoldig'i, narx va holat o'zgarishlari real vaqtda saytga tushadi
+—  Skladdan yangi tovar qo'shilsa saytda avtomatik paydo bo'ladi
+—  Buyurtma berilganda sklad zaxirasi avtomatik kamayadi
+—  Omborda tovar tugasa saytda 'Tugadi' holati ko'rsatiladi
+3.3.  To'lov Tizimlari — Payme va Click
+Payme va Click to'lov tizimlari to'liq integratsiyasi. Mijoz saytdan chiqmasdan to'lovni 
+amalga oshiradi.
+—  Payme va Click orqali onlayn to'lov qabul qilish
+—  Muvaffaqiyatli to'lovdan so'ng buyurtma avtomatik tasdiqlanadi va CRM ga 'To'langan' 
+holati bilan tushadi
+—  To'lov amalga oshmasa buyurtma 'Kutilmoqda' holatida qoladi
+—  Kassir cheki avtomatik generatsiya qilinadi va mijozga yuboriladi
+—  To'lov holati va tranzaksiya tarixi CRM da saqlanadi
+3.4.  AI Sotuvchi Agent (Sayt + Telegram)
+Sayt ichidagi chat va Telegram bot orqali ishlaydigan sun'iy intellekt agenti. Ish 
+vaqtidan tashqari, dam olish kunlari ham to'xtovsiz xizmat ko'rsatadi.
+Saytdagi Chat Widget:
+—  Saytga kirgan mijoz bilan darhol suhbat boshlash
+—  Tovar mavjudligi, narx, xususiyatlar, yetkazib berish shartlari haqida savollarга javob 
+berish
+—  Mijoz parametrlari (byudjet, maqsad, o'lcham) asosida eng mos tovarlarni taklif qilish
+—  Savatga qo'shish va buyurtma berish jarayonini chat orqali boshqarish
+Telegram Bot:
+—  Telegram orqali murojat qilgan mijozlarga xuddi shu funksiyalar
+—  Buyurtma holati haqida Telegram orqali bildirishnoma yuborish
+—  Barcha suhbatlar CRM da avtomatik saqlanadi va mijoz profiliga biriktiriladi
+3.5.  Ichki CRM Tizimi
+Barcha murojatlar, buyurtmalar va mijozlar bitta boshqaruv panelida. Operator hamma 
+narsani bitta ekrandan ko'radi va boshqaradi.
+Buyurtmalar Boshqaruvi:
+—  Buyurtma holatlari: Yangi → Tasdiqlandi → To'planyapti → Jo'natildi → Yetkazildi → 
+Yopildi
+—  Har bir buyurtmani tegishli operatorga biriktirish
+—  Buyurtma holati o'zgarganda mijozga avtomatik Telegram xabari
+—  Buyurtmalarni filtr va qidiruv (sana, holat, operator, summa bo'yicha)
+Mijoz Profillari:
+—  Har bir mijoz uchun to'liq profil: ism, telefon, manzil
+—  Barcha buyurtmalar tarixi va jami xarid summasi
+
+
+—  AI suhbat yozuvlari — Instagram, Telegram va sayt chatidan
+—  Operator izohlari va ichki eslatmalar
+Murojatlar bo'limi:
+—  Barcha kanallardan (sayt, Instagram, Telegram) keladigan murojatlar bitta ro'yxatda
+—  Har bir murojatga holat belgilash: yangi, ko'rib chiqilmoqda, yopildi
+—  Javob berish muddatini nazorat qilish
+—  Operator CRM dan to'g'ridan-to'g'ri mijozga Telegram xabar yoza oladi
+Hisobotlar:
+—  Kunlik va haftalik buyurtmalar va daromad statistikasi
+—  Eng ko'p sotilgan tovarlar ro'yxati
+—  Murojaatlar va javob berish samaradorligi tahlili
+3.6.  AI Ijtimoiy Tarmoq Agenti (Instagram + Telegram)
+Instagram va Telegram orqali keladigan barcha murojaatlarga avtomatik javob 
+beradigan va mijozlarni CRM ga yig'adigan sun'iy intellekt agenti. Yangi mijozlarni 
+jalb qilishni to'liq avtomatlashtiradi.
+Instagram:
+—  Instagram Direct xabarlariga AI orqali avtomatik javob berish
+—  Post va reelslarga izoh qoldirgan foydalanuvchiga Direct orqali darhol murojat qilish 
+va suhbat boshlash
+—  Boshlang'ich konsultatsiya: mahsulot haqida savollarga javob, narx va mavjudlikni 
+tushuntirish
+—  Suhbat davomida mijozning ism va telefon raqamini olish
+—  To'plangan ma'lumotlar avtomatik CRM ga tushadi va lead sifatida saqlanadi
+Telegram:
+—  Telegram botga yozgan har bir foydalanuvchi bilan AI suhbat boshlaydi
+—  Mahsulotlar, narxlar, yetkazib berish haqida boshlang'ich konsultatsiya
+—  Mijoz ma'lumotlarini (ism, telefon, qiziqish) to'plab CRM ga yuborish
+—  Buyurtma berish jarayonini Telegram orqali boshqarish
+CRM Integratsiyasi:
+—  Barcha kanallardan yig'ilgan leadlar bitta CRM da to'planadi
+—  Har bir lead uchun: manba kanal, ism, telefon, qiziqish va suhbat tarixi
+—  Operator CRM dan leadni ko'rib, davom ettirishi yoki yopishi mumkin
+  KAFOLAT
+Loyiha topshirilgandan so'ng 30 (o'ttiz) kalendar kun bepul texnik qo'llab-quvvatlash 
+ko'rsatiladi. Ushbu muddat ichida aniqlangan nosozliklar 48 soat ichida bartaraf etiladi. 
+Foydalanish bo'yicha qo'llanma va operator uchun onlayn o'quv sessiyasi taqdim 
+etiladi.
+Taklif amal qilish muddati: 30 (o'ttiz) kalendar kun.
+ 
+
+
+IJROCHI: 
+Tashkilot: _______________________ 
+Rahbar:    _______________________ 
+Imzo:       ___________   M.O. 
+Sana:       «____» ________ 2026 yil
+MIJOZ (A VIKONTEX): 
+Tashkilot: _______________________ 
+Rahbar:    _______________________ 
+Imzo:       ___________   M.O. 
+Sana:       «____» ________ 2026 yil
