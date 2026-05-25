@@ -87,6 +87,5 @@ export function maskSecretValue(value: string): string {
     return '';
   }
 
-  return 'вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў';
+  return '********';
 }
-
