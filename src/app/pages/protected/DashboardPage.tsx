@@ -762,9 +762,6 @@ function DashboardPage() {
 										customDateTo: to,
 									}))
 
-									if (range.to) {
-										setIsDatePopoverOpen(false)
-									}
 								}}
 							/>
 							<div className='mt-2 flex items-center justify-between gap-2 border-t border-border-soft/70 pt-2'>
