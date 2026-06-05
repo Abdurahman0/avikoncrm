@@ -26,6 +26,7 @@ import IntegrationConfigDeleteDialog from '../../../features/integrations/compon
 import IntegrationConfigDetailPanel from '../../../features/integrations/components/IntegrationConfigDetailPanel';
 import IntegrationConfigFormPanel from '../../../features/integrations/components/IntegrationConfigFormPanel';
 import { formatLocalizedDate } from '../../../i18n/date-format';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import {
   getIntegrationProviderClassName,
   getIntegrationProviderLabel,
@@ -111,7 +112,7 @@ function toBooleanSecretFilter(value: SecretFilter): boolean | undefined {
 function IntegrationsPage() {
   const { t, i18n } = useTranslation();
   const { hasPermission, hasRole } = useAuth();
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
   const canManageIntegrations = hasRole('developer') || hasPermission('can_manage_integrations');
 
   const [configSearch, setConfigSearch] = usePersistentState('integrations:config-search', '');

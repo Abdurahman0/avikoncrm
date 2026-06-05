@@ -15,6 +15,7 @@ import {
 	getUserRoleLabel,
 	getUserStatusLabel,
 } from '../../../i18n/labels'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import type { AppUser, SelectOption } from '../../../types/domain'
 import type { UserRole } from '../../../types/user'
@@ -118,7 +119,7 @@ import { useAuth } from '../../../auth'
 
 function ProfilePage() {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const roleOptions = useMemo<SelectOption[]>(
 		() => [
 			{ value: 'developer', label: getUserRoleLabel(t, 'developer') },

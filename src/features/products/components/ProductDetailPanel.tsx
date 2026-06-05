@@ -9,6 +9,7 @@ import {
   PageCard,
 } from '../../../components/shared/page';
 import { formatLocalizedDate } from '../../../i18n/date-format';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { services } from '../../../services';
 import type { EntityId, Product } from '../../../types/domain';
 
@@ -37,7 +38,7 @@ function ProductDetailPanel({
   deleteDisabledReason = null,
 }: ProductDetailPanelProps) {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -80,6 +81,15 @@ function ProductDetailPanel({
     };
   }, [productId]);
 
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
   function openImagePreview(imageUrl: string, alt: string) {
     setPreviewImageUrl(imageUrl);
     setPreviewImageAlt(alt);
@@ -102,12 +112,12 @@ function ProductDetailPanel({
 
   return (
     <div
-      className="fixed inset-0 z-40 flex justify-end bg-background-overlay/72 backdrop-blur-[3px]"
+      className="fixed inset-0 z-40 flex justify-end bg-background-overlay/72"
       onClick={onClose}
       role="presentation"
     >
       <aside
-        className="h-full w-full overflow-y-auto bg-background-subtle p-4 shadow-xl ring-1 ring-border-soft/50 min-[641px]:max-w-[460px] min-[641px]:p-5"
+        className="h-full w-full overflow-y-auto overscroll-contain bg-background-subtle p-4 shadow-xl ring-1 ring-border-soft/50 [contain:layout_paint] min-[641px]:max-w-[460px] min-[641px]:p-5"
         onClick={(event) => event.stopPropagation()}
         aria-label={t('products.detail.titleFallback')}
       >
@@ -168,6 +178,8 @@ function ProductDetailPanel({
                       src={product.imageUrl}
                       alt={product.name}
                       className="h-44 w-full cursor-zoom-in rounded-xl object-cover ring-1 ring-border-soft/40"
+                      loading="eager"
+                      decoding="async"
                       onClick={() => openImagePreview(product.imageUrl ?? '', product.name)}
                     />
                     {product.images.length > 1 ? (
@@ -178,6 +190,8 @@ function ProductDetailPanel({
                             src={image.imageUrl}
                             alt={product.name}
                             className="h-16 w-16 cursor-zoom-in rounded-lg object-cover ring-1 ring-border-soft/35"
+                            loading="lazy"
+                            decoding="async"
                             onClick={() =>
                               openImagePreview(image.imageUrl, `${product.name} (${t('products.detail.images')})`)
                             }
@@ -189,7 +203,7 @@ function ProductDetailPanel({
                 </PageCard>
               ) : null}
 
-              <PageCard>
+              <PageCard className="[content-visibility:auto] [contain-intrinsic-size:540px]">
                 <div className="grid gap-2.5 sm:grid-cols-2">
                   <div className="rounded-lg bg-surface-subtle/80 p-3">
                     <p className={labelClassName}>{t('products.detail.price')}</p>
@@ -323,6 +337,7 @@ function ProductDetailPanel({
               src={previewImageUrl}
               alt={previewImageAlt}
               className="max-h-[92vh] w-full bg-background-subtle object-contain"
+              decoding="async"
             />
           </div>
         </div>

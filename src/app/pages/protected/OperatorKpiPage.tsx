@@ -23,6 +23,7 @@ import type { OperatorStatisticsSummary } from '../../../types/domain';
 import { Calendar } from '../../../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { formatLocalizedDate } from '../../../i18n/date-format';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { ru, uz } from 'date-fns/locale';
 
 const PAGE_SIZE = 12;
@@ -155,7 +156,7 @@ function DatePickerField(props: {
 
 function OperatorKpiPage() {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
 
   const [dateFrom, setDateFrom] = usePersistentState('operator-kpi:date-from', defaultDateFrom());
   const [dateTo, setDateTo] = usePersistentState('operator-kpi:date-to', defaultDateTo());

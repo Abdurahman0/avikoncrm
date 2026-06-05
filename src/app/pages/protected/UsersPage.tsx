@@ -26,6 +26,7 @@ import UserDetailPanel from '../../../features/users/components/UserDetailPanel'
 import UserFormPanel from '../../../features/users/components/UserFormPanel';
 import { formatLocalizedDate } from '../../../i18n/date-format';
 import { getUserRoleLabel } from '../../../i18n/labels';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { usePersistentState } from '../../../lib/persistent-state';
 import { services } from '../../../services';
 import type {
@@ -70,7 +71,7 @@ function UsersPage() {
   const canManageUsers = hasPermission('can_manage_users');
   const canManageDeveloperRole = hasRole('developer');
   const currentManagedUserId = currentUser?.id ?? null;
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
 
   const [search, setSearch] = usePersistentState('users:search', '');
   const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');

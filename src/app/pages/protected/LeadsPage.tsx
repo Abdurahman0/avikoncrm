@@ -23,6 +23,7 @@ import LeadDetailPanel from '../../../features/leads/components/LeadDetailPanel'
 import LeadFormPanel from '../../../features/leads/components/LeadFormPanel'
 import { formatLocalizedDate } from '../../../i18n/date-format'
 import { getChannelLabel, getLeadStatusLabel } from '../../../i18n/labels'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { usePersistentState } from '../../../lib/persistent-state'
 import { services } from '../../../services'
 import { useAuth } from '../../../auth'
@@ -243,7 +244,7 @@ function LeadsPage() {
 	const { t, i18n } = useTranslation()
 	const { hasPermission, currentUser } = useAuth()
 	const canManageLeads = hasPermission('can_manage_leads')
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const relativeLocale = i18n.language === 'ru' ? 'ru' : 'uz'
 
 	const allOperatorsOption = useMemo<SelectOption>(

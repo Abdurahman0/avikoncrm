@@ -15,6 +15,7 @@ import {
 } from '../../../components/ui/chart';
 import { formatLocalizedDate } from '../../../i18n/date-format';
 import { getChannelLabel, getLeadStatusLabel } from '../../../i18n/labels';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { services } from '../../../services';
 import type {
   OperatorStatisticsDetail,
@@ -82,7 +83,7 @@ function OperatorKpiDetailPanel({
   onClose,
 }: OperatorKpiDetailPanelProps) {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
   const query = useMemo(() => ({ ...defaultDateRange(), ...params }), [params]);
 
   const [isLoading, setIsLoading] = useState(true);

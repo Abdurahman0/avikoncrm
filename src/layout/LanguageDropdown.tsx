@@ -10,6 +10,7 @@ type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 const LANGUAGE_COUNTRY_CODES: Record<SupportedLanguage, string> = {
   uz: 'UZ',
   ru: 'RU',
+  en: 'US',
 };
 
 function resolveActiveLanguage(language: string): SupportedLanguage {

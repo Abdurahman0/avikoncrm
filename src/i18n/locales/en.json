@@ -1,0 +1,2465 @@
+{
+  "common": {
+    "appName": "Avikontex",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "na": "Not available",
+    "active": "Active",
+    "inactive": "Inactive",
+    "unassigned": "Unassigned",
+    "notAvailable": "Not available",
+    "language": "Language",
+    "languages": {
+      "uz": "Uzbek",
+      "ru": "Russian",
+      "en": "English"
+    },
+    "close": "Close"
+  },
+  "routes": {
+    "home": {
+      "title": "Home",
+      "description": "Redirect page based on session status."
+    },
+    "login": {
+      "title": "Sign in",
+      "description": "Login page."
+    },
+    "access-denied": {
+      "title": "Access denied",
+      "description": "Message for disallowed pages."
+    },
+    "not-found": {
+      "title": "Page not found",
+      "description": "Backup page for unknown destinations."
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Main metrics and overall analytics."
+    },
+    "leads": {
+      "title": "Leads",
+      "description": "Unified inbox for website, Telegram, and Instagram leads."
+    },
+    "customers": {
+      "title": "Customers",
+      "description": "Customer directory and profiles."
+    },
+    "clients": {
+      "title": "Clients",
+      "description": "Client directory and profiles."
+    },
+    "products": {
+      "title": "Products",
+      "description": "Catalogue, pricing and stock management."
+    },
+    "contracts": {
+      "title": "Orders",
+      "description": "Manage order status and internal workflow."
+    },
+    "orders": {
+      "title": "Orders",
+      "description": "Order management."
+    },
+    "couriers": {
+      "title": "Couriers",
+      "description": "Manage courier profiles and delivery appointments."
+    },
+    "agents": {
+      "title": "Agents",
+      "description": "Manage agent profiles and attached products."
+    },
+    "payments": {
+      "title": "Payments",
+      "description": "Payment status and transactions."
+    },
+    "chat": {
+      "title": "Chat",
+      "description": "Conversation and message workspace."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Important events and alerts."
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "User Settings and Information."
+    },
+    "users": {
+      "title": "Users",
+      "description": "Team members and permissions management."
+    },
+    "operator-kpi": {
+      "title": "Operator KPI",
+      "description": "Operator performance and efficiency analytics."
+    },
+    "integrations": {
+      "title": "Integrations",
+      "description": "External service connections."
+    },
+    "ai-settings": {
+      "title": "AI Settings",
+      "description": "Artificial intelligence configuration."
+    },
+    "logs": {
+      "title": "Logs",
+      "description": "System event and audit logs."
+    },
+    "audit-requests": {
+      "title": "Audit Requests",
+      "description": "Energy audit inquiries and summary process."
+    }
+  },
+  "navigation": {
+    "groups": {
+      "main": "Main",
+      "operations": "Operations",
+      "communication": "Communication",
+      "system": "System"
+    },
+    "captions": {
+      "dashboard": "Dashboard",
+      "profile": "Profile",
+      "users": "Users",
+      "integrations": "Integrations",
+      "leads": "Leads inbox",
+      "customers": "Customers",
+      "clients": "Clients",
+      "products": "Products",
+      "contracts": "Orders",
+      "orders": "Orders",
+      "couriers": "Couriers",
+      "agents": "Agents",
+      "payments": "Payments",
+      "chat": "Chats",
+      "notifications": "Notifications",
+      "ai-settings": "AI Settings",
+      "logs": "Logs",
+      "audit-requests": "Audit requests"
+    }
+  },
+  "topbar": {
+    "menuOpen": "Open navigation",
+    "themeToggle": "Change theme",
+    "refresh": "Refresh page",
+    "notifications": "Notifications",
+    "profileMenu": "Open the profile menu",
+    "profile": "Profile",
+    "logout": "Log out",
+    "noRole": "No role",
+    "noEmail": "No email"
+  },
+  "auth": {
+    "login": {
+      "eyebrow": "Avicontex CRM",
+      "subtitle": "CRM management platform",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "developer",
+      "passwordLabel": "Password",
+      "usernameError": "Enter your username.",
+      "passwordError": "Password must be at least 8 characters long.",
+      "invalidCredentials": "Username or password is incorrect.",
+      "signIn": "Enter",
+      "signingIn": "Entering...",
+      "hidePassword": "Hide password",
+      "showPassword": "Show password",
+      "footerRights": "V© 2026 Avicontex. All rights reserved.",
+      "footerPowered": "Developer"
+    },
+    "accessDenied": {
+      "eyebrow": "Access control",
+      "title": "Entry is denied",
+      "description": "You are logged in but do not have permission for this page.",
+      "currentAccount": "Current account:",
+      "notSignedIn": "Not logged in",
+      "role": "Role:",
+      "goAllowed": "Go to a fixed page",
+      "signOut": "Exit",
+      "goLogin": "Go to the login page"
+    }
+  },
+  "shared": {
+    "table": {
+      "emptyTitle": "No records found",
+      "emptyDescription": "Information will be displayed here when available.",
+      "loadingTitle": "Loading table",
+      "loadingDescription": "The rows are displayed when the data is ready.",
+      "reorderRow": "Change order"
+    },
+    "searchInput": {
+      "placeholder": "search"
+    },
+    "pagination": {
+      "page": "Page",
+      "of": "from",
+      "totalItems": "total record",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "filterSelect": {
+      "select": "Choose"
+    },
+    "emptyState": {
+      "title": "No information found",
+      "description": "The required information is not available yet."
+    },
+    "loadingState": {
+      "title": "Loading",
+      "description": "Retrieving data."
+    },
+    "placeholder": {
+      "sectionTitle": "Page foundation",
+      "sectionDescription": "This is an example of a general page structure for this module.",
+      "emptyTitle": "The module interface is not ready yet",
+      "emptyDescription": "In the next tasks, this section will be filled with real content.",
+      "nextStateTitle": "Next case",
+      "loadingPatternTitle": "Loading status",
+      "loadingPatternHeading": "Future data loading",
+      "loadingPatternDescription": "This state is used as a temporary boot interface when services are connected.",
+      "publicRoute": "Public page",
+      "protectedRoute": "Protected page",
+      "routeId": "Page ID",
+      "navigation": "Navigation",
+      "listed": "It will be displayed",
+      "hidden": "Hidden",
+      "access": "Enter",
+      "allowedRoles": "Fixed roles",
+      "accessStrategy": "Entry strategy"
+    }
+  },
+  "dashboard": {
+    "loadingTitle": "Loading dashboard",
+    "loadingDescription": "Analytics and distributions are being received.",
+    "errorTitle": "Dashboard unavailable",
+    "errorDescription": "Failed to load dashboard data.",
+    "title": "Dashboard",
+    "welcome": "Welcome back",
+    "workspaceFallback": "Workspace",
+    "totalLeads": "Total inquiries",
+    "sourceDataHint": "Source data appears after new leads are added.",
+    "metrics": {
+      "leads": "Inquiries",
+      "customers": "Customers",
+      "orders": "Orders",
+      "pendingPayments": "Expected payments",
+      "unreadMessages": "Unread messages",
+      "revenue": "Revenue",
+      "newLeads": "new inquiries",
+      "newCustomers": "new customers",
+      "completed": "completed",
+      "pending": "pending",
+      "activeSessions": "active sessions",
+      "collected": "assembled",
+      "collectedAmount": "Collected amount",
+      "pipelineAmount": "Expected amount"
+    },
+    "sections": {
+      "trend": "Trends",
+      "source": "Inquiry sources",
+      "leadStatus": "Inquiry funnel",
+      "contractStatus": "Order pipeline",
+      "orderStatus": "Order status",
+      "paymentStatus": "Payment status",
+      "chatChannels": "Chat channels",
+      "performance": "Performance",
+      "topProducts": "Top products",
+      "regionDemand": "Regional demand",
+      "managerPerformance": "Manager performance"
+    },
+    "descriptions": {
+      "trend": "Trends for leads, chats, and orders during the selected period.",
+      "source": "Distribution of inquiries by channel and platform.",
+      "leadStatus": "Distribution of inquiries across funnel stages.",
+      "contractStatus": "Distribution of orders across fulfillment statuses.",
+      "topProducts": "List of best-selling products by sales volume.",
+      "regionDemand": "Distribution of customers in the region during the selected period.",
+      "managerPerformance": "Total, won, and lost client metrics across managers."
+    },
+    "performance": {
+      "leadConversionRate": "Lead conversion rate",
+      "orderCompletionRate": "Order completion rate",
+      "averageOrderValue": "Average order value"
+    },
+    "topProducts": {
+      "hint": "Best-selling SKUs",
+      "empty": "Top products are not available yet.",
+      "columns": {
+        "product": "Product",
+        "sold": "Sold",
+        "revenue": "Income"
+      }
+    },
+    "regionDemand": {
+      "empty": "No information found on regions.",
+      "emptyDescription": "Information on regions is not available for the selected period.",
+      "columns": {
+        "region": "Region",
+        "total": "Customers"
+      }
+    },
+    "managerPerformance": {
+      "empty": "No information found on managers.",
+      "emptyDescription": "There is no information on managers for the selected period.",
+      "columns": {
+        "manager": "Manager",
+        "total": "Total",
+        "won": "Won",
+        "lost": "Lost"
+      }
+    },
+    "noLeads": "No leads",
+    "filters": {
+      "intervalLabel": "Interval",
+      "dateFrom": "Start date",
+      "dateTo": "End date",
+      "customRange": "Date range",
+      "pickRange": "Select a date range",
+      "clearRange": "Clean up",
+      "presets": {
+        "today": "Today",
+        "7d": "7D",
+        "30d": "30D"
+      },
+      "intervals": {
+        "day": "Daily",
+        "week": "Weekly",
+        "month": "Monthly"
+      }
+    },
+    "publicApi": {
+      "title": "Public API",
+      "subtitle": "Check company information and subsidy calculator.",
+      "companyTitle": "Company information",
+      "companyDescription": "Public endpoint for details, platform and pricing matrix.",
+      "loadCompany": "Load company information",
+      "loadingCompany": "Loading...",
+      "companyError": "Company information could not be retrieved.",
+      "companyEmpty": "Click the button for company information.",
+      "subsidyTitle": "Subsidy calculator",
+      "subsidyDescription": "Calculation of the final price for the panel, inverter and power.",
+      "panelType": "Panel type",
+      "inverterType": "Inverter type",
+      "requestedPower": "Requested power (kW)",
+      "auditPower": "Audit power (kW)",
+      "calculate": "Calculation",
+      "calculating": "Calculating...",
+      "subsidyError": "Failed to retrieve subsidy calculation.",
+      "subsidyEmpty": "Enter the parameters and click the 'Calculate' button.",
+      "basePrice": "Base price",
+      "subsidyAmount": "Subsidy amount",
+      "customerAmount": "Customer fee",
+      "referencePower": "Subsidy base capacity",
+      "panelTypes": {
+        "jinkoJa": "Jinko / JA Solar",
+        "longiHiMoX10": "Longi HI MO X10"
+      },
+      "inverterTypes": {
+        "deye": "Deye",
+        "solax": "Solax"
+      }
+    }
+  },
+  "leads": {
+    "pipelineEyebrow": "Appeals",
+    "title": "Appeals",
+    "lead": "Appeal",
+    "newLead": "New appeal",
+    "subtitle": "Manage Site, Telegram and Instagram requests in a single inbox.",
+    "visible": "is visible",
+    "filters": "filter",
+    "allStatuses": "All cases",
+    "allChannels": "All channels",
+    "allOperators": "All operators",
+    "status": "Status",
+    "channel": "Channel",
+    "assignedOperator": "Combined operator",
+    "orderBy": "Sorting",
+    "updatedNewest": "Updated (New)",
+    "updatedOldest": "Updated (old)",
+    "createdNewest": "Added (new)",
+    "createdOldest": "Added (old)",
+    "searchPlaceholder": "Search by address, phone or username...",
+    "count": "appeal",
+    "unknownHandle": "unknown",
+    "detailOpen": "Details are open",
+    "queueTitle": "Queue of appeals",
+    "queueHint": "Click on a row to open the details",
+    "emptyTitle": "No matching reference found",
+    "emptyDescription": "Try changing your search or filters.",
+    "errorTitle": "No appeals available",
+    "errorDescription": "Failed to download applications from current service.",
+    "contact": "Contact",
+    "source": "Source",
+    "owner": "Responsible",
+    "lastActivity": "Recent activity",
+    "noPhone": "No phone",
+    "noEmail": "No email",
+    "awaitingOutreach": "Awaiting communication",
+    "dmSent": "Message sent",
+    "unassigned": "Not attached",
+    "replied": "Answered",
+    "awaitingReply": "Awaiting response",
+    "actions": {
+      "column": "Actions",
+      "edit": "Editing",
+      "delete": "Turn off",
+      "statusUpdateError": "Failed to update application status."
+    },
+    "form": {
+      "eyebrow": "Application form",
+      "createTitle": "Add a new application",
+      "editTitle": "Edit the application",
+      "createSubtitle": "Enter new contact information.",
+      "editSubtitle": "Update your application profile and manage your status.",
+      "close": "Close the application form",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Name is surname",
+      "phone": "Telephone",
+      "email": "Email",
+      "instagram": "Instagram username",
+      "telegram": "Telegram username",
+      "source": "Source",
+      "status": "Status",
+      "operator": "Responsible operator",
+      "notes": "Explanation",
+      "notesPlaceholder": "Write an internal comment on the application",
+      "metadata": "Metadata (JSON)",
+      "requiredError": "Fill in the required fields.",
+      "metadataError": "Metadata must be in JSON object form only.",
+      "saveError": "The request could not be saved.",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "createSubmit": "Add a reference",
+      "editSubmit": "Save changes"
+    },
+    "deleteDialog": {
+      "eyebrow": "Delete the application",
+      "title": "Deleting reference \"{{name}}\".",
+      "description": "This action is not reversible. The reference will be completely removed from the history.",
+      "deleting": "Deleting...",
+      "confirm": "Yes, delete"
+    },
+    "detail": {
+      "ariaLabel": "Application details",
+      "profile": "Application profile",
+      "titleFallback": "Application details",
+      "close": "Close application details",
+      "loadingTitle": "Loading application details",
+      "loadingDescription": "Retrieving profile and activity data.",
+      "errorTitle": "No appeal available",
+      "errorDescription": "The selected application could not be loaded.",
+      "contactTitle": "Contact",
+      "contactDescription": "Basic profile and attachment information.",
+      "phone": "Telephone",
+      "email": "Email",
+      "instagram": "Instagram",
+      "telegram": "Telegram",
+      "source": "Source",
+      "owner": "Responsible",
+      "activityTitle": "Activity",
+      "activityDescription": "Timeline and communication signals.",
+      "created": "Added",
+      "updated": "Updated",
+      "lastContact": "Last contact",
+      "lastMessage": "Last message",
+      "leadReplied": "Appeal answered",
+      "dmSent": "Message sent",
+      "notesTitle": "Notes",
+      "notesDescription": "Context before further communication.",
+      "noNotes": "No comments yet.",
+      "metadataTitle": "Metadata",
+      "statusControl": "Update application status",
+      "readOnlyHint": "You do not have the right to edit the reference."
+    },
+    "sla": "SLA",
+    "slaOverdue": "{{count}} minutes late",
+    "slaDueSoon": "Term: {{relative}}",
+    "slaOnTrack": "Term: {{relative}}",
+    "chat": "Chat",
+    "openChat": "Open a chat"
+  },
+  "customers": {
+    "eyebrow": "Process",
+    "title": "Customers",
+    "subtitle": "Monitor customer list and attached operators.",
+    "newCustomer": "New customer",
+    "searchPlaceholder": "Search by customer, phone or address...",
+    "allOperators": "All operators",
+    "assignedOperator": "Combined operator",
+    "orderBy": "Sorting",
+    "updatedNewest": "Updated (New)",
+    "updatedOldest": "Updated (old)",
+    "createdNewest": "Added (new)",
+    "createdOldest": "Added (old)",
+    "records": "writing",
+    "activeFilters": "active filter",
+    "rowSelected": "The row is selected",
+    "directoryTitle": "Client directory",
+    "directoryHint": "Find the right customer through search and filters.",
+    "emptyTitle": "No matching client found",
+    "emptyDescription": "Change the search query or operator filter.",
+    "errorTitle": "No customers available",
+    "errorDescription": "Could not download clients from the current service.",
+    "loadingTitle": "Loading clients",
+    "loadingDescription": "Receiving customer list.",
+    "columns": {
+      "customer": "Customer",
+      "phone": "Telephone",
+      "email": "Email",
+      "address": "Address",
+      "operator": "Operator",
+      "created": "Date added",
+      "updated": "Updated date",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Editing",
+      "delete": "Turn off"
+    },
+    "noEmail": "No email",
+    "noPhone": "No phone",
+    "noNotes": "No comment",
+    "noAddress": "No address",
+    "defaultCountry": "Uzbekistan",
+    "noLeadLink": "The lead is not connected",
+    "leadPrefix": "Lead",
+    "detail": {
+      "ariaLabel": "Customer details",
+      "profile": "Customer profile",
+      "titleFallback": "Customer details",
+      "close": "Close customer details",
+      "loadingTitle": "Loading customer details",
+      "loadingDescription": "Retrieving customer information.",
+      "errorTitle": "The client does not exist",
+      "errorDescription": "The selected client could not be loaded.",
+      "contactTitle": "Contact",
+      "contactDescription": "Basic information and links.",
+      "phone": "Telephone",
+      "email": "Email",
+      "address": "Address",
+      "operator": "Responsible operator",
+      "linkedLead": "Linked lid",
+      "notes": "Explanation",
+      "metadata": "Metadata",
+      "created": "Added",
+      "updated": "Updated",
+      "readOnlyHint": "You do not have permission to edit the client."
+    },
+    "form": {
+      "eyebrow": "Customer form",
+      "createTitle": "Add a new customer",
+      "editTitle": "Edit client",
+      "createSubtitle": "Enter new customer information for CRM.",
+      "editSubtitle": "Update your customer profile.",
+      "close": "Close the client form",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Name is surname",
+      "phone": "Telephone",
+      "email": "Email",
+      "address": "Address",
+      "addressPlaceholder": "Street and home address",
+      "lead": "Linked lid",
+      "operator": "Responsible operator",
+      "notes": "Explanation",
+      "notesPlaceholder": "Write a short comment about the client",
+      "metadata": "Metadata (JSON)",
+      "noLead": "Without a lead",
+      "requiredError": "Fill in the required fields.",
+      "metadataError": "Metadata must be a JSON object only.",
+      "saveError": "Could not save client.",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "createSubmit": "Add a customer",
+      "editSubmit": "Save changes"
+    },
+    "deleteDialog": {
+      "eyebrow": "Delete the client",
+      "title": "Deleting client \"{{name}}\".",
+      "description": "This action is not reversible. The customer record will be permanently deleted.",
+      "deleting": "Deleting...",
+      "confirm": "Yes, delete"
+    }
+  },
+  "users": {
+    "eyebrow": "Management",
+    "title": "Users",
+    "subtitle": "Manage team accounts and permissions.",
+    "newUser": "New user",
+    "records": "user",
+    "activeFilters": "active filter",
+    "searchPlaceholder": "Search by email, name or phone...",
+    "loadingTitle": "Loading users",
+    "loadingDescription": "Retrieving a list of accounts.",
+    "errorTitle": "No users available",
+    "errorDescription": "Could not download users from the current service.",
+    "emptyTitle": "No matching user found",
+    "emptyDescription": "Try changing the search or filter parameters.",
+    "listTitle": "Community users",
+    "listHint": "Click on a row to view details",
+    "fullAccessShort": "Full access",
+    "permissionsCount": "{{count}} permissions",
+    "columns": {
+      "user": "User",
+      "role": "Role",
+      "phone": "Telephone",
+      "status": "Status",
+      "permissions": "Permissions",
+      "created": "Added",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "filters": {
+      "allRoles": "All roles",
+      "allStatuses": "All cases",
+      "role": "Role",
+      "status": "Status"
+    },
+    "actions": {
+      "edit": "Editing",
+      "delete": "Turn off",
+      "activate": "Activation",
+      "deactivate": "Disable",
+      "toggling": "Updating...",
+      "toggleError": "Failed to update user status."
+    },
+    "detail": {
+      "ariaLabel": "User details",
+      "profile": "User profile",
+      "titleFallback": "User details",
+      "close": "Close the detail panel",
+      "loadingTitle": "Loading user details",
+      "loadingDescription": "Retrieving account and permission information.",
+      "errorTitle": "User not found",
+      "errorDescription": "The selected user could not be loaded.",
+      "accountTitle": "Account information",
+      "accountDescription": "Basic profile and login status.",
+      "phone": "Telephone",
+      "role": "Role",
+      "createdBy": "Created by",
+      "status": "Status",
+      "permissions": "Special permissions",
+      "developerPermissionsHint": "The Developer role automatically has all permissions.",
+      "noPermissions": "Special permissions are not attached.",
+      "createdAt": "Added",
+      "updatedAt": "Updated",
+      "readOnlyHint": "You do not have user management rights."
+    },
+    "form": {
+      "eyebrow": "User form",
+      "createTitle": "Add user",
+      "editTitle": "Edit user",
+      "createSubtitle": "Enter the new account and role settings.",
+      "editSubtitle": "Update user account and permissions.",
+      "close": "Close the form",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Name is surname",
+      "email": "Email",
+      "phone": "Telephone",
+      "password": "Password",
+      "passwordRequired": "At least 8 characters",
+      "passwordOptional": "Leave blank to not change the password",
+      "role": "Role",
+      "activeUser": "Active user",
+      "activeHint": "An inactive user cannot log in.",
+      "permissionsTitle": "Operator permissions",
+      "permissionsDescription": "Select the required access codes for the operator.",
+      "requiredError": "Fill in the required fields.",
+      "emailError": "Please enter a valid email address.",
+      "passwordError": "Password must be at least 8 characters long.",
+      "saveError": "Could not save user.",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "createSubmit": "Add user",
+      "editSubmit": "Save changes",
+      "applyRoleDefaults": "Apply Role Rights ({{count}})",
+      "permissionGroups": {
+        "viewing": "Viewing rights",
+        "managing": "Management rights",
+        "updating": "Renewal Rights",
+        "communication": "Communication rights",
+        "other": "Other rights"
+      }
+    },
+    "deleteDialog": {
+      "eyebrow": "Delete a user",
+      "title": "Deleting user \"{{name}}\".",
+      "description": "This action is not reversible. The user will be permanently deleted.",
+      "deleting": "Deleting...",
+      "confirm": "Yes, delete"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Manage pricing, stock and active status from a single directory.",
+    "newProduct": "New product",
+    "newCategory": "New category",
+    "allCurrencies": "All currencies",
+    "allStatuses": "All statuses",
+    "allReviewsModes": "Comments: All",
+    "reviewsEnabled": "Comments are enabled",
+    "reviewsDisabled": "Comments are off",
+    "reviewsFilterLabel": "Comments",
+    "status": "Status",
+    "currency": "Currency",
+    "orderBy": "Sorting",
+    "updatedNewest": "Updated (New)",
+    "updatedOldest": "Updated (old)",
+    "createdNewest": "Added (new)",
+    "createdOldest": "Added (old)",
+    "nameAz": "Name (A-Z)",
+    "nameZa": "Name (Z-A)",
+    "priceHighLow": "Price (high-low)",
+    "priceLowHigh": "Price (low-high)",
+    "searchPlaceholder": "Search by product name, SKU or description...",
+    "categorySearchPlaceholder": "Search by category name or code...",
+    "records": "records",
+    "categoriesRecords": "categories",
+    "categoriesCountLabel": "categories",
+    "activeFilters": "active filters",
+    "catalogTitle": "Product catalog",
+    "catalogHint": "Click on a row to view details",
+    "categoriesCatalogTitle": "Catalog of categories",
+    "categoriesCatalogHint": "Select the action to edit the category",
+    "loadingTitle": "Loading products",
+    "loadingDescription": "Retrieving directory information.",
+    "errorTitle": "Products are not available",
+    "errorDescription": "Could not download products from the current service.",
+    "emptyTitle": "No matching products found",
+    "emptyDescription": "Change the search or filter combination.",
+    "categoriesEmptyTitle": "No matching category found",
+    "categoriesEmptyDescription": "Please try again by changing the search or filters.",
+    "categoriesErrorTitle": "There are no categories",
+    "categoriesErrorDescription": "Failed to load categories from current service.",
+    "categoryReorderError": "Could not save order of categories.",
+    "categoryNoDescription": "No description",
+    "columns": {
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "priceAfterSubsidy": "Sale price",
+      "subsidyAmount": "Discount",
+      "currency": "Currency",
+      "stock": "Min stock",
+      "status": "Status",
+      "updated": "Updated date",
+      "actions": "Actions"
+    },
+    "stockStatus": {
+      "in_stock": "In stock",
+      "low_stock": "Low stock",
+      "out_of_stock": "Out of stock"
+    },
+    "categoryColumns": {
+      "name": "Category",
+      "code": "Code",
+      "sortOrder": "Order",
+      "status": "Status",
+      "updated": "Updated date",
+      "actions": "Actions"
+    },
+    "noDescription": "No description",
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "categoryActions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "categoryForm": {
+      "ariaLabel": "Add category form",
+      "eyebrow": "Category form",
+      "createTitle": "New Category",
+      "editTitle": "Edit category",
+      "createSubtitle": "Add a new category for products.",
+      "editSubtitle": "Update category information.",
+      "name": "Category name",
+      "namePlaceholder": "For example: solar panels",
+      "code": "Code",
+      "sortOrder": "Serial number",
+      "sortOrderHint": "The lower number is higher. 1 is the highest.",
+      "description": "Description",
+      "descriptionPlaceholder": "Short description by category",
+      "active": "Active category",
+      "activeHint": "Toggle the category on or off.",
+      "create": "Add category",
+      "save": "Save changes",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "requiredError": "Enter a category name.",
+      "sortOrderError": "Enter the correct serial number.",
+      "saveError": "Category could not be saved."
+    },
+    "categoryDeleteDialog": {
+      "ariaLabel": "Delete category window",
+      "eyebrow": "Confirm deletion",
+      "title": "Delete category \"{{name}}\"?",
+      "description": "This action removes the category and cannot be undone.",
+      "confirm": "Delete category",
+      "deleting": "Deleting..."
+    },
+    "detail": {
+      "eyebrow": "Product profile",
+      "titleFallback": "Product details",
+      "skuPrefix": "SKU",
+      "close": "Close product details",
+      "loadingTitle": "Loading product details",
+      "loadingDescription": "Retrieving product profile and metadata.",
+      "errorTitle": "Product not available",
+      "errorDescription": "The selected product could not be loaded.",
+      "images": "Product images",
+      "imagesDesc": "Attached images for catalog.",
+      "noImages": "No image has been uploaded for the product.",
+      "deleteImage": "Delete picture",
+      "sectionDetails": "Product information",
+      "sectionDetailsDesc": "Directory profile and availability.",
+      "sectionLifecycle": "History",
+      "sectionLifecycleDesc": "History of creation and renewal.",
+      "sectionMetadata": "Metadata",
+      "price": "Price",
+      "subsidyEnabled": "Discount enabled",
+      "subsidyAmount": "Discount amount",
+      "priceAfterSubsidy": "Sale price",
+      "stockQuantity": "Stock quantity",
+      "description": "Description",
+      "created": "Created",
+      "updated": "Updated",
+      "reviewsEnabled": "Comments",
+      "noDescription": "No description.",
+      "editProduct": "Edit product",
+      "deleteProduct": "Delete product"
+    },
+    "form": {
+      "eyebrow": "Product form",
+      "createTitle": "Add product",
+      "editTitle": "Edit the product",
+      "createSubtitle": "Add a new product to the catalog.",
+      "editSubtitle": "Update selected product information.",
+      "close": "Close product form",
+      "name": "Product name",
+      "sku": "SKU",
+      "skuAutoHint": "SKU is automatically created by category.",
+      "description": "Description",
+      "category": "Category",
+      "categoryPlaceholder": "For example: care",
+      "price": "Price",
+      "stockQuantity": "Stock quantity",
+      "currency": "Currency",
+      "activeProduct": "Active product",
+      "activeProductHint": "Toggle product visibility and availability.",
+      "recommendedProduct": "Recommended product",
+      "recommendedProductHint": "Mark the product as recommended.",
+      "subsidyEnabled": "Discount enabled",
+      "subsidyEnabledHint": "Enable promotional or discounted pricing for this product.",
+      "reviewsEnabled": "Accepting comments",
+      "reviewsEnabledHint": "Enable or disable reviews for this product.",
+      "currentImages": "Current pictures",
+      "images": "Pictures",
+      "primaryImage": "Main picture",
+      "otherImages": "Simple pictures",
+      "selectedImages": "picture is selected",
+      "ordinaryImageOne": "Normal picture 1",
+      "ordinaryImageTwo": "Normal picture 2",
+      "removeImage": "Remove the image",
+      "imageDeleteError": "Could not delete image.",
+      "noImages": "No images found.",
+      "metadata": "Metadata (JSON)",
+      "imagesMinError": "Please select at least 1 image when adding a product.",
+      "imagesMaxError": "When adding a product, you can choose a maximum of 3 images.",
+      "createSubmit": "Add product",
+      "editSubmit": "Save changes",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "requiredError": "Fill in the required fields.",
+      "metadataError": "Metadata must be in JSON object form only.",
+      "priceError": "The value must be a positive or zero number.",
+      "stockError": "Number must be a positive or zero integer.",
+      "saveError": "The product could not be saved."
+    },
+    "deleteDialog": {
+      "eyebrow": "Confirm deletion",
+      "title": "Delete {{name}} product?",
+      "description": "This action removes the product from the catalog. The action cannot be undone.",
+      "confirm": "Delete the product",
+      "deleting": "Deleting...",
+      "orderCheckInProgress": "Checking the connection with the orders. Please wait a moment.",
+      "linkedOrderError": "This product is used in orders. Unable to disable, disable the product.",
+      "deleteError": "An error occurred while uninstalling the product."
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "Manage and monitor the flow of orders in one panel.",
+    "newOrder": "New order",
+    "allStatuses": "All cases",
+    "allSources": "All sources",
+    "allFulfillmentMethods": "All execution methods",
+    "status": "Status",
+    "source": "Source",
+    "fulfillmentMethod": "Method of execution",
+    "fulfillmentDelivery": "Delivery",
+    "fulfillmentPickup": "Take away",
+    "aiGenerated": "Added AI",
+    "aiAll": "Everything",
+    "aiYes": "AI",
+    "aiNo": "By hand",
+    "orderBy": "Sorting",
+    "updatedNewest": "Updated (New)",
+    "updatedOldest": "Updated (old)",
+    "createdNewest": "Added (new)",
+    "createdOldest": "Added (old)",
+    "totalHighLow": "Total (high-low)",
+    "totalLowHigh": "Total (low-high)",
+    "searchPlaceholder": "Search by Contact, Phone, Address or ID...",
+    "records": "writing",
+    "views": {
+      "orders": "Orders",
+      "reviews": "Comments"
+    },
+    "reviews": {
+      "boardTitle": "List of comments",
+      "emptyTitle": "No comments found",
+      "emptyDescription": "No comments yet.",
+      "submittedNewest": "Submitted (new)",
+      "submittedOldest": "Submitted (old)",
+      "searchPlaceholder": "Search by review or customer...",
+      "records": "writing",
+      "columns": {
+        "reviewer": "Reviewer",
+        "comment": "Comment",
+        "source": "Source",
+        "submittedAt": "Date sent",
+        "actions": "Actions"
+      },
+      "actions": {
+        "delete": "Delete comment"
+      },
+      "deleteDialog": {
+        "eyebrow": "Delete comment",
+        "title": "Delete comment for \"{{id}}\".",
+        "description": "This action cannot be undone. The comment will be permanently deleted.",
+        "deleting": "Deleting...",
+        "confirm": "Delete comment"
+      }
+    },
+    "activeFilters": "active filter",
+    "detailOpen": "Details are open",
+    "itemsSuffix": "position",
+    "boardTitle": "List of orders",
+    "boardHint": "Click on a row to open the details",
+    "loadingTitle": "Loading orders",
+    "loadingDescription": "Order list and filters are being prepared.",
+    "errorTitle": "No orders available",
+    "errorDescription": "Unable to load orders from current service.",
+    "emptyTitle": "No matching order found",
+    "emptyDescription": "Please try again by changing the search or filters.",
+    "columns": {
+      "order": "Order",
+      "customerContact": "Customer / Contact",
+      "source": "Source",
+      "status": "Status",
+      "totalAmount": "Total amount",
+      "aiGenerated": "AI",
+      "updated": "Updated date",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Editing",
+      "delete": "Turn off",
+      "recalculate": "Recount",
+      "recalculating": "Counting..."
+    },
+    "detail": {
+      "ariaLabel": "Order details",
+      "eyebrow": "Order profile",
+      "titleFallback": "Order details",
+      "close": "Close order details",
+      "aiYes": "Added AI",
+      "aiNo": "Added manually",
+      "loadingTitle": "Loading order details",
+      "loadingDescription": "Retrieving order profile and items.",
+      "errorTitle": "Order not available",
+      "errorDescription": "The selected order could not be loaded.",
+      "sectionContact": "Contact and connection",
+      "sectionContactDescription": "Customer, lead and delivery information.",
+      "contactPhone": "Contact phone number",
+      "shippingAddress": "Shipping Address",
+      "fulfillmentMethod": "Method of execution",
+      "customer": "Customer",
+      "lead": "Lead",
+      "noCustomer": "Client not attached",
+      "noLead": "The lead is not connected",
+      "sectionItems": "Order items",
+      "sectionItemsDescription": "Section by number of products and prices.",
+      "itemProduct": "Product",
+      "itemQty": "Number",
+      "itemUnitPrice": "Unit price",
+      "itemLineTotal": "Row total",
+      "sectionLifecycle": "Payment history",
+      "createdAt": "Added",
+      "updatedAt": "Updated",
+      "paidAmount": "Amount paid",
+      "notes": "Notes",
+      "noNotes": "No comment left.",
+      "recalculateError": "The order could not be recalculated."
+    },
+    "form": {
+      "eyebrow": "Order form",
+      "createTitle": "Add an order",
+      "editTitle": "Edit order",
+      "createSubtitle": "Add a new order quickly.",
+      "editSubtitle": "Update your order information.",
+      "close": "Close the order form",
+      "customer": "Customer",
+      "lead": "Lead",
+      "noneCustomer": "Without a client",
+      "noneLead": "Without a lead",
+      "status": "Status",
+      "source": "Source",
+      "fulfillmentMethod": "Method of execution",
+      "contactName": "Contact name",
+      "contactPhone": "Contact phone number",
+      "shippingAddress": "Shipping Address",
+      "notes": "Explanation",
+      "notesPlaceholder": "Internal comments and delivery notes...",
+      "aiGenerated": "AI added order",
+      "aiGeneratedHint": "Turn on if the order is added by AI.",
+      "itemsTitle": "Order items",
+      "addItem": "Add item",
+      "removeItem": "Remove an item",
+      "noProducts": "Products are not available. Create a product first.",
+      "product": "Product",
+      "quantity": "Number",
+      "unitPrice": "Unit price",
+      "totalAmount": "Total amount",
+      "createSubmit": "Add an order",
+      "editSubmit": "Save changes",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "requiredError": "Fill in the required fields.",
+      "itemsRequired": "Add at least one item.",
+      "productRequired": "Select a product for each item.",
+      "saveError": "The order could not be saved."
+    },
+    "deleteDialog": {
+      "ariaLabel": "Delete order window",
+      "eyebrow": "Confirm deletion",
+      "title": "Delete order {{id}}?",
+      "description": "This action deletes the order from the register and cannot be reversed.",
+      "confirm": "Delete an order",
+      "deleting": "Deleting..."
+    }
+  },
+  "couriers": {
+    "title": "Couriers",
+    "subtitle": "Manage courier profiles and delivery appointments in one window.",
+    "tabs": {
+      "couriers": "Couriers",
+      "orders": "Courier orders"
+    },
+    "newCourier": "New courier",
+    "records": "writing",
+    "activeFilters": "active filter",
+    "courierDetailOpen": "Courier details are open",
+    "orderDetailOpen": "The order details are open",
+    "searchCourierPlaceholder": "Search by courier name, username, phone or telegram ID...",
+    "searchOrderPlaceholder": "Search by order, courier, status or comment...",
+    "filters": {
+      "status": "Status",
+      "courier": "Courier",
+      "orderBy": "Sorting"
+    },
+    "status": {
+      "all": "Everything",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "orderStatus": {
+      "all": "All cases",
+      "pending": "Waiting",
+      "assigned": "Attached",
+      "in_transit": "On the way",
+      "delivered": "Delivered"
+    },
+    "ordering": {
+      "updatedNewest": "Updated (New)",
+      "updatedOldest": "Updated (old)",
+      "createdNewest": "Added (new)",
+      "createdOldest": "Added (old)",
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)",
+      "statusAsc": "Status (A-Z)",
+      "statusDesc": "Status (Z-A)"
+    },
+    "courierListTitle": "Directory of couriers",
+    "courierListHint": "Click on the row to view the profile.",
+    "courierLoadingTitle": "Loading couriers",
+    "courierLoadingDescription": "Receiving courier list and status.",
+    "courierErrorTitle": "Couriers are not available",
+    "courierErrorDescription": "Failed to download couriers from current service.",
+    "courierEmptyTitle": "No suitable courier found",
+    "courierEmptyDescription": "Try changing your search or filters.",
+    "orderListTitle": "Courier orders",
+    "orderListHint": "Open the bar to update.",
+    "orderLoadingTitle": "Loading courier orders",
+    "orderLoadingDescription": "Taking delivery appointments and cases.",
+    "orderErrorTitle": "Courier orders are not available",
+    "orderErrorDescription": "Unable to download courier orders from the current service.",
+    "orderEmptyTitle": "No matching courier order found",
+    "orderEmptyDescription": "Please try again by changing the search or filters.",
+    "columns": {
+      "courier": "Courier",
+      "phone": "Telephone",
+      "telegramId": "Telegram ID",
+      "status": "Status",
+      "updated": "Updated",
+      "actions": "Actions",
+      "order": "Order",
+      "cancelReason": "Reason for cancellation"
+    },
+    "actions": {
+      "edit": "Editing",
+      "delete": "Turn off",
+      "open": "Opening",
+      "setActive": "Activation",
+      "setInactive": "Disable",
+      "savePatch": "Save",
+      "replacePut": "Exchange",
+      "repostOffer": "Resend the offer"
+    },
+    "form": {
+      "eyebrow": "Courier form",
+      "titleCreate": "Add courier",
+      "titleEdit": "Edit courier",
+      "close": "Close the courier form",
+      "firstName": "Name",
+      "telegramUserId": "Telegram user ID",
+      "username": "Username",
+      "phone": "Telephone",
+      "isActive": "Active courier",
+      "isActiveHint": "Inactive couriers will be removed from appointments.",
+      "metadata": "Metadata (JSON)",
+      "firstNameRequired": "Name is required.",
+      "metadataObjectError": "Metadata must be a JSON object.",
+      "metadataJsonError": "Metadata must be valid JSON.",
+      "createSubmit": "Add courier",
+      "editSubmit": "Save changes",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "saveError": "Courier could not be saved."
+    },
+    "deleteDialog": {
+      "eyebrow": "Delete the courier",
+      "title": "Delete courier {{name}}",
+      "description": "This action is irreversible. The courier record will be deleted.",
+      "confirm": "Yes, delete",
+      "deleting": "Deleting..."
+    },
+    "detail": {
+      "ariaLabel": "Courier details",
+      "title": "Courier profile",
+      "close": "Close courier details",
+      "loadingTitle": "Loading courier details",
+      "loadingDescription": "Retrieving selected courier profile.",
+      "errorTitle": "Courier not available",
+      "errorDescription": "The selected courier could not be downloaded.",
+      "contact": "Contact",
+      "metadata": "Metadata",
+      "created": "Added",
+      "updated": "Updated",
+      "noMetadata": "No metadata available.",
+      "readOnlyHint": "View only mode. Editing operations require Manage Couriers permission."
+    },
+    "orderDetail": {
+      "ariaLabel": "Courier order details",
+      "title": "Courier order",
+      "close": "Close courier order details",
+      "loadingTitle": "Loading courier order",
+      "loadingDescription": "Retrieving order details.",
+      "errorTitle": "Courier order is not available",
+      "errorDescription": "The selected courier order could not be loaded.",
+      "orderSummaryTitle": "Order details",
+      "orderSummaryDescription": "Contact, address and order content.",
+      "orderId": "Order ID",
+      "status": "Status",
+      "awaitingCancelReason": "The cancellation reason is pending",
+      "cancelReason": "Reason for cancellation",
+      "contactName": "Contact name",
+      "contactPhone": "Contact phone number",
+      "shippingAddress": "Shipping Address",
+      "totalAmount": "Total amount",
+      "items": "Order products",
+      "itemColumns": {
+        "product": "Product",
+        "quantity": "Number",
+        "unitPrice": "Unit price",
+        "lineTotal": "Row total"
+      },
+      "noItems": "Custom products are not available.",
+      "metadata": "Metadata (JSON)",
+      "acceptedAt": "Time taken",
+      "inTransitAt": "On the way",
+      "deliveredAt": "Delivery time",
+      "updated": "Updated",
+      "replacing": "Replacing...",
+      "reposting": "Resending...",
+      "orderIdRequired": "Order ID is mandatory for PUT.",
+      "saveError": "Courier order could not be updated.",
+      "repostError": "Could not resend the offer.",
+      "readOnlyHint": "View only mode. Update operations require Manage Couriers permission."
+    }
+  },
+  "agents": {
+    "eyebrow": "Agent Center",
+    "title": "Agents",
+    "subtitle": "Manage agent profiles, active status and product attachments in a single window.",
+    "newAgent": "New agent",
+    "records": "writing",
+    "activeFilters": "active filter",
+    "detailOpen": "Agent details are open",
+    "searchPlaceholder": "Search by agent name, phone, telegram chat ID or username...",
+    "boardTitle": "List of agents",
+    "boardHint": "Click on a row to view details.",
+    "emptyTitle": "No matching agent found",
+    "emptyDescription": "Please try again by changing the search or filters.",
+    "errorTitle": "No agents available",
+    "errorDescription": "Could not download agents from the current service.",
+    "loadingTitle": "Loading agents",
+    "loadingDescription": "Receiving agent records and attached products.",
+    "productsCount": "{{count}} products",
+    "noProducts": "Product not attached",
+    "filters": {
+      "status": "Status",
+      "products": "Product",
+      "allProducts": "All products",
+      "selectedProducts": "{{count}} is selected",
+      "orderBy": "Sorting"
+    },
+    "status": {
+      "all": "Everything",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "ordering": {
+      "updatedNewest": "Updated (New)",
+      "updatedOldest": "Updated (old)",
+      "createdNewest": "Added (new)",
+      "createdOldest": "Added (old)",
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)"
+    },
+    "columns": {
+      "agent": "Agent",
+      "phone": "Telephone",
+      "telegramChatId": "Telegram chat ID",
+      "telegramUsername": "Telegram username",
+      "products": "Products",
+      "status": "Status",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Editing",
+      "delete": "Turn off",
+      "setActive": "Activation",
+      "setInactive": "Disable"
+    },
+    "form": {
+      "eyebrow": "Agent form",
+      "titleCreate": "Add agent",
+      "titleEdit": "Edit agent",
+      "close": "Close the agent form",
+      "fullName": "Full name",
+      "phone": "Telephone",
+      "telegramChatId": "Telegram chat ID",
+      "telegramUsername": "Telegram username",
+      "isActive": "Active agent",
+      "isActiveHint": "Inactive agents are not used in new attachments.",
+      "products": "Bundled products",
+      "productsHint": "Choose products that work with the agent.",
+      "noProducts": "No active products found. Add a product first.",
+      "fullNameRequired": "Full name is required.",
+      "createSubmit": "Add agent",
+      "editSubmit": "Save changes",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "saveError": "Failed to save agent."
+    },
+    "detail": {
+      "ariaLabel": "Agent details",
+      "title": "Agent profile",
+      "close": "Close agent details",
+      "loadingTitle": "Loading agent details",
+      "loadingDescription": "Retrieving selected agent profile.",
+      "errorTitle": "Agent not available",
+      "errorDescription": "The selected agent could not be loaded.",
+      "products": "Bundled products",
+      "noProducts": "There are no attached products.",
+      "metadata": "Metadata",
+      "noMetadata": "No metadata available.",
+      "created": "Added",
+      "updated": "Updated",
+      "readOnlyHint": "View only mode. Editing operations require Manage Agents permission."
+    },
+    "deleteDialog": {
+      "eyebrow": "Uninstall the agent",
+      "title": "Uninstall the {{name}} agent",
+      "description": "This action is irreversible. The agent record will be deleted.",
+      "confirm": "Yes, delete",
+      "deleting": "Deleting..."
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "subtitle": "Track submitted transactions, check pending ones, and finalize their status.",
+    "newPayment": "New payment",
+    "all": "Everything",
+    "cancel": "Cancellation",
+    "notAvailable": "Not available",
+    "records": "writing",
+    "activeFilters": "active filter",
+    "detailOpen": "Details are open",
+    "searchPlaceholder": "Search by sender, card last 4 digits or check number...",
+    "status": "Status",
+    "method": "Method",
+    "order": "Order",
+    "orderPlaceholder": "order-001",
+    "orderBy": "Sorting",
+    "boardTitle": "List of payments",
+    "boardHint": "Click on a row to view details",
+    "emptyTitle": "No matching payment found",
+    "emptyDescription": "Please try again by changing the search or filters.",
+    "errorTitle": "There are no fees",
+    "errorDescription": "Unable to download payments from the current service.",
+    "loadingTitle": "Payments are loading",
+    "loadingDescription": "Receiving transaction records and audit statuses.",
+    "noReference": "No tracking number",
+    "columns": {
+      "payment": "Payment",
+      "amount": "Amount",
+      "method": "Method",
+      "status": "Status",
+      "submittedBy": "Sender",
+      "lastFourDigits": "Last 4 digits",
+      "order": "Order",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "ordering": {
+      "updatedNewest": "Updated (New)",
+      "updatedOldest": "Updated (old)",
+      "createdNewest": "Added (new)",
+      "createdOldest": "Added (old)",
+      "amountHighLow": "Sum (high-low)",
+      "amountLowHigh": "Sum (low-high)"
+    },
+    "actions": {
+      "approve": "Confirmation",
+      "reject": "Refusal",
+      "verify": "Check",
+      "approving": "Confirming...",
+      "rejecting": "Rejecting...",
+      "verifying": "Checking...",
+      "delete": "Turn off",
+      "deleteWithId": "Delete {{id}} payment",
+      "updateError": "Unable to update payment status at this time.",
+      "notFoundError": "Payment not found."
+    },
+    "detail": {
+      "ariaLabel": "Payment details",
+      "titleFallback": "Payment details",
+      "close": "Close payment details",
+      "orderBadge": "Order: {{order}}",
+      "loadingTitle": "Loading payment details",
+      "loadingDescription": "Retrieving transaction timeline and verification data.",
+      "errorTitle": "There is no payment",
+      "errorDescription": "The selected payment could not be downloaded.",
+      "sectionOverview": "general information",
+      "sectionOverviewDescription": "Basic payment, billing and order links.",
+      "submittedBy": "Sender",
+      "lastFourDigits": "Last 4 digits",
+      "verificationReference": "Inspection number",
+      "reviewedBy": "Considered",
+      "sectionScreenshot": "Check photo",
+      "screenshotMissing": "Receipt image not attached.",
+      "sectionLifecycle": "History",
+      "createdAt": "Added",
+      "updatedAt": "Updated",
+      "reviewedAt": "Considered",
+      "sectionMetadata": "Metadata",
+      "readOnlyHint": "Read only mode. Payment review actions are available only for payment operators.",
+      "screenshotAlt": "Image of receipt for payment {{id}}"
+    },
+    "form": {
+      "ariaLabel": "Add payment form",
+      "createTitle": "Add payment",
+      "createSubtitle": "Add a new payment record with a status of \"pending\".",
+      "close": "Close the Add Payment form",
+      "amount": "Amount",
+      "method": "Method",
+      "submittedBy": "Sender",
+      "submittedByPlaceholder": "Operator name",
+      "order": "Order",
+      "orderPlaceholder": "order-001",
+      "lastFourDigits": "Last 4 digits",
+      "verificationReference": "Inspection number",
+      "verificationPlaceholder": "VRF-2026-10001",
+      "screenshot": "Check URL",
+      "screenshotPlaceholder": "https://...",
+      "metadata": "Metadata (JSON)",
+      "metadataPlaceholder": "{\"source\":\"manual\",\"risk_score\":22}",
+      "createSubmit": "Add payment",
+      "creating": "Adding...",
+      "saveError": "The payment could not be saved.",
+      "amountError": "The sum must be greater than 0.",
+      "submittedByRequired": "Sender name is required.",
+      "orderRequired": "Order ID is required.",
+      "noEligibleOrders": "There are no matching orders. An order with a canceled, completed, or unpaid order status is required to add a payment.",
+      "metadataObjectError": "Metadata must be a JSON object.",
+      "metadataValueError": "Metadata values ​​can only be string/number/boolean/null.",
+      "metadataInvalid": "The metadata is in the wrong format."
+    },
+    "deleteDialog": {
+      "ariaLabel": "Payment deletion window",
+      "eyebrow": "Confirm deletion",
+      "title": "Delete {{id}} payment?",
+      "description": "This action will completely delete the payment from the system.",
+      "confirm": "Delete payment",
+      "deleting": "Deleting..."
+    }
+  },
+  "aiSettings": {
+    "eyebrow": "AI settings",
+    "title": "AI settings",
+    "subtitle": "Control AI agent behavior, prompts, and automation options.",
+    "newSetting": "New configuration",
+    "records": "configuration",
+    "activeFilters": "active filter",
+    "searchPlaceholder": "Search by name, model or system prompt",
+    "listTitle": "List of configurations",
+    "listHint": "There will be only one active configuration at a time",
+    "emptyTitle": "Configuration not found",
+    "emptyDescription": "Please change the filters and try again.",
+    "loadingTitle": "Loading AI settings",
+    "loadingDescription": "Retrieving configurations and active profile information.",
+    "errorTitle": "Failed to load AI settings",
+    "errorDescription": "An error occurred while retrieving information from the service.",
+    "autoOrderOn": "Auto order is enabled",
+    "autoOrderOff": "Auto order is disabled",
+    "followUpOn": "Follow-up is enabled",
+    "followUpOff": "Follow-up is disabled",
+    "filters": {
+      "allStatuses": "All cases",
+      "status": "Status",
+      "ordering": "Sorting"
+    },
+    "ordering": {
+      "updatedNewest": "Updated (New)",
+      "updatedOldest": "Updated (old)",
+      "createdNewest": "Added (new)",
+      "createdOldest": "Added (old)",
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)",
+      "temperatureHighLow": "Temperature (high-low)",
+      "temperatureLowHigh": "Temperature (low-high)"
+    },
+    "columns": {
+      "name": "Name",
+      "model": "Model",
+      "temperature": "Temperature",
+      "autoOrder": "Auto order",
+      "followUp": "Follow-up",
+      "active": "Active",
+      "updatedAt": "Updated",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Editing",
+      "setActive": "Activation",
+      "activating": "Activating...",
+      "activateError": "Failed to activate configuration.",
+      "delete": "Turn off"
+    },
+    "form": {
+      "eyebrow": "Configuration form",
+      "createTitle": "Add AI configuration",
+      "editTitle": "Edit AI configuration",
+      "createSubtitle": "Add a new AI profile and activate immediately if needed.",
+      "editSubtitle": "Update selected AI profile settings.",
+      "close": "Close the configuration form",
+      "name": "Name",
+      "namePlaceholder": "For example: Sales assistant v4",
+      "modelName": "Model name",
+      "systemPrompt": "System prompt",
+      "systemPromptPlaceholder": "Enter AI agent action rules and style…",
+      "systemPromptHint": "Write clear, concise and business-friendly rules. This text defines the basic behavior of the agent.",
+      "temperature": "Temperature (0-1)",
+      "orderConfidenceThreshold": "Order Confidence Limit (0-1)",
+      "followUpMinutes": "Follow-up delay (in minutes)",
+      "followUpEnabled": "Enable follow-up",
+      "followUpHint": "If enabled, the AI ​​will start feedback after the specified minute.",
+      "followUpMessage": "Follow-up message",
+      "followUpMessagePlaceholder": "For example: Need more help?",
+      "followUpMessageHint": "The text of the message sent to the client when follow-up is enabled.",
+      "resumeAfterOperatorMinutes": "Resume after operator pause (in minutes)",
+      "autoOrderEnabled": "Auto order",
+      "autoOrderHint": "The AI ​​will automatically prepare the order if it has enough confidence.",
+      "isActive": "Active configuration",
+      "isActiveHint": "If enabled, other active configurations are automatically disabled.",
+      "requiredError": "Fill in the required fields.",
+      "temperatureError": "The temperature should be between 0 and 1.",
+      "confidenceError": "The confidence limit should be between 0 and 1.",
+      "followUpError": "The minute value must be greater than 1 when follow-up is enabled.",
+      "followUpMessageError": "Enter the text of the message when the follow-up is enabled.",
+      "resumeError": "The minute value must be greater than 1.",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "createSubmit": "Add configuration",
+      "editSubmit": "Save changes",
+      "saveError": "Failed to save configuration."
+    },
+    "detail": {
+      "ariaLabel": "AI configuration details",
+      "eyebrow": "AI configuration",
+      "titleFallback": "Configuration details",
+      "close": "Close the detail panel",
+      "loadingTitle": "Loading configuration",
+      "loadingDescription": "Fetching AI profile details.",
+      "errorTitle": "Configuration not found",
+      "errorDescription": "The selected profile could not be loaded.",
+      "behaviorTitle": "Behavioral parameters",
+      "behaviorDescription": "Model, threshold and automation settings.",
+      "updatedBy": "User who updated",
+      "createdAt": "Added",
+      "updatedAt": "Updated",
+      "readOnlyHint": "Read only mode. There is no right to change."
+    },
+    "deleteDialog": {
+      "eyebrow": "Confirm deletion",
+      "title": "Delete configuration \"{{name}}\"?",
+      "description": "This action unregisters the configuration. Deleting an active configuration is not allowed.",
+      "confirm": "Delete configuration",
+      "deleting": "Deleting..."
+    }
+  },
+  "integrations": {
+    "eyebrow": "Integrations",
+    "title": "Integrations",
+    "subtitle": "Manage Telegram and Instagram connections, control event flow.",
+    "newConfig": "New configuration",
+    "configRecords": "configuration",
+    "eventRecords": "event",
+    "loadingTitle": "Loading integrations",
+    "loadingDescription": "Retrieving configuration and event information.",
+    "errorTitle": "Failed to load integration data",
+    "errorDescription": "There was an error connecting to the service.",
+    "secret": "Confidential",
+    "public": "It's open",
+    "processed": "Recycled",
+    "pending": "Waiting",
+    "revealValue": "Show",
+    "hideValue": "Hide",
+    "views": {
+      "configs": "Configurations",
+      "events": "Events"
+    },
+    "providers": {
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "openai": "OpenAI"
+    },
+    "platforms": {
+      "telegram": "Telegram",
+      "instagram": "Instagram",
+      "userbot": "Userbot",
+      "payment": "Payment"
+    },
+    "filters": {
+      "allProviders": "All providers",
+      "allStatuses": "All cases",
+      "allTypes": "All species",
+      "allPlatforms": "All platforms",
+      "allProcessed": "Everything",
+      "provider": "Provider",
+      "status": "Status",
+      "visibility": "Appearance",
+      "ordering": "Sorting",
+      "platform": "Platform",
+      "processed": "Processing status"
+    },
+    "ordering": {
+      "updatedNewest": "Updated (New)",
+      "updatedOldest": "Updated (old)",
+      "createdNewest": "Added (new)",
+      "createdOldest": "Added (old)",
+      "providerAsc": "Provider (A-Z)",
+      "providerDesc": "Provider (Z-A)",
+      "keyAsc": "Key (A-Z)",
+      "keyDesc": "Key (Z-A)",
+      "attemptsHighLow": "Attempts (High-Low)",
+      "attemptsLowHigh": "Attempts (low-high)"
+    },
+    "actions": {
+      "edit": "Editing",
+      "delete": "Turn off"
+    },
+    "configColumns": {
+      "provider": "Provider",
+      "key": "Key / Label",
+      "value": "Value",
+      "visibility": "Confidentiality",
+      "active": "Active",
+      "updatedAt": "Updated",
+      "actions": "Actions"
+    },
+    "eventColumns": {
+      "platform": "Platform",
+      "eventType": "Event type",
+      "externalId": "External ID",
+      "processed": "Recycled",
+      "attempts": "Attempts",
+      "createdAt": "Added"
+    },
+    "configSearchPlaceholder": "Search by provider, key or label",
+    "eventSearchPlaceholder": "Search by event_type or external_id",
+    "configEmptyTitle": "Configuration not found",
+    "configEmptyDescription": "Please change the filters and try again.",
+    "eventEmptyTitle": "No events found",
+    "eventEmptyDescription": "Try again by checking your search and filters.",
+    "configFields": {
+      "provider": "Provider",
+      "key": "Key",
+      "label": "Label",
+      "value": "Value",
+      "isSecret": "Secret value",
+      "isActive": "Active",
+      "updatedBy": "User who updated",
+      "createdAt": "Added",
+      "updatedAt": "Updated"
+    },
+    "eventFields": {
+      "platform": "Platform",
+      "eventType": "Event type",
+      "externalId": "External ID",
+      "eventKey": "Event key",
+      "processed": "Status",
+      "attempts": "Attempts",
+      "errorMessage": "Error",
+      "payload": "Payload",
+      "createdAt": "Added",
+      "updatedAt": "Updated"
+    },
+    "configForm": {
+      "eyebrow": "Configuration form",
+      "createTitle": "Add integration configuration",
+      "editTitle": "Edit the integration configuration",
+      "createSubtitle": "Add a new configuration for Telegram, Instagram or OpenAI.",
+      "editSubtitle": "Update the selected configuration values.",
+      "close": "Close the configuration form",
+      "requiredError": "Fill in the required fields.",
+      "saveError": "Failed to save configuration.",
+      "creating": "Adding...",
+      "saving": "Saving...",
+      "createSubmit": "Add configuration",
+      "editSubmit": "Save changes",
+      "keyPlaceholder": "For example: webhook_secret",
+      "labelPlaceholder": "For example: Telegram Webhook Secret",
+      "valuePlaceholder": "Enter the value",
+      "secretHint": "If enabled, the value in the list will be masked.",
+      "activeHint": "Used in the integration flow if enabled."
+    },
+    "configDetail": {
+      "ariaLabel": "Integration configuration details",
+      "eyebrow": "Configuration detail",
+      "titleFallback": "Configuration",
+      "close": "Close the detail panel",
+      "loadingTitle": "Loading configuration",
+      "loadingDescription": "Retrieving selected configuration information.",
+      "errorTitle": "Configuration not found",
+      "errorDescription": "The selected record could not be loaded.",
+      "configTitle": "Configuration information",
+      "configDescription": "Check provider connection and security settings.",
+      "readOnlyHint": "Read only mode. There is no right to change."
+    },
+    "eventDetail": {
+      "ariaLabel": "Integration event details",
+      "eyebrow": "Event details",
+      "titleFallback": "Event details",
+      "close": "Close the detail panel",
+      "loadingTitle": "Loading event",
+      "loadingDescription": "Retrieving details of the selected event.",
+      "errorTitle": "Event not found",
+      "errorDescription": "The selected event could not be downloaded.",
+      "eventInfo": "Event information"
+    },
+    "deleteDialog": {
+      "eyebrow": "Confirm deletion",
+      "title": "Delete configuration \"{{label}}\"?",
+      "description": "This action unregisters the configuration and cannot be undone.",
+      "confirm": "Delete configuration",
+      "deleting": "Deleting..."
+    }
+  },
+  "logs": {
+    "columns": {
+      "type": "Type",
+      "message": "Message",
+      "createdAt": "Added"
+    },
+    "detail": {
+      "ariaLabel": "Log details",
+      "eyebrow": "Log entry",
+      "titleFallback": "Log detail",
+      "close": "Close detail",
+      "loadingTitle": "Loading log",
+      "loadingDescription": "Retrieving selected log data.",
+      "errorTitle": "Log not found",
+      "errorDescription": "The selected log entry could not be loaded.",
+      "metadataTitle": "Metadata"
+    }
+  },
+  "profile": {
+    "eyebrow": "Account",
+    "title": "Profile",
+    "subtitle": "Manage your account and personal settings.",
+    "editProfile": "Edit profile",
+    "loadingTitle": "Loading profile",
+    "loadingDescription": "Retrieving credentials.",
+    "errorTitle": "Profile not available",
+    "errorDescription": "Failed to load credentials.",
+    "notSet": "Not included",
+    "sections": {
+      "editProfile": "Edit profile",
+      "contactInformation": "Contact information",
+      "accountDetails": "Account details",
+      "permissions": "Permissions",
+      "security": "Safety"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "email": "Email",
+      "phone": "Telephone",
+      "role": "Role",
+      "status": "Status",
+      "userId": "User ID",
+      "joined": "Date added",
+      "lastActive": "Recent activity"
+    },
+    "placeholders": {
+      "fullName": "Enter your full name",
+      "email": "user@example.com",
+      "phone": "+998 90 000 0000",
+      "password": "At least 8 characters",
+      "confirmPassword": "Re-enter the password"
+    },
+    "accountStatus": {
+      "title": "Account status",
+      "activeHint": "Your account is active and visible in the system.",
+      "inactiveHint": "Your account has been temporarily disabled."
+    },
+    "actions": {
+      "changePassword": "change password",
+      "saveChanges": "Save changes",
+      "saving": "Saving..."
+    },
+    "password": {
+      "newPasswordTitle": "New Password",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "mismatch": "Passwords did not match.",
+      "editModeHint": "Use the edit form section to update your password."
+    },
+    "permissions": {
+      "fullAccess": "Full access is available, no separate access codes required.",
+      "noneAssigned": "Special permissions are not attached."
+    },
+    "security": {
+      "description": "Manage your password and security settings."
+    }
+  },
+  "labels": {
+    "roles": {
+      "developer": "Programmer",
+      "admin": "Administrator",
+      "operator": "Operator"
+    },
+    "userStatus": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "invited": "Offered"
+    },
+    "leadStatus": {
+      "new": "New",
+      "in_progress": "Under review",
+      "closed": "Closed",
+      "contacted": "Connected",
+      "qualified": "Qualified",
+      "negotiating": "Negotiation",
+      "converted": "Conversion",
+      "lost": "Lost",
+      "archived": "Archive"
+    },
+    "orderStatus": {
+      "all": "All orders",
+      "contract": "Order",
+      "contracts": "Orders",
+      "new": "New",
+      "draft": "Draft",
+      "waiting_payment": "Payment is pending",
+      "pending": "Waiting",
+      "confirmed": "Confirmed",
+      "packing": "Accumulating",
+      "shipped": "Sent",
+      "delivered": "Delivered",
+      "closed": "Closed",
+      "audit_pending": "Payment review",
+      "audit_paid": "Advance received",
+      "moderation": "Under review",
+      "contract_ready": "Ready to dispatch",
+      "payment_pending": "Payment is pending",
+      "paid": "Paid",
+      "sent": "Sent",
+      "signed": "Signed",
+      "canceled": "Canceled",
+      "completed": "Completed",
+      "cancelled": "Canceled"
+    },
+    "paymentStatus": {
+      "unpaid": "Unpaid",
+      "pending": "Waiting",
+      "paid": "Paid",
+      "approved": "Confirmed",
+      "rejected": "Rejected",
+      "verified": "Checked",
+      "failed": "Unsuccessful",
+      "refunded": "Returned",
+      "partially_refunded": "Partially returned"
+    },
+    "paymentMethod": {
+      "manual": "By hand",
+      "payme": "Payme",
+      "click": "Click"
+    },
+    "channels": {
+      "instagram": "Instagram",
+      "telegram": "Telegram",
+      "whatsapp": "WhatsApp",
+      "facebook": "Facebook",
+      "website": "Website",
+      "marketplace": "Marketplace",
+      "webchat": "Web chat",
+      "web": "Web",
+      "referral": "Recommendation",
+      "manual": "By hand",
+      "other": "Other"
+    },
+    "permissions": {
+      "can_view_dashboard": "View Dashboard",
+      "can_view_agents": "View agents",
+      "can_manage_agents": "Management of agents",
+      "can_view_couriers": "View couriers",
+      "can_manage_couriers": "Managing couriers",
+      "can_view_leads": "View leads",
+      "can_manage_leads": "Lead management",
+      "can_view_customers": "View customers",
+      "can_manage_customers": "Customer management",
+      "can_view_products": "View products",
+      "can_manage_products": "Product management",
+      "can_view_orders": "View orders",
+      "can_update_orders": "Update orders",
+      "can_view_payments": "View payments",
+      "can_manage_payments": "Payment management",
+      "can_chat": "Using chat",
+      "can_view_notifications": "View notifications",
+      "can_manage_users": "User management",
+      "can_manage_integrations": "Managing Integrations",
+      "can_manage_ai_settings": "Manage AI settings",
+      "can_view_logs": "View logs",
+      "dashboard": {
+        "view": "Control Panel"
+      },
+      "leads": {
+        "view": "View leads",
+        "manage": "Lead management"
+      },
+      "clients": {
+        "view": "View customers",
+        "manage": "Customer management"
+      },
+      "products": {
+        "view": "View products",
+        "manage": "Product management"
+      },
+      "chats": {
+        "view": "View chats",
+        "manage": "Manage chats"
+      },
+      "contracts": {
+        "view": "View contracts",
+        "manage": "Contract management"
+      },
+      "notifications": {
+        "view": "View notifications",
+        "manage": "Manage notifications"
+      },
+      "integrations": {
+        "view": "View integrations",
+        "manage": "Managing Integrations"
+      },
+      "ai": {
+        "view": "View AI settings",
+        "manage": "Manage AI settings"
+      },
+      "logs": {
+        "view": "View logs"
+      },
+      "users": {
+        "view": "View users",
+        "manage": "User management"
+      }
+    },
+    "permissionDescriptions": {
+      "can_view_dashboard": "Allows you to view dashboard statistics.",
+      "can_view_agents": "Allows to view agent list and details.",
+      "can_manage_agents": "Allows to add, edit and delete agents.",
+      "can_view_couriers": "Allows to view couriers and courier orders.",
+      "can_manage_couriers": "Allows to manage couriers and courier orders.",
+      "can_view_leads": "Allows you to view the list and details of your leads.",
+      "can_manage_leads": "Allows to add, edit and delete leads.",
+      "can_view_customers": "Allows viewing of customer information.",
+      "can_manage_customers": "Allows adding, editing and deleting customers.",
+      "can_view_products": "Allows you to view the product catalog.",
+      "can_manage_products": "Allows to add, edit and delete products.",
+      "can_view_orders": "Allows you to view the order list and details.",
+      "can_update_orders": "Allows you to update order status and details.",
+      "can_view_payments": "Allows you to view the list and details of payments.",
+      "can_manage_payments": "Allows approval, rejection and management of payments.",
+      "can_chat": "Allows correspondence via chat.",
+      "can_view_notifications": "Allows viewing of system notifications.",
+      "can_manage_users": "Allows to add, edit and delete users.",
+      "can_manage_integrations": "Allows you to manage integration settings.",
+      "can_manage_ai_settings": "Allows adding and editing AI settings.",
+      "can_view_logs": "Allows viewing of system logs.",
+      "dashboard": {
+        "view": "Dashboard and KPI pages"
+      },
+      "leads": {
+        "view": "View lead list and lead detail",
+        "manage": "Generate, update and manage leads"
+      },
+      "clients": {
+        "view": "View customer list and details",
+        "manage": "Create, update and manage clients"
+      },
+      "products": {
+        "view": "View products and catalog information",
+        "manage": "Creating, updating and deleting products"
+      },
+      "chats": {
+        "view": "View chat sessions and messages",
+        "manage": "Reply, pause AI and manage chats"
+      },
+      "contracts": {
+        "view": "View contracts and audit requests",
+        "manage": "Create, update and delete contracts and audits"
+      },
+      "notifications": {
+        "view": "View a list of notifications",
+        "manage": "Mark and delete notifications as read"
+      },
+      "integrations": {
+        "view": "View integration settings",
+        "manage": "Update integration settings"
+      },
+      "ai": {
+        "view": "View AI settings and active AI configurations",
+        "manage": "Create, update and delete AI settings"
+      },
+      "logs": {
+        "view": "View API and AI logs"
+      },
+      "users": {
+        "view": "View a list of users and role information",
+        "manage": "Create, update and delete users"
+      }
+    }
+  },
+  "placeholders": {
+    "orders": {
+      "summary": "The orders department will be fully functional in the next tasks.",
+      "sectionTitle": "Orders module",
+      "sectionDescription": "This section is ready for order list and status management.",
+      "emptyTitle": "The orders interface is not ready yet",
+      "emptyDescription": "In the next step, a real interface for orders will be added."
+    },
+    "payments": {
+      "summary": "The payments section will be fully functional in the next tasks.",
+      "sectionTitle": "Payments module",
+      "sectionDescription": "This section is ready to manage transaction and payment situations.",
+      "emptyTitle": "The payment interface is not ready yet",
+      "emptyDescription": "A real payment interface will be added in the next step."
+    },
+    "chat": {
+      "summary": "The chat section will be fully functional in the next tasks.",
+      "sectionTitle": "Chat module",
+      "sectionDescription": "This section is ready for message flow and operator communication.",
+      "emptyTitle": "The chat interface is not ready yet",
+      "emptyDescription": "A real chat interface will be added in the next step."
+    },
+    "notifications": {
+      "summary": "The notifications section will be fully functional in the next tasks.",
+      "sectionTitle": "Notifications module",
+      "sectionDescription": "This section is ready for system alerts.",
+      "emptyTitle": "The notifications interface is not ready yet",
+      "emptyDescription": "In the next step, a realistic interface for notifications will be added."
+    },
+    "users": {
+      "summary": "The user section will be fully functional in the next tasks.",
+      "sectionTitle": "Users module",
+      "sectionDescription": "This section is ready for team and role management.",
+      "emptyTitle": "The user interface is not ready yet",
+      "emptyDescription": "In the next step, a real user interface will be added."
+    },
+    "integrations": {
+      "summary": "The integrations section will be fully functional in the next tasks.",
+      "sectionTitle": "Integrations module",
+      "sectionDescription": "This section is ready for external service connections.",
+      "emptyTitle": "The integrations interface is not ready yet",
+      "emptyDescription": "In the next step, a real interface for integrations will be added."
+    },
+    "aiSettings": {
+      "summary": "The AI ​​settings section will be fully functional in later missions.",
+      "sectionTitle": "AI settings module",
+      "sectionDescription": "This section is ready for model and prompt settings.",
+      "emptyTitle": "The AI ​​settings interface is not ready yet",
+      "emptyDescription": "In the next step, a realistic interface for AI settings will be added."
+    },
+    "logs": {
+      "summary": "The logs section will be fully functional in the next tasks.",
+      "sectionTitle": "Journals module",
+      "sectionDescription": "This section is ready for audit and technical records.",
+      "emptyTitle": "The logs interface is not ready yet",
+      "emptyDescription": "In the next step, a real interface for logs will be added."
+    },
+    "notFound": {
+      "summary": "Backup page for unknown destinations.",
+      "sectionTitle": "Page not found",
+      "sectionDescription": "This public page is used to redirect the user in wrong directions.",
+      "emptyTitle": "404 interface not ready yet",
+      "emptyDescription": "User redirection options will be added in the next step."
+    }
+  },
+  "auditRequests": {
+    "eyebrow": "Energy audit",
+    "title": "Audit inquiries",
+    "subtitle": "Track audit requests, manage summary and update cases all in one place.",
+    "newAuditRequest": "New request",
+    "visible": "is visible",
+    "detailOpen": "Profile is open",
+    "listTitle": "Queue of audit requests",
+    "listHint": "Click on the line to open the profile.",
+    "searchPlaceholder": "Search by customer, contract or phone...",
+    "emptyTitle": "No audit requests found",
+    "emptyDescription": "Change search or filter parameters.",
+    "errorTitle": "Audit requests are not available",
+    "errorDescription": "Failed to load audit request list.",
+    "filters": {
+      "status": "Status",
+      "client": "Customer",
+      "requestedPower": "Power (kW)",
+      "ordering": "Sorting",
+      "allStatuses": "All cases",
+      "allClients": "All customers",
+      "clientPlaceholder": "Filter by customer name"
+    },
+    "ordering": {
+      "updatedNewest": "Updated (New)",
+      "updatedOldest": "Updated (old)",
+      "createdNewest": "Created (new)",
+      "createdOldest": "Created (old)",
+      "powerHighLow": "Power (high-low)",
+      "powerLowHigh": "Power (low-high)"
+    },
+    "statuses": {
+      "new": "New",
+      "moderation": "Moderation",
+      "published": "Announced",
+      "paid": "Paid",
+      "conclusion_given": "The conclusion is given"
+    },
+    "columns": {
+      "request": "Request",
+      "requestedPower": "Requested power",
+      "contactPhone": "Contact phone",
+      "status": "Status",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "fields": {
+      "client": "Customer",
+      "contract": "Agreement",
+      "requestedPower": "Requested power (kW)",
+      "status": "Status",
+      "contactPhone": "Contact phone",
+      "siteAddress": "Object address",
+      "notes": "Explanation",
+      "conclusion": "Summary",
+      "created": "Created",
+      "updated": "Updated"
+    },
+    "form": {
+      "eyebrow": "Audit Request Form",
+      "createTitle": "New audit request",
+      "editTitle": "Edit an audit request",
+      "close": "Close the form",
+      "requiredError": "Fill in the required fields: customer, contract and capacity.",
+      "saveError": "Could not save audit request.",
+      "saving": "Saving...",
+      "createSubmit": "Create a request",
+      "editSubmit": "Save changes",
+      "clientPlaceholder": "Select a client",
+      "contractPlaceholder": "Select the contract"
+    },
+    "detail": {
+      "eyebrow": "Audit Request Profile",
+      "close": "Close the detail panel",
+      "loadingTitle": "Loading audit request",
+      "loadingDescription": "Retrieving audit request details.",
+      "errorTitle": "No audit request found",
+      "errorDescription": "The selected audit request does not exist or has been disabled."
+    },
+    "deleteDialog": {
+      "eyebrow": "Confirm deletion",
+      "title": "Delete prompt \"{{client}}\"?",
+      "description": "This action is irreversible.",
+      "deleting": "Deleting...",
+      "confirm": "Delete request"
+    }
+  },
+  "contractsPage": {
+    "eyebrow": "Orders",
+    "title": "Orders",
+    "subtitle": "Manage orders, fulfillment, and customer communication in one workspace.",
+    "newContract": "New order",
+    "visible": "is visible",
+    "detailOpen": "Profile is open",
+    "searchPlaceholder": "Search by order, customer or phone...",
+    "statusLabel": "Status",
+    "panelLabel": "Category",
+    "inverterLabel": "Brand",
+    "powerLabel": "Units",
+    "allStatuses": "All statuses",
+    "allPanels": "All categories",
+    "allInverters": "All brands",
+    "listTitle": "Catalog of orders",
+    "listHint": "Click on the row to view the profile.",
+    "errorTitle": "No orders available",
+    "errorDescription": "Failed to load order list.",
+    "columns": {
+      "title": "Order",
+      "amount": "Amount",
+      "panel": "Category",
+      "inverter": "Brand",
+      "power": "Units",
+      "status": "Status",
+      "updated": "Updated",
+      "actions": "Actions"
+    },
+    "statuses": {
+      "new": "New",
+      "confirmed": "Confirmed",
+      "packing": "Processing",
+      "shipped": "Sent",
+      "draft": "Draft",
+      "audit_pending": "Payment review",
+      "audit_paid": "Advance received",
+      "moderation": "Under review",
+      "contract_ready": "Ready to dispatch",
+      "payment_pending": "Payment is pending",
+      "paid": "Paid",
+      "delivered": "Delivered",
+      "closed": "Closed",
+      "sent": "Sent",
+      "signed": "Signed",
+      "canceled": "Canceled"
+    },
+    "edit": "Edit",
+    "delete": "Delete",
+    "pricing": {
+      "button": "Pricing guide",
+      "title": "Pricing guide",
+      "loadingTitle": "Loading...",
+      "loadingDescription": "Retrieving matrix data.",
+      "emptyTitle": "The matrix is ​​empty",
+      "emptyDescription": "There is no information to display.",
+      "subsidy": "Discount",
+      "auditPowers": "Supported units",
+      "configurations": "configurations",
+      "power": "Units",
+      "view": "View",
+      "basePrice": "Base price",
+      "customerPrice": "Sale price",
+      "audit": "Units",
+      "currency": "UZS"
+    },
+    "form": {
+      "newClient": "New customer",
+      "newClientName": "Customer name",
+      "newClientNamePlaceholder": "For example: Ali Valiyev",
+      "newClientPhone": "Customer phone",
+      "newClientPhonePlaceholder": "For example: +998901234567",
+      "newClientRequiredError": "Fill in the customer name, phone number, and order title.",
+      "subsidyRequiredError": "Fill in the Discount (%) field."
+    }
+  },
+  "operatorKpi": {
+    "eyebrow": "Efficiency",
+    "title": "Operator KPI",
+    "subtitle": "Operator indicators for the selected date range.",
+    "records": "operator",
+    "loadingTitle": "Loading operator statistics",
+    "loadingDescription": "Fetching KPI data...",
+    "errorTitle": "KPI not loaded",
+    "errorDescription": "The service is not available or not allowed.",
+    "emptyTitle": "No operators found",
+    "emptyDescription": "Try changing the date range.",
+    "filters": {
+      "dateFrom": "Start date",
+      "dateTo": "End date"
+    },
+    "columns": {
+      "operator": "Operator",
+      "contactedClients": "Customers",
+      "messagesSent": "Messages",
+      "contractClients": "Orders",
+      "lostClients": "Lost",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "View KPIs"
+    },
+    "detail": {
+      "ariaLabel": "Operator KPI details",
+      "eyebrow": "Operator KPI",
+      "close": "Shut down",
+      "loadingTitle": "Loading KPI",
+      "loadingDescription": "Getting operator statistics.",
+      "errorTitle": "KPI not loaded",
+      "errorDescription": "Failed to load operator data."
+    },
+    "metrics": {
+      "contactedClients": "Contacted customers",
+      "messagesSent": "Sent messages",
+      "contracts": "Orders"
+    },
+    "distributions": {
+      "contractStatus": "Contract status",
+      "clientStatus": "Customer status",
+      "sources": "Sources"
+    },
+    "recentClients": {
+      "title": "Recent customers",
+      "subtitle": "Customers last contacted during the selected date range.",
+      "emptyTitle": "There are no customers",
+      "emptyDescription": "No recent connections found.",
+      "columns": {
+        "client": "Customer",
+        "status": "Status",
+        "source": "Source",
+        "lastContact": "Last contact"
+      }
+    }
+  },
+  "clients": {
+    "importExport": {
+      "importClients": "Import",
+      "exportClients": "Export",
+      "importTitle": "Import customers",
+      "importSubtitle": "Upload a JSON file or post a client JSON array.",
+      "uploadFile": "File upload",
+      "downloadTemplate": "Download template",
+      "importPlaceholder": "[{\"full_name\":\"Ali Valiyev\",\"phone\":\"+998901234567\",\"region\":\"Tashkent\"}]",
+      "startImport": "Import",
+      "importing": "Importing...",
+      "close": "Shut down",
+      "exportInProgress": "Exporting...",
+      "importFileReadError": "Unable to read import file.",
+      "invalidImportJson": "The JSON is invalid. Must be an array of objects.",
+      "importNoValidRows": "No valid entry found (full_name field is mandatory).",
+      "exportFailed": "Could not export clients.",
+      "importFailed": "Could not import clients.",
+      "exportSuccess": "Export completed: records {{count}}.",
+      "importResult": "Import completed. Success: {{success}}, Error: {{failed}}."
+    },
+    "page": {
+      "eyebrow": "Customer",
+      "title": "Customers",
+      "subtitle": "Manage the customer base, track order history, and work with customer cards in one workspace.",
+      "newClient": "New customer",
+      "visible": "is visible",
+      "detailOpen": "Profile is open",
+      "errorTitle": "No customers available",
+      "errorDescription": "The list of clients could not be loaded."
+    }
+  },
+  "notifications": {
+    "eyebrow": "Notifications",
+    "title": "Notifications",
+    "subtitle": "Follow important events and updates",
+    "loadingTitle": "Loading...",
+    "loadingDescription": "Loading notification list.",
+    "errorTitle": "Failed to download notification",
+    "errorDescription": "Please refresh the page and try again.",
+    "activeFilters": "active filter",
+    "detailOpen": "The detail panel is open",
+    "searchPlaceholder": "Notification search",
+    "listTitle": "List of notifications",
+    "listHint": "Unread ones are highlighted",
+    "countSuffix": "ta",
+    "filters": {
+      "allChannels": "All channels",
+      "all": "Everything",
+      "read": "Read",
+      "unread": "Unread",
+      "channel": "Channel",
+      "status": "Status",
+      "ordering": "Sorting"
+    },
+    "ordering": {
+      "createdNewest": "Date Added (New)",
+      "createdOldest": "Date Added (old)",
+      "updatedNewest": "Date Updated (New)",
+      "updatedOldest": "Updated Date (old)"
+    },
+    "bulk": {
+      "markAllRead": "Make all read",
+      "markingAllRead": "Setting up...",
+      "deleteAll": "Delete all",
+      "deletingAll": "Deleting...",
+      "deleteAllConfirm": "Clear all notifications? This action cannot be undone.",
+      "deleteOne": "Turn off",
+      "deletingOne": "Deleting...",
+      "deleteOneConfirm": "Remove this notification?"
+    },
+    "detailPanelAria": "Notification Details",
+    "itemEyebrow": "Notification",
+    "detailPanelTitle": "Notification Details",
+    "detailPanelClose": "Close the detail panel",
+    "loadingDetailDescription": "Receiving notification details.",
+    "detailErrorTitle": "Notification not found",
+    "detailErrorDescription": "The selected notification data could not be loaded.",
+    "detailMessageTitle": "Text",
+    "detailMessageDescription": "Full notification message.",
+    "detailInfoTitle": "Details",
+    "createdAt": "Added",
+    "updatedAt": "Updated",
+    "user": "User",
+    "additionalInfo": "Additional Information"
+  },
+  "chatPage": {
+    "title": "Conversations",
+    "countSuffix": "items",
+    "closeSessionAria": "Close the conversation",
+    "ordering": {
+      "latestMessage": "Last post (new)",
+      "oldestMessage": "Last post (old)",
+      "newestCreated": "Added (new)",
+      "oldestCreated": "Added (old)"
+    },
+    "errors": {
+      "sessionLoad": "Failed to load chat details.",
+      "messagesLoad": "Messages could not be downloaded.",
+      "messageSend": "Message not sent.",
+      "aiPause": "The AI ​​could not be stopped.",
+      "aiResume": "Failed to enable AI.",
+      "sessionDelete": "The conversation could not be deleted.",
+      "requestOperator": "Operator request not sent."
+    },
+    "confirmations": {
+      "deleteSession": "Delete this conversation and all its history?"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by conversation, client or external ID",
+      "channel": "Channel",
+      "allChannels": "All channels",
+      "allChannelsShort": "All",
+      "operator": "Operator",
+      "activeOperator": "Active operator",
+      "inactiveOperator": "Inactive operator",
+      "sorting": "Sorting"
+    },
+    "channels": {
+      "web": "Web",
+      "manual": "By hand"
+    },
+    "states": {
+      "open": "Open",
+      "pending": "Pending",
+      "resolved": "Completed"
+    },
+    "sessionList": {
+      "loadingTitle": "Loading conversations",
+      "loadingDescription": "Getting a list of chat sessions.",
+      "errorTitle": "Failed to load chats",
+      "errorDescription": "Try downloading the chat sessions again.",
+      "emptyTitle": "Chat not found",
+      "emptyDescription": "Please try again by changing the search or filters.",
+      "unknownChat": "Unknown chat",
+      "noTime": "There is no time",
+      "noMessage": "There is no message",
+      "operatorRequired": "Operator required"
+    },
+    "workspace": {
+      "selectDate": "Select a date",
+      "invalidTime": "Enter the correct time.",
+      "futureTime": "The time must be after the present.",
+      "resumeAi": "Enable AI",
+      "pauseAiTime": "Schedule AI pause",
+      "deleteSession": "Delete session",
+      "pauseUntil": "When to stop AI",
+      "cancel": "Cancel",
+      "minuteShort": "min",
+      "messageLabel": "Message text",
+      "attachedImages": "Attached images",
+      "attachedImage": "Attached image",
+      "close": "Close",
+      "emptyChatTitle": "Conversation is not selected",
+      "emptyChatDescription": "Select a conversation from the left list.",
+      "openProfile": "Open a customer profile",
+      "aiOnAction": "Enable",
+      "aiOffAction": "Pause",
+      "aiPausedStatus": "AI is disabled",
+      "saveLoading": "Saving...",
+      "pauseSubmit": "Pause AI",
+      "loadingMessagesTitle": "Loading messages",
+      "loadingMessagesDescription": "Receiving messages for the selected conversation.",
+      "noMessagesTitle": "No messages found",
+      "noMessagesDescription": "There are currently no messages for this session.",
+      "messagePlaceholder": "Write a message...",
+      "sendAria": "Sending",
+      "unknownCustomer": "Unknown customer",
+      "person": {
+        "client": "Customer",
+        "lead": "Lead",
+        "contact": "Contact"
+      },
+      "sender": {
+        "customer": "Customer",
+        "ai": "AI assistant",
+        "operator": "Operator",
+        "system": "System"
+      },
+      "timeUnavailable": "Not available",
+      "requestOperator": "Call operator",
+      "operatorRequested": "Operator requested"
+    }
+  }
+}

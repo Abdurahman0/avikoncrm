@@ -8,6 +8,12 @@ import type {
 	CreateContractInput,
 	UpdateContractInput,
 } from '../../../services/contracts'
+import {
+	getContractBrandOptions,
+	getContractEmptyOptionLabel,
+	getContractProductLineOptions,
+	resolveContractCatalogLanguage,
+} from '../utils/catalogOptions'
 
 export interface ContractsFormPanelProps {
 	contract?: Contract
@@ -336,22 +342,23 @@ export function ContractsFormPanel({
 }: ContractsFormPanelProps) {
 	const { t, i18n } = useTranslation()
 	const isRu = i18n.language.toLowerCase().startsWith('ru')
+	const contractCatalogLanguage = resolveContractCatalogLanguage(i18n.language)
 	const isEditing = Boolean(contract)
 
 	const tx = isRu
 		? {
-				form: '\u0424\u043e\u0440\u043c\u0430 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
-				createTitle: '\u041d\u043e\u0432\u044b\u0439 \u0434\u043e\u0433\u043e\u0432\u043e\u0440',
-				editTitle: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
+				form: '\u0424\u043e\u0440\u043c\u0430 \u0437\u0430\u043a\u0430\u0437\u0430',
+				createTitle: '\u041d\u043e\u0432\u044b\u0439 \u0437\u0430\u043a\u0430\u0437',
+				editTitle: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u0437\u0430\u043a\u0430\u0437\u0430',
 				requiredError:
 					'\u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043f\u043e\u043b\u044f: \u043a\u043b\u0438\u0435\u043d\u0442 \u0438 \u043d\u0430\u0437\u0432\u0430\u043d\u0438\u0435.',
 				detailsJsonError:
 					'\u041f\u043e\u043b\u0435 "\u0414\u0435\u0442\u0430\u043b\u0438" \u0434\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u0432\u0430\u043b\u0438\u0434\u043d\u044b\u043c JSON \u043e\u0431\u044a\u0435\u043a\u0442\u043e\u043c.',
 				saveError:
-					'\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0434\u043e\u0433\u043e\u0432\u043e\u0440.',
+					'\u041d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0437\u0430\u043a\u0430\u0437.',
 				saving: '\u0421\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0435...',
 				createSubmit:
-					'\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u0434\u043e\u0433\u043e\u0432\u043e\u0440',
+					'\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u0437\u0430\u043a\u0430\u0437',
 				editSubmit:
 					'\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f',
 				cancel: '\u041e\u0442\u043c\u0435\u043d\u0430',
@@ -365,55 +372,54 @@ export function ContractsFormPanel({
 				removeItem: '\u0423\u0434\u0430\u043b\u0438\u0442\u044c',
 				labels: {
 					client: '\u041a\u043b\u0438\u0435\u043d\u0442',
-					title: '\u0424.\u0418.\u0428.',
+					title: '\u0418\u043c\u044f \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
 					status: '\u0421\u0442\u0430\u0442\u0443\u0441',
 					requestedPower:
-						'\u0417\u0430\u043f\u0440\u043e\u0448\u0435\u043d\u043d\u0430\u044f \u043c\u043e\u0449\u043d\u043e\u0441\u0442\u044c (kW)',
+						'\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043f\u043e \u0437\u0430\u043a\u0430\u0437\u0443',
 					customerPhone:
 						'\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
 					oneIdCode: 'One ID \u043a\u043e\u0434',
-					inverterType:
-						'\u0422\u0438\u043f \u0438\u043d\u0432\u0435\u0440\u0442\u043e\u0440\u0430',
-					panelType: '\u0422\u0438\u043f \u043f\u0430\u043d\u0435\u043b\u0438',
+					inverterType: '\u0411\u0440\u0435\u043d\u0434',
+					panelType: '\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f',
 					agreedAmount:
-						'\u0421\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u0441\u0443\u043c\u043c\u0430',
+						'\u0421\u0443\u043c\u043c\u0430 \u0437\u0430\u043a\u0430\u0437\u0430',
 					paidAmount:
-						'\u0412\u044b\u0434\u0430\u043d\u043d\u0430\u044f \u0441\u0443\u043c\u043c\u0430',
+						'\u041e\u043f\u043b\u0430\u0447\u0435\u043d\u043e',
 					givenSubsidyAmount:
-						'\u0412\u044b\u0434\u0430\u043d\u043d\u0430\u044f \u0441\u0443\u0431\u0441\u0438\u0434\u0438\u044f',
-					address: '\u0410\u0434\u0440\u0435\u0441 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438',
+						'\u041f\u0440\u0438\u043c\u0435\u043d\u0451\u043d\u043d\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430',
+					address: '\u0410\u0434\u0440\u0435\u0441 \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438',
 					auditorCompanyName:
-						'\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0441\u043a\u043e\u0439 \u043e\u0440\u0433\u0430\u043d\u0438\u0437\u0430\u0446\u0438\u0438',
-					auditorPhone: '\u041d\u043e\u043c\u0435\u0440 \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0430',
+						'\u041f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a',
+					auditorPhone: '\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u043f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a\u0430',
 					auditConclusionText:
-						'\u0410\u0443\u0434\u0438\u0442\u043e\u0440\u0441\u043a\u043e\u0435 \u0437\u0430\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435',
-					lotDeadlineAt: '\u0421\u0440\u043e\u043a \u043b\u043e\u0442\u0430 (dd.MM.yyyy HH:mm)',
+						'\u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0437\u0430\u043c\u0435\u0442\u043a\u0430',
+					lotDeadlineAt: '\u0421\u0440\u043e\u043a \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438 (dd.MM.yyyy HH:mm)',
 					installerFeeAmount:
-						'\u0421\u0443\u043c\u043c\u0430 \u043e\u043f\u043b\u0430\u0442\u044b \u0443\u0441\u0442\u0430',
+						'\u041b\u043e\u0433\u0438\u0441\u0442\u0438\u043a\u0430',
 					auditContractFile:
-						'\u0424\u0430\u0439\u043b \u0430\u0443\u0434\u0438\u0442 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
+						'\u0424\u0430\u0439\u043b \u0441\u043e\u0433\u043b\u0430\u0448\u0435\u043d\u0438\u044f',
 					homeCadastreFile:
-						'\u0424\u0430\u0439\u043b \u043a\u0430\u0434\u0430\u0441\u0442\u0440\u0430 \u0434\u043e\u043c\u0430',
+						'\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
 					companyContractFile:
-						'\u0424\u0430\u0439\u043b \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430 \u0444\u0438\u0440\u043c\u044b',
+						'\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 \u043f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a\u0430',
 					additionalFile:
 						'\u0414\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0444\u0430\u0439\u043b',
-					subsidyPercent: '\u0421\u0443\u0431\u0441\u0438\u0434\u0438\u044f (%)',
-					items: '\u041f\u043e\u0437\u0438\u0446\u0438\u0438 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
+					subsidyPercent: '\u0421\u043a\u0438\u0434\u043a\u0430 (%)',
+					items: '\u041f\u043e\u0437\u0438\u0446\u0438\u0438 \u0437\u0430\u043a\u0430\u0437\u0430',
 					quantity: '\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e',
 					unitPrice: '\u0426\u0435\u043d\u0430',
 				},
 			}
 		: {
-				form: 'Shartnoma formasi',
-				createTitle: 'Yangi shartnoma',
-				editTitle: 'Shartnomani tahrirlash',
+				form: 'Buyurtma formasi',
+				createTitle: 'Yangi buyurtma',
+				editTitle: 'Buyurtmani tahrirlash',
 				requiredError: "Majburiy maydonlarni to'ldiring: mijoz va nom.",
 				detailsJsonError:
 					"\"Tafsilotlar\" maydoni yaroqli JSON obyekt bo'lishi kerak.",
-				saveError: "Shartnomani saqlab bo'lmadi.",
+				saveError: "Buyurtmani saqlab bo'lmadi.",
 				saving: 'Saqlanmoqda...',
-				createSubmit: 'Shartnoma yaratish',
+				createSubmit: 'Buyurtma yaratish',
 				editSubmit: "O'zgarishlarni saqlash",
 				cancel: 'Bekor qilish',
 				close: 'Yopish',
@@ -425,28 +431,28 @@ export function ContractsFormPanel({
 				removeItem: 'Olib tashlash',
 				labels: {
 					client: 'Mijoz',
-					title: 'F.I.SH',
+					title: 'Mijoz ismi',
 					status: 'Holat',
-					requestedPower: "So'ralgan quvvat (kW)",
+					requestedPower: "Buyurtma miqdori",
 					customerPhone: 'Mijoz telefoni',
 					oneIdCode: 'One ID kodi',
-					inverterType: 'Invertor turi',
-					panelType: 'Panel turi',
-					agreedAmount: 'Kelishilgan summa',
-					paidAmount: 'Berilgan summa',
-					givenSubsidyAmount: 'Berilgan subsidiya miqdori',
-					address: "O'rnatish manzili",
-					auditorCompanyName: 'Auditor tashkilot nomi',
-					auditorPhone: 'Auditor raqami',
-					auditConclusionText: 'Audit bergan xulosa',
-					lotDeadlineAt: "Lotga qo'yilgan muddat (dd.MM.yyyy HH:mm)",
-					installerFeeAmount: 'Obyekt usta haqi summasi',
-					auditContractFile: 'Audit shartnoma fayl',
-					homeCadastreFile: 'Uy kadastr fayl',
-					companyContractFile: 'Firma shartnomasi fayl',
+					inverterType: 'Brend',
+					panelType: 'Kategoriya',
+					agreedAmount: 'Buyurtma summasi',
+					paidAmount: "To'langan summa",
+					givenSubsidyAmount: "Qo'llangan chegirma",
+					address: 'Yetkazib berish manzili',
+					auditorCompanyName: "Ta'minotchi",
+					auditorPhone: "Ta'minotchi telefoni",
+					auditConclusionText: 'Ichki izoh',
+					lotDeadlineAt: 'Yetkazib berish muddati (dd.MM.yyyy HH:mm)',
+					installerFeeAmount: 'Logistika xarajati',
+					auditContractFile: 'Kelishuv fayli',
+					homeCadastreFile: 'Mijoz hujjati',
+					companyContractFile: "Ta'minotchi hujjati",
 					additionalFile: "Qo'shimcha fayl",
-					subsidyPercent: 'Subsidiya (%)',
-					items: 'Shartnoma pozitsiyalari',
+					subsidyPercent: 'Chegirma (%)',
+					items: 'Buyurtma pozitsiyalari',
 					quantity: 'Soni',
 					unitPrice: 'Narx',
 				},
@@ -554,6 +560,24 @@ export function ContractsFormPanel({
 			{ value: 'canceled', label: isRu ? 'Отменен' : 'Bekor qilingan' },
 		],
 		[isRu],
+	)
+	const emptyCatalogLabel = useMemo(
+		() => getContractEmptyOptionLabel(contractCatalogLanguage),
+		[contractCatalogLanguage],
+	)
+	const brandOptions = useMemo(
+		() => [
+			{ value: '', label: emptyCatalogLabel },
+			...getContractBrandOptions(contractCatalogLanguage),
+		],
+		[contractCatalogLanguage, emptyCatalogLabel],
+	)
+	const productLineOptions = useMemo(
+		() => [
+			{ value: '', label: emptyCatalogLabel },
+			...getContractProductLineOptions(contractCatalogLanguage),
+		],
+		[contractCatalogLanguage, emptyCatalogLabel],
 	)
 	const lotDeadlinePlaceholder = isRu
 		? 'Например: 15.05.2026 14:20'
@@ -850,14 +874,7 @@ export function ContractsFormPanel({
 						<label className={labelClassName}>{tx.labels.inverterType}</label>
 						<FilterSelect
 							value={form.inverter_type}
-							options={[
-								{
-									value: '',
-									label: isRu ? 'Не указано' : 'Ko\'rsatilmagan',
-								},
-								{ value: 'deye', label: 'DEYE' },
-								{ value: 'solax', label: 'SOLAX' },
-							]}
+							options={brandOptions}
 							onChange={value =>
 								updateField('inverter_type', value as Contract['inverter_type'])
 							}
@@ -868,14 +885,7 @@ export function ContractsFormPanel({
 						<label className={labelClassName}>{tx.labels.panelType}</label>
 						<FilterSelect
 							value={form.panel_type}
-							options={[
-								{
-									value: '',
-									label: isRu ? 'Не указано' : 'Ko\'rsatilmagan',
-								},
-								{ value: 'jinko_ja', label: 'Jinko / JA Solar' },
-								{ value: 'longi_hi_mo_x10', label: 'Longi HI MO X10' },
-							]}
+							options={productLineOptions}
 							onChange={value => updateField('panel_type', value as Contract['panel_type'])}
 							disabled={isSubmitting}
 						/>
@@ -1168,4 +1178,3 @@ export function ContractsFormPanel({
 		</div>
 	)
 }
-

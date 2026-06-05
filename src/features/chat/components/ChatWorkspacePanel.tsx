@@ -8,7 +8,6 @@ import {
 	FiUser,
 } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
-import { ru, uz } from 'date-fns/locale'
 import chatBackground from '../../../assets/chat-background.svg'
 import { FilterSelect } from '../../../components/shared/data'
 import AppIcon from '../../../components/shared/icons/AppIcon'
@@ -23,6 +22,7 @@ import {
 	formatLocalizedDate,
 	formatUzMonthYear,
 } from '../../../i18n/date-format'
+import { resolveDateFnsLocale, resolveIntlLocale } from '../../../i18n/locale'
 import ChatUserProfilePanel from './ChatUserProfilePanel'
 import { getConversationDisplayName } from '../utils/conversation-display'
 import type { ChatMessage, Conversation } from '../../../types/domain'
@@ -52,7 +52,7 @@ const PAUSE_MINUTE_OPTIONS = Array.from({ length: 60 }, (_, index) => {
 
 function formatDateTime(value: string | null, language: string, fallback: string): string {
 	return formatLocalizedDate(value, language, {
-		locale: language === 'ru' ? 'ru-RU' : 'uz-UZ',
+		locale: resolveIntlLocale(language),
 		withYear: true,
 		withTime: true,
 		shortMonth: true,
@@ -241,8 +241,8 @@ function ChatWorkspacePanel({
 	onResumeAI,
 }: ChatWorkspacePanelProps) {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
-	const calendarLocale = i18n.language === 'ru' ? ru : uz
+	const locale = resolveIntlLocale(i18n.language)
+	const calendarLocale = resolveDateFnsLocale(i18n.language)
 	const senderLabels: Record<ChatMessage['sender_type'], string> = {
 		customer: t('chatPage.workspace.sender.customer'),
 		ai: t('chatPage.workspace.sender.ai'),

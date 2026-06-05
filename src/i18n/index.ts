@@ -1,10 +1,11 @@
-﻿import i18n from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import en from './locales/en.json';
 import ru from './locales/ru.json';
 import uz from './locales/uz.json';
 
 const LANGUAGE_STORAGE_KEY = 'avikontex-language';
-const SUPPORTED_LANGUAGES = ['uz', 'ru'] as const;
+const SUPPORTED_LANGUAGES = ['uz', 'ru', 'en'] as const;
 type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 function isSupportedLanguage(value: string): value is SupportedLanguage {
@@ -33,6 +34,7 @@ if (!i18n.isInitialized) {
     resources: {
       uz: { translation: uz },
       ru: { translation: ru },
+      en: { translation: en },
     },
     lng: resolveInitialLanguage(),
     fallbackLng: 'uz',
@@ -43,7 +45,7 @@ if (!i18n.isInitialized) {
   });
 }
 
-i18n.on('languageChanged', (language) => {
+i18n.on('languageChanged', language => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -61,4 +63,3 @@ i18n.on('languageChanged', (language) => {
 
 export { LANGUAGE_STORAGE_KEY, SUPPORTED_LANGUAGES };
 export default i18n;
-

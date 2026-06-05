@@ -19,8 +19,10 @@
     "language": "Til",
     "languages": {
       "uz": "O'zbekcha",
-      "ru": "Ruscha"
-    }
+      "ru": "Ruscha",
+      "en": "English"
+    },
+    "close": "Yopish"
   },
   "routes": {
     "home": {
@@ -241,16 +243,16 @@
     "title": "Boshqaruv paneli",
     "welcome": "Xush kelibsiz",
     "workspaceFallback": "Ish maydoni",
-    "totalLeads": "Jami mijozlar",
+    "totalLeads": "Jami so'rovlar",
     "sourceDataHint": "Yangi mijozlar qo'shilgandan keyin manba ma'lumotlari ko'rsatiladi.",
     "metrics": {
-      "leads": "Mijozlar",
+      "leads": "So'rovlar",
       "customers": "Mijozlar",
       "orders": "Buyurtmalar",
       "pendingPayments": "Kutilayotgan to'lovlar",
       "unreadMessages": "O'qilmagan xabarlar",
       "revenue": "Daromad",
-      "newLeads": "yangi mijoz",
+      "newLeads": "yangi so'rovlar",
       "newCustomers": "yangi mijoz",
       "completed": "yakunlangan",
       "pending": "kutilmoqda",
@@ -261,9 +263,9 @@
     },
     "sections": {
       "trend": "Trendlar",
-      "source": "Mijoz manbalari",
-      "leadStatus": "Mijoz holatlari",
-      "contractStatus": "Shartnoma holati",
+      "source": "So'rov manbalari",
+      "leadStatus": "So'rov funneli",
+      "contractStatus": "Buyurtma jarayoni",
       "orderStatus": "Buyurtma holati",
       "paymentStatus": "To'lov holati",
       "chatChannels": "Chat kanallari",
@@ -274,9 +276,9 @@
     },
     "descriptions": {
       "trend": "Tanlangan davr bo'yicha mijozlar, chatlar va shartnomalar dinamikasi.",
-      "source": "Telegram va qo'lda kiritilgan manbalar bo'yicha mijozlar taqsimoti.",
-      "leadStatus": "Jarayon bo'ylab holatlar taqsimoti.",
-      "contractStatus": "Shartnomalar holatlari bo'yicha taqsimot.",
+      "source": "So'rovlarning kanal va platformalar bo'yicha taqsimoti.",
+      "leadStatus": "So'rovlarning funnel bosqichlari bo'yicha taqsimoti.",
+      "contractStatus": "Buyurtmalarning fulfillment holatlari bo'yicha taqsimoti.",
       "topProducts": "Sotuv hajmi bo'yicha eng ko'p sotilgan mahsulotlar ro'yxati.",
       "regionDemand": "Tanlangan davrda hududlar kesimidagi mijozlar taqsimoti.",
       "managerPerformance": "Menejerlar kesimida umumiy, yutilgan va yo'qotilgan mijozlar ko'rsatkichlari."
@@ -287,7 +289,7 @@
       "averageOrderValue": "O'rtacha buyurtma qiymati"
     },
     "topProducts": {
-      "hint": "Tafsilotlar uchun mahsulotlar qatorini ko'ring",
+      "hint": "Eng ko'p sotilgan SKUlar",
       "empty": "Top mahsulotlar hali mavjud emas.",
       "columns": {
         "product": "Mahsulot",
@@ -742,8 +744,8 @@
       "product": "Mahsulot",
       "sku": "SKU",
       "price": "Narx",
-      "priceAfterSubsidy": "Subsidiya bilan narx",
-      "subsidyAmount": "Subsidiya",
+      "priceAfterSubsidy": "Sotuv narxi",
+      "subsidyAmount": "Chegirma",
       "currency": "Valyuta",
       "stock": "Zaxira soni",
       "status": "Holat",
@@ -823,9 +825,9 @@
       "sectionLifecycleDesc": "Yaratilish va yangilanish tarixi.",
       "sectionMetadata": "Metadata",
       "price": "Narx",
-      "subsidyEnabled": "Subsidiya",
-      "subsidyAmount": "Subsidiya summasi",
-      "priceAfterSubsidy": "Subsidiya bilan narx",
+      "subsidyEnabled": "Chegirma yoqilgan",
+      "subsidyAmount": "Chegirma summasi",
+      "priceAfterSubsidy": "Sotuv narxi",
       "stockQuantity": "Mahsulotlar soni",
       "description": "Tavsif",
       "created": "Qo'shilgan",
@@ -855,8 +857,8 @@
       "activeProductHint": "Mahsulot operatsiyalarda ko'rinishini yoqing yoki o'chiring.",
       "recommendedProduct": "Tavsiya etilgan mahsulot",
       "recommendedProductHint": "Mahsulotni tavsiya qilingan sifatida belgilang.",
-      "subsidyEnabled": "Subsidiya yoqilgan",
-      "subsidyEnabledHint": "Ushbu mahsulot uchun subsidiyani yoqing yoki o'chiring.",
+      "subsidyEnabled": "Chegirma yoqilgan",
+      "subsidyEnabledHint": "Mahsulot uchun aksiya yoki chegirma narxini yoqing.",
       "reviewsEnabled": "Sharhlarni qabul qilish",
       "reviewsEnabledHint": "Ushbu mahsulot uchun sharhlarni yoqing yoki o'chiring.",
       "currentImages": "Joriy rasmlar",
@@ -1818,10 +1820,10 @@
       "shipped": "Jo'natildi",
       "delivered": "Yetkazilgan",
       "closed": "Yopildi",
-      "audit_pending": "Audit kutilmoqda",
-      "audit_paid": "Audit to'langan",
-      "moderation": "Moderatsiya",
-      "contract_ready": "Shartnoma tayyor",
+      "audit_pending": "To'lov tekshiruvda",
+      "audit_paid": "Avans qabul qilingan",
+      "moderation": "Tekshiruvda",
+      "contract_ready": "Jo'natishga tayyor",
       "payment_pending": "To'lov kutilmoqda",
       "paid": "To'langan",
       "sent": "Yuborilgan",
@@ -2145,18 +2147,18 @@
   "contractsPage": {
     "eyebrow": "Buyurtmalar",
     "title": "Buyurtmalar",
-    "subtitle": "Buyurtma holatlari va mijoz jarayonini bitta oynada boshqaring.",
+    "subtitle": "Buyurtmalar, yetkazib berish va mijoz jarayonini bitta oynada boshqaring.",
     "newContract": "Yangi buyurtma",
     "visible": "ko'rinmoqda",
     "detailOpen": "Profil ochiq",
     "searchPlaceholder": "Buyurtma, mijoz yoki telefon bo'yicha qidiring...",
     "statusLabel": "Holat",
-    "panelLabel": "Panel",
-    "inverterLabel": "Invertor",
-    "powerLabel": "Quvvat (kW)",
+    "panelLabel": "Kategoriya",
+    "inverterLabel": "Brend",
+    "powerLabel": "Birlik",
     "allStatuses": "Barcha holatlar",
-    "allPanels": "Barcha panellar",
-    "allInverters": "Barcha invertorlar",
+    "allPanels": "Barcha kategoriyalar",
+    "allInverters": "Barcha brendlar",
     "listTitle": "Buyurtmalar katalogi",
     "listHint": "Profilni ko'rish uchun satrni bosing.",
     "errorTitle": "Buyurtmalar mavjud emas",
@@ -2164,9 +2166,9 @@
     "columns": {
       "title": "Buyurtma",
       "amount": "Summa",
-      "panel": "Panel",
-      "inverter": "Invertor",
-      "power": "Quvvat",
+      "panel": "Kategoriya",
+      "inverter": "Brend",
+      "power": "Birlik",
       "status": "Holat",
       "updated": "Yangilangan",
       "actions": "Amallar"
@@ -2177,10 +2179,10 @@
       "packing": "To'planyapti",
       "shipped": "Jo'natildi",
       "draft": "Qoralama",
-      "audit_pending": "Audit kutilmoqda",
-      "audit_paid": "Audit to'langan",
-      "moderation": "Moderatsiya",
-      "contract_ready": "Shartnoma tayyor",
+      "audit_pending": "To'lov tekshiruvda",
+      "audit_paid": "Avans qabul qilingan",
+      "moderation": "Tekshiruvda",
+      "contract_ready": "Jo'natishga tayyor",
       "payment_pending": "To'lov kutilmoqda",
       "paid": "To'langan",
       "delivered": "Yetkazilgan",
@@ -2192,20 +2194,20 @@
     "edit": "Tahrirlash",
     "delete": "O'chirish",
     "pricing": {
-      "button": "Narxlar jadvali",
-      "title": "Narxlar jadvali",
+      "button": "Narx yo'riqnomasi",
+      "title": "Narx yo'riqnomasi",
       "loadingTitle": "Yuklanmoqda...",
       "loadingDescription": "Matritsa ma'lumotlari olinmoqda.",
       "emptyTitle": "Matritsa bo'sh",
       "emptyDescription": "Ko'rsatish uchun ma'lumot yo'q.",
-      "subsidy": "Subsidiya",
-      "auditPowers": "Qo'llab-quvvatlanadigan audit (kW)",
-      "configurations": "konfiguratsiya",
-      "power": "Quvvat",
+      "subsidy": "Chegirma",
+      "auditPowers": "Qo'llab-quvvatlanadigan birliklar",
+      "configurations": "konfiguratsiyalar",
+      "power": "Birlik",
       "view": "Ko'rish",
       "basePrice": "Bazaviy narx",
-      "customerPrice": "Mijoz narxi",
-      "audit": "Audit",
+      "customerPrice": "Sotuv narxi",
+      "audit": "Birlik",
       "currency": "so'm"
     },
     "form": {
@@ -2214,8 +2216,8 @@
       "newClientNamePlaceholder": "Masalan: Ali Valiyev",
       "newClientPhone": "Mijoz telefoni",
       "newClientPhonePlaceholder": "Masalan: +998901234567",
-      "newClientRequiredError": "Yangi mijoz uchun ism, telefon va shartnoma nomini to'ldiring.",
-      "subsidyRequiredError": "Subsidiya (%) maydonini to'ldiring."
+      "newClientRequiredError": "Yangi mijoz uchun ism, telefon va buyurtma nomini to'ldiring.",
+      "subsidyRequiredError": "Chegirma (%) maydonini to'ldiring."
     }
   },
   "operatorKpi": {
@@ -2237,7 +2239,7 @@
       "operator": "Operator",
       "contactedClients": "Mijozlar",
       "messagesSent": "Xabarlar",
-      "contractClients": "Shartnomalar",
+      "contractClients": "Buyurtmalar",
       "lostClients": "Yo'qotilgan",
       "actions": "Amallar"
     },
@@ -2256,7 +2258,7 @@
     "metrics": {
       "contactedClients": "Aloqaga chiqqan mijozlar",
       "messagesSent": "Yuborilgan xabarlar",
-      "contracts": "Shartnomalar"
+      "contracts": "Buyurtmalar"
     },
     "distributions": {
       "contractStatus": "Shartnoma holati",
@@ -2300,7 +2302,7 @@
     "page": {
       "eyebrow": "Mijoz",
       "title": "Mijozlar",
-      "subtitle": "Mijozlarni boshqaring, holatlarni kuzating va kartochkalar bilan yagona oynada ishlang.",
+      "subtitle": "Mijozlar bazasini boshqaring, buyurtma tarixini kuzating va kartochkalar bilan bitta joyda ishlang.",
       "newClient": "Yangi mijoz",
       "visible": "ko'rinmoqda",
       "detailOpen": "Profil ochiq",

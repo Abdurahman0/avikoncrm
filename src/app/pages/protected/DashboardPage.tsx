@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ru, uz } from 'date-fns/locale'
 import { type DateRange } from 'react-day-picker'
 import {
 	DataTable,
@@ -25,6 +24,7 @@ import {
 	formatLocalizedDate,
 	formatUzMonthYear,
 } from '../../../i18n/date-format'
+import { resolveDateFnsLocale, resolveIntlLocale } from '../../../i18n/locale'
 import { formatCurrencyAmount } from '../../../constants'
 import { services } from '../../../services'
 import type {
@@ -384,8 +384,8 @@ function DashboardIntervalDropdown({
 
 function DashboardPage() {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
-	const calendarLocale = i18n.language === 'ru' ? ru : uz
+	const locale = resolveIntlLocale(i18n.language)
+	const calendarLocale = resolveDateFnsLocale(i18n.language)
 	const [overview, setOverview] = useState<DashboardOverview | null>(null)
 	const [filters, setFilters] = useState<DashboardFilters>({
 		interval: 'day',

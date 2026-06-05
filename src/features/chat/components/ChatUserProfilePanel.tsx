@@ -1,9 +1,10 @@
-import { useEffect, useMemo } from 'react'
+﻿import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiMapPin, FiPhone, FiTag } from 'react-icons/fi'
 import { createPortal } from 'react-dom'
 import AppIcon from '../../../components/shared/icons/AppIcon'
 import { formatLocalizedDate } from '../../../i18n/date-format'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import type { Conversation } from '../../../types/domain'
 
 interface ChatUserProfilePanelProps {
@@ -127,7 +128,7 @@ function resolveStatePayload(
 						name: asText(structuredExtractionRecord.name),
 						phone: asText(structuredExtractionRecord.phone),
 						address: asText(structuredExtractionRecord.address),
-					}
+				  }
 				: null,
 		}
 	}
@@ -168,23 +169,60 @@ function ChatUserProfilePanel({
 	onClose,
 }: ChatUserProfilePanelProps) {
 	const { i18n } = useTranslation()
-	const isRu = i18n.language === 'ru'
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
-	const labels = {
-		profile: isRu ? 'Профиль клиента' : 'Mijoz profili',
-		closeProfile: isRu ? 'Закрыть панель профиля' : 'Profil panelini yopish',
-		mainInfo: isRu ? 'Основная информация' : "Asosiy ma'lumot",
-		phone: isRu ? 'Телефон' : 'Telefon',
-		address: isRu ? 'Адрес' : 'Manzil',
-		lastActivity: isRu ? 'Последняя активность' : 'Oxirgi faollik',
-		context: isRu ? 'Контекст' : 'Kontekst',
-		selectedProduct: isRu ? 'Выбранный продукт' : 'Tanlangan mahsulot',
-		noData: isRu ? 'Данные не найдены' : "Ma'lumot topilmadi",
-		unknownCustomer: isRu ? 'Неизвестный клиент' : "Noma'lum mijoz",
-		unknownChannel: isRu ? 'Неизвестно' : "Noma'lum",
-		manual: isRu ? 'Вручную' : "Qo'lda",
-		web: isRu ? 'Веб' : 'Veb',
-	}
+	const language = i18n.language.startsWith('ru')
+		? 'ru'
+		: i18n.language.startsWith('en')
+			? 'en'
+			: 'uz'
+	const locale = resolveIntlLocale(i18n.language)
+	const labelsByLanguage = {
+		ru: {
+			profile: 'Профиль клиента',
+			closeProfile: 'Закрыть панель профиля',
+			mainInfo: 'Основная информация',
+			phone: 'Телефон',
+			address: 'Адрес',
+			lastActivity: 'Последняя активность',
+			context: 'Контекст',
+			selectedProduct: 'Выбранный товар',
+			noData: 'Данные не найдены',
+			unknownCustomer: 'Неизвестный клиент',
+			unknownChannel: 'Неизвестно',
+			manual: 'Вручную',
+			web: 'Веб',
+		},
+		en: {
+			profile: 'Customer profile',
+			closeProfile: 'Close profile panel',
+			mainInfo: 'Main information',
+			phone: 'Phone',
+			address: 'Address',
+			lastActivity: 'Last activity',
+			context: 'Context',
+			selectedProduct: 'Selected product',
+			noData: 'No data found',
+			unknownCustomer: 'Unknown customer',
+			unknownChannel: 'Unknown',
+			manual: 'Manual',
+			web: 'Web',
+		},
+		uz: {
+			profile: 'Mijoz profili',
+			closeProfile: 'Profil panelini yopish',
+			mainInfo: "Asosiy ma''lumot",
+			phone: 'Telefon',
+			address: 'Manzil',
+			lastActivity: 'Oxirgi faollik',
+			context: 'Kontekst',
+			selectedProduct: 'Tanlangan mahsulot',
+			noData: "Ma''lumot topilmadi",
+			unknownCustomer: "Noma''lum mijoz",
+			unknownChannel: "Noma''lum",
+			manual: "Qo''lda",
+			web: 'Veb',
+		},
+	} as const
+	const labels = labelsByLanguage[language]
 
 	useEffect(() => {
 		if (!isOpen) {
@@ -209,27 +247,19 @@ function ChatUserProfilePanel({
 		}
 
 		const statePayload = resolveStatePayload(session)
-
 		const name = resolveDisplayName(session, statePayload, labels.unknownCustomer)
-
 		const phone =
 			statePayload?.phone ??
 			statePayload?.structured_extraction?.phone ??
 			session.client?.phone ??
 			session.lead?.phone ??
 			null
-
 		const address =
 			statePayload?.address ??
 			statePayload?.structured_extraction?.address ??
 			null
-
 		const selectedProduct = statePayload?.selected_product_name ?? null
-		const lastActivity = formatDateTime(
-			session.last_message_at,
-			i18n.language,
-			locale,
-		)
+		const lastActivity = formatDateTime(session.last_message_at, i18n.language, locale)
 
 		return {
 			name,
@@ -248,7 +278,7 @@ function ChatUserProfilePanel({
 								: labels.unknownChannel,
 			lastActivity,
 		}
-	}, [i18n.language, labels.manual, labels.unknownChannel, labels.unknownCustomer, labels.web, locale, session])
+	}, [i18n.language, labels, locale, session])
 
 	const panel = (
 		<div

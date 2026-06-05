@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { FiEdit2, FiEye, FiEyeOff, FiTrash2 } from 'react-icons/fi'
 import { FaInstagram, FaTelegramPlane } from 'react-icons/fa'
 import { useTranslation } from 'react-i18next'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { StatusBadge } from '../../../components/shared/data'
 import AppIcon from '../../../components/shared/icons/AppIcon'
 import {
@@ -70,7 +71,7 @@ function IntegrationConfigDetailPanel({
 	onDelete,
 }: IntegrationConfigDetailPanelProps) {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const [config, setConfig] = useState<IntegrationConfig | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [hasError, setHasError] = useState(false)

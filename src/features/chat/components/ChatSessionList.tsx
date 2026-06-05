@@ -2,6 +2,7 @@ import { FaInstagram, FaTelegramPlane } from 'react-icons/fa';
 import { FiAlertTriangle, FiEdit3, FiGlobe } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { EmptyState, LoadingState } from '../../../components/shared/page';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { getConversationDisplayName } from '../utils/conversation-display';
 import type { Conversation, EntityId } from '../../../types/domain';
 
@@ -98,6 +99,7 @@ function ChatSessionList({
   onSelectSession,
 }: ChatSessionListProps) {
   const { t, i18n } = useTranslation();
+  const locale = resolveIntlLocale(i18n.language);
   const labels = {
     loadingTitle: t('chatPage.sessionList.loadingTitle'),
     loadingDescription: t('chatPage.sessionList.loadingDescription'),
@@ -227,7 +229,7 @@ function ChatSessionList({
                   <span className='inline-flex min-h-6 items-center rounded-pill bg-surface-subtle px-2 text-[11px] font-semibold text-text-secondary ring-1 ring-border-soft/45'>
                     {formatSessionTime(
                       session.last_message_at,
-                      i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ',
+                      locale,
                       labels.noTime,
                     )}
                   </span>

@@ -8,6 +8,7 @@ import {
   PageCard,
 } from '../../../components/shared/page';
 import { formatLocalizedDate } from '../../../i18n/date-format';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { services } from '../../../services';
 import type { EntityId, ProductCategory } from '../../../types/domain';
 
@@ -31,7 +32,7 @@ function ProductCategoryDetailPanel({
   onDelete,
 }: ProductCategoryDetailPanelProps) {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
   const [category, setCategory] = useState<ProductCategory | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -73,12 +74,12 @@ function ProductCategoryDetailPanel({
 
   return (
     <div
-      className="fixed inset-0 z-40 flex justify-end bg-background-overlay/72 backdrop-blur-[3px]"
+      className="fixed inset-0 z-40 flex justify-end bg-background-overlay/72"
       onClick={onClose}
       role="presentation"
     >
       <aside
-        className="h-full w-full overflow-y-auto bg-background-subtle p-4 shadow-xl ring-1 ring-border-soft/50 min-[641px]:max-w-[460px] min-[641px]:p-5"
+        className="h-full w-full overflow-y-auto overscroll-contain bg-background-subtle p-4 shadow-xl ring-1 ring-border-soft/50 [contain:layout_paint] min-[641px]:max-w-[460px] min-[641px]:p-5"
         onClick={(event) => event.stopPropagation()}
         aria-label={t('products.categoryColumns.name')}
       >

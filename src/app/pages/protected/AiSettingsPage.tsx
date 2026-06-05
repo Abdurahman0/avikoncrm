@@ -21,6 +21,7 @@ import {
 } from '../../../components/shared/page';
 import { useAuth } from '../../../auth';
 import { formatLocalizedDate } from '../../../i18n/date-format';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import AISettingDeleteDialog from '../../../features/ai-settings/components/AISettingDeleteDialog';
 import AISettingDetailPanel from '../../../features/ai-settings/components/AISettingDetailPanel';
 import AISettingFormPanel from '../../../features/ai-settings/components/AISettingFormPanel';
@@ -97,7 +98,7 @@ function AiSettingsPage() {
   const { hasPermission, hasRole } = useAuth();
   const canManageAISettings =
     hasRole('developer') || hasPermission('can_manage_ai_settings');
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
 
   const [search, setSearch] = usePersistentState('ai-settings:search', '');
   const [activeFilter, setActiveFilter] = useState<ActiveFilter>('all');

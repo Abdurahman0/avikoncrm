@@ -11,6 +11,7 @@ import {
 	PageCard,
 } from '../../../components/shared/page'
 import { formatLocalizedDate } from '../../../i18n/date-format'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import type { AISetting, EntityId } from '../../../types/domain'
 
@@ -64,7 +65,7 @@ function AISettingDetailPanel({
 	onDelete,
 }: AISettingDetailPanelProps) {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const [setting, setSetting] = useState<AISetting | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [hasError, setHasError] = useState(false)

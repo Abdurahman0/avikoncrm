@@ -11,6 +11,7 @@ import {
 } from '../../../components/shared/page'
 import { formatLocalizedDate } from '../../../i18n/date-format'
 import { getChannelLabel, getLeadStatusLabel } from '../../../i18n/labels'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { routePaths } from '../../../config/routes'
 import { services } from '../../../services'
 import type { Lead } from '../../../services/contracts'
@@ -98,7 +99,7 @@ function LeadDetailPanel({
 }: LeadDetailPanelProps) {
 	const { t, i18n } = useTranslation()
 	const navigate = useNavigate()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const [lead, setLead] = useState<Lead | null>(null)
 	const [resolvedOperatorName, setResolvedOperatorName] = useState<
 		string | null

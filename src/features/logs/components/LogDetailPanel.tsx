@@ -10,6 +10,7 @@ import {
 	PageCard,
 } from '../../../components/shared/page'
 import { formatLocalizedDate } from '../../../i18n/date-format'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import type { AppLog, EntityId } from '../../../types/domain'
 import { getLogTypeLabel, getLogTypeTone } from '../utils/log-format'
@@ -63,7 +64,7 @@ function formatMetadata(metadata: AppLog['metadata']): string {
 
 function LogDetailPanel({ logId, onClose }: LogDetailPanelProps) {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const [log, setLog] = useState<AppLog | null>(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [hasError, setHasError] = useState(false)

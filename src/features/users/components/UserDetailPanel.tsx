@@ -10,6 +10,7 @@ import {
 } from '../../../components/shared/page'
 import { formatLocalizedDate } from '../../../i18n/date-format'
 import { getUserPermissionLabel, getUserRoleLabel } from '../../../i18n/labels'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import type {
 	ManagedUser,
@@ -89,7 +90,7 @@ function UserDetailPanel({
 	onDelete,
 }: UserDetailPanelProps) {
 	const { t, i18n } = useTranslation()
-	const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
 	const [user, setUser] = useState<ManagedUser | null>(null)
 	const [permissions, setPermissions] = useState<UserPermission[]>([])
 	const [isLoading, setIsLoading] = useState(true)

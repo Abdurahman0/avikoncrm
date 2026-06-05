@@ -19,9 +19,15 @@ import { EmptyState, LoadingState, PageCard } from '../../../components/shared/p
 import { StatusBadge } from '../../../components/shared/data'
 import AppIcon from '../../../components/shared/icons/AppIcon'
 import { formatLocalizedDate } from '../../../i18n/date-format'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import { routePaths } from '../../../config/routes'
 import { services } from '../../../services'
 import type { Contract } from '../../../services/contracts'
+import {
+	getContractBrandLabel,
+	getContractProductLineLabel,
+	resolveContractCatalogLanguage,
+} from '../utils/catalogOptions'
 
 export interface ContractsDetailPanelProps {
 	contractId: string
@@ -67,8 +73,8 @@ function getStatusLabel(status: string, isRu: boolean): string {
 			closed: "\u0417\u0430\u043a\u0440\u044b\u0442",
 			canceled: "\u041e\u0442\u043c\u0435\u043d\u0435\u043d",
 			draft: "\u0427\u0435\u0440\u043d\u043e\u0432\u0438\u043a",
-			audit_pending: "\u0410\u0443\u0434\u0438\u0442 \u043e\u0436\u0438\u0434\u0430\u0435\u0442\u0441\u044f",
-			audit_paid: "\u0410\u0443\u0434\u0438\u0442 \u043e\u043f\u043b\u0430\u0447\u0435\u043d",
+			audit_pending: "\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043e\u043f\u043b\u0430\u0442\u044b",
+			audit_paid: "\u0410\u0432\u0430\u043d\u0441 \u043f\u043e\u043b\u0443\u0447\u0435\u043d",
 			moderation: "\u041c\u043e\u0434\u0435\u0440\u0430\u0446\u0438\u044f",
 			contract_ready: "\u0414\u043e\u0433\u043e\u0432\u043e\u0440 \u0433\u043e\u0442\u043e\u0432",
 			payment_pending: "\u041e\u0436\u0438\u0434\u0430\u0435\u0442 \u043e\u043f\u043b\u0430\u0442\u0443",
@@ -89,8 +95,8 @@ function getStatusLabel(status: string, isRu: boolean): string {
 		closed: 'Yopildi',
 		canceled: 'Bekor qilindi',
 		draft: 'Qoralama',
-		audit_pending: 'Audit kutilmoqda',
-		audit_paid: "Audit to'langan",
+		audit_pending: "To'lov tekshiruvda",
+		audit_paid: 'Avans qabul qilingan',
 		moderation: 'Moderatsiya',
 		contract_ready: 'Shartnoma tayyor',
 		payment_pending: "To'lov kutilmoqda",
@@ -468,6 +474,7 @@ function formatSmartValue(
 	value: unknown,
 	locale: string,
 	currencyLabel: string,
+	unitsLabel = 'qty',
 ): string {
 	if (value === null || value === undefined) {
 		return '-'
@@ -480,7 +487,7 @@ function formatSmartValue(
 			return `${value}%`
 		}
 		if (key.endsWith('_kw') || key.includes('power')) {
-			return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)} kW`
+			return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)} ${unitsLabel}`
 		}
 		if (key.endsWith('_amount') || key.endsWith('_price')) {
 			return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)} ${currencyLabel}`
@@ -494,13 +501,13 @@ function formatSmartValue(
 		}
 		const asNumber = Number(trimmed)
 		if (Number.isFinite(asNumber)) {
-			return formatSmartValue(key, asNumber, locale, currencyLabel)
+			return formatSmartValue(key, asNumber, locale, currencyLabel, unitsLabel)
 		}
 		return trimmed
 	}
 	if (Array.isArray(value)) {
 		const parts = value
-			.map(item => formatSmartValue(key, item, locale, currencyLabel))
+			.map(item => formatSmartValue(key, item, locale, currencyLabel, unitsLabel))
 			.filter(Boolean)
 		return parts.length ? parts.join(', ') : '-'
 	}
@@ -544,23 +551,23 @@ function getDetailsLabel(key: string, isRu: boolean): string {
 	const ru: Record<string, string> = {
 		pricing_breakdown: '\u0420\u0430\u0441\u0447\u0435\u0442 \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u0438',
 		base_price: '\u0411\u0430\u0437\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430',
-		subsidy_amount: '\u0421\u0443\u043c\u043c\u0430 \u0441\u0443\u0431\u0441\u0438\u0434\u0438\u0438',
-		customer_amount: '\u0421\u0443\u043c\u043c\u0430 \u0434\u043b\u044f \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
-		subsidy_percent: '\u0421\u0443\u0431\u0441\u0438\u0434\u0438\u044f (%)',
-		audit_power_kw: '\u0410\u0443\u0434\u0438\u0442 \u043c\u043e\u0449\u043d\u043e\u0441\u0442\u044c',
-		panel_type: '\u0422\u0438\u043f \u043f\u0430\u043d\u0435\u043b\u0438',
-		inverter_type: '\u0422\u0438\u043f \u0438\u043d\u0432\u0435\u0440\u0442\u043e\u0440\u0430',
+		subsidy_amount: '\u0421\u043a\u0438\u0434\u043a\u0430',
+		customer_amount: '\u0418\u0442\u043e\u0433 \u0434\u043b\u044f \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
+		subsidy_percent: '\u0421\u043a\u0438\u0434\u043a\u0430 (%)',
+		audit_power_kw: '\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0451\u043d\u043d\u043e\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e',
+		panel_type: '\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f',
+		inverter_type: '\u0411\u0440\u0435\u043d\u0434',
 	}
 
 	const uz: Record<string, string> = {
 		pricing_breakdown: 'Narx hisob-kitobi',
 		base_price: 'Bazaviy narx',
-		subsidy_amount: 'Subsidiya summasi',
-		customer_amount: 'Mijoz summasi',
-		subsidy_percent: 'Subsidiya (%)',
-		audit_power_kw: 'Audit quvvati',
-		panel_type: 'Panel turi',
-		inverter_type: 'Invertor turi',
+		subsidy_amount: 'Chegirma',
+		customer_amount: 'Mijoz uchun yakuniy summa',
+		subsidy_percent: 'Chegirma (%)',
+		audit_power_kw: 'Tasdiqlangan miqdor',
+		panel_type: 'Kategoriya',
+		inverter_type: 'Brend',
 	}
 
 	return (isRu ? ru[key] : uz[key]) ?? humanizeKey(key)
@@ -570,10 +577,12 @@ function DetailsGrid({
 	data,
 	isRu,
 	locale,
+	unitsLabel,
 }: {
 	data: PlainObject
 	isRu: boolean
 	locale: string
+	unitsLabel: string
 }) {
 	const currencyLabel = isRu ? '\u0441\u0443\u043c' : "so'm"
 	const entries = Object.entries(data).filter(
@@ -588,7 +597,13 @@ function DetailsGrid({
 		<div className='mt-2 grid gap-2 sm:grid-cols-2'>
 			{entries.map(([key, value]) => {
 				const label = getDetailsLabel(key, isRu)
-				const formatted = formatSmartValue(key, value, locale, currencyLabel)
+				const formatted = formatSmartValue(
+					key,
+					value,
+					locale,
+					currencyLabel,
+					unitsLabel,
+				)
 				const isAmount = key.endsWith('_amount') || key.endsWith('_price')
 				return (
 					<div
@@ -617,10 +632,12 @@ function ContractsDetailsView({
 	details,
 	isRu,
 	locale,
+	unitsLabel,
 }: {
 	details: Contract['details']
 	isRu: boolean
 	locale: string
+	unitsLabel: string
 }) {
 	if (!details) {
 		return <p className='mt-1 text-sm font-semibold text-text-secondary'>-</p>
@@ -659,7 +676,7 @@ function ContractsDetailsView({
 					<p className='text-[11px] font-semibold uppercase tracking-[0.14em] text-primary'>
 						{getDetailsLabel('pricing_breakdown', isRu)}
 					</p>
-					<DetailsGrid data={pricing} isRu={isRu} locale={locale} />
+					<DetailsGrid data={pricing} isRu={isRu} locale={locale} unitsLabel={unitsLabel} />
 				</div>
 			) : null}
 
@@ -689,94 +706,95 @@ export function ContractsDetailPanel({
 }: ContractsDetailPanelProps) {
 	const { i18n } = useTranslation()
 	const isRu = i18n.language.toLowerCase().startsWith('ru')
-	const locale = isRu ? 'ru-RU' : 'uz-UZ'
+	const locale = resolveIntlLocale(i18n.language)
+	const contractCatalogLanguage = resolveContractCatalogLanguage(i18n.language)
 	const navigate = useNavigate()
 	const tx = isRu
 		? {
-				title: '\u041f\u0440\u043e\u0444\u0438\u043b\u044c \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
+				title: '\u041f\u0440\u043e\u0444\u0438\u043b\u044c \u0437\u0430\u043a\u0430\u0437\u0430',
 				loadingTitle: '\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430...',
 				loadingDescription:
 					'\u041f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0434\u0430\u043d\u043d\u044b\u0435 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430.',
-				errorTitle: '\u0414\u043e\u0433\u043e\u0432\u043e\u0440 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d',
+				errorTitle: '\u0417\u0430\u043a\u0430\u0437 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d',
 				errorDescription:
-					'\u0414\u043e\u0433\u043e\u0432\u043e\u0440 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0438\u043b\u0438 \u0431\u044b\u043b \u0443\u0434\u0430\u043b\u0435\u043d.',
+					'\u0417\u0430\u043a\u0430\u0437 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u0438\u043b\u0438 \u0431\u044b\u043b \u0443\u0434\u0430\u043b\u0451\u043d.',
 				edit: '\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c',
 				delete: '\u0423\u0434\u0430\u043b\u0438\u0442\u044c',
 				fields: {
 					client: '\u041a\u043b\u0438\u0435\u043d\u0442',
 					status: '\u0421\u0442\u0430\u0442\u0443\u0441',
-					fullName: '\u0424.\u0418.\u0428.',
+					fullName: '\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0437\u0430\u043a\u0430\u0437\u0430',
 					requestedPower:
-						'\u0417\u0430\u043f\u0440\u043e\u0448\u0435\u043d\u043d\u0430\u044f \u043c\u043e\u0449\u043d\u043e\u0441\u0442\u044c',
+						'\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043f\u043e \u0437\u0430\u043a\u0430\u0437\u0443',
 					phone: '\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
 					oneIdCode: 'One ID \u043a\u043e\u0434',
-					inverter: '\u0422\u0438\u043f \u0438\u043d\u0432\u0435\u0440\u0442\u043e\u0440\u0430',
-					panel: '\u0422\u0438\u043f \u043f\u0430\u043d\u0435\u043b\u0438',
+					inverter: '\u0411\u0440\u0435\u043d\u0434',
+					panel: '\u041a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u044f',
 					agreedAmount:
-						'\u0421\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u043d\u043d\u0430\u044f \u0441\u0443\u043c\u043c\u0430',
-					paidAmount: '\u0412\u044b\u0434\u0430\u043d\u043d\u0430\u044f \u0441\u0443\u043c\u043c\u0430',
+						'\u0421\u0443\u043c\u043c\u0430 \u0437\u0430\u043a\u0430\u0437\u0430',
+					paidAmount: '\u041e\u043f\u043b\u0430\u0447\u0435\u043d\u043e',
 					givenSubsidyAmount:
-						'\u0412\u044b\u0434\u0430\u043d\u043d\u0430\u044f \u0441\u0443\u0431\u0441\u0438\u0434\u0438\u044f',
-					address: '\u0410\u0434\u0440\u0435\u0441 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438',
+						'\u041f\u0440\u0438\u043c\u0435\u043d\u0451\u043d\u043d\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430',
+					address: '\u0410\u0434\u0440\u0435\u0441 \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438',
 					auditorCompanyName:
-						'\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0441\u043a\u043e\u0439 \u043e\u0440\u0433\u0430\u043d\u0438\u0437\u0430\u0446\u0438\u0438',
-					auditorPhone: '\u041d\u043e\u043c\u0435\u0440 \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0430',
+						'\u041f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a',
+					auditorPhone: '\u0422\u0435\u043b\u0435\u0444\u043e\u043d \u043f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a\u0430',
 					auditConclusionText:
-						'\u0410\u0443\u0434\u0438\u0442\u043e\u0440\u0441\u043a\u043e\u0435 \u0437\u0430\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0435',
-					lotDeadlineAt: '\u0421\u0440\u043e\u043a \u043b\u043e\u0442\u0430',
-					installerFeeAmount: '\u0421\u0443\u043c\u043c\u0430 \u0443\u0441\u0442\u0430',
+						'\u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0437\u0430\u043c\u0435\u0442\u043a\u0430',
+					lotDeadlineAt: '\u0421\u0440\u043e\u043a \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0438',
+					installerFeeAmount: '\u041b\u043e\u0433\u0438\u0441\u0442\u0438\u043a\u0430',
 					details: '\u0414\u0435\u0442\u0430\u043b\u0438',
 					attachments: '\u0424\u0430\u0439\u043b\u044b \u0438 \u0444\u043e\u0442\u043e',
 					auditContractFile:
-						'\u0424\u0430\u0439\u043b \u0430\u0443\u0434\u0438\u0442 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
+						'\u0424\u0430\u0439\u043b \u0441\u043e\u0433\u043b\u0430\u0448\u0435\u043d\u0438\u044f',
 					cadastreFile:
-						'\u0424\u0430\u0439\u043b \u043a\u0430\u0434\u0430\u0441\u0442\u0440\u0430 \u0434\u043e\u043c\u0430',
+						'\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 \u043a\u043b\u0438\u0435\u043d\u0442\u0430',
 					companyContractFile:
-						'\u0424\u0430\u0439\u043b \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430 \u0444\u0438\u0440\u043c\u044b',
+						'\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442 \u043f\u043e\u0441\u0442\u0430\u0432\u0449\u0438\u043a\u0430',
 					additionalFile:
 						'\u0414\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0444\u0430\u0439\u043b',
 					open: '\u041e\u0442\u043a\u0440\u044b\u0442\u044c',
 					created: '\u0421\u043e\u0437\u0434\u0430\u043d',
 					updated: '\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d',
-					items: '\u041f\u043e\u0437\u0438\u0446\u0438\u0438 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u0430',
+					items: '\u041f\u043e\u0437\u0438\u0446\u0438\u0438 \u0437\u0430\u043a\u0430\u0437\u0430',
 				},
 			}
 		: {
-				title: 'Shartnoma profili',
+				title: 'Buyurtma profili',
 				loadingTitle: 'Yuklanmoqda...',
-				loadingDescription: "Shartnoma ma'lumotlari olinmoqda.",
-				errorTitle: 'Shartnoma topilmadi',
-				errorDescription: "Shartnoma mavjud emas yoki o'chirilgan.",
+				loadingDescription: "Buyurtma ma'lumotlari olinmoqda.",
+				errorTitle: 'Buyurtma topilmadi',
+				errorDescription: "Buyurtma mavjud emas yoki o'chirilgan.",
 				edit: 'Tahrirlash',
 				delete: "O'chirish",
 				fields: {
 					client: 'Mijoz',
 					status: 'Holat',
-					fullName: 'F.I.SH',
-					requestedPower: "So'ralgan quvvat",
+					fullName: 'Buyurtma nomi',
+					requestedPower: 'Buyurtma miqdori',
 					phone: 'Mijoz telefon raqami',
 					oneIdCode: 'One ID kodi',
-					inverter: 'Invertor turi',
-					panel: 'Panel turi',
-					agreedAmount: 'Kelishilgan summa',
-					paidAmount: 'Berilgan summa',
-					givenSubsidyAmount: 'Berilgan subsidiya miqdori',
-					address: "O'rnatish manzili",
-					auditorCompanyName: 'Auditor tashkilot nomi',
-					auditorPhone: 'Auditor raqami',
-					auditConclusionText: 'Audit bergan xulosa',
-					lotDeadlineAt: "Lotga qo'yilgan muddat",
-					installerFeeAmount: 'Obyekt usta haqi summasi',
+					inverter: 'Brend',
+					panel: 'Kategoriya',
+					agreedAmount: 'Buyurtma summasi',
+					paidAmount: "To'langan summa",
+					givenSubsidyAmount: "Qo'llangan chegirma",
+					address: 'Yetkazib berish manzili',
+					auditorCompanyName: "Ta'minotchi",
+					auditorPhone: "Ta'minotchi telefoni",
+					auditConclusionText: 'Ichki izoh',
+					lotDeadlineAt: 'Yetkazib berish muddati',
+					installerFeeAmount: 'Logistika xarajati',
 					details: 'Tafsilotlar',
 					attachments: 'Fayllar va rasmlar',
-					auditContractFile: 'Audit shartnoma fayl',
-					cadastreFile: 'Uy kadastr fayl',
-					companyContractFile: 'Firma shartnomasi fayl',
+					auditContractFile: 'Kelishuv fayli',
+					cadastreFile: 'Mijoz hujjati',
+					companyContractFile: "Ta'minotchi hujjati",
 					additionalFile: "Qo'shimcha fayl",
 					open: "Ko'rish",
 					created: 'Yaratilgan',
 					updated: 'Yangilangan',
-					items: 'Shartnoma pozitsiyalari',
+					items: 'Buyurtma pozitsiyalari',
 				},
 			}
 
@@ -803,6 +821,7 @@ export function ContractsDetailPanel({
 
 	const contract = state.data
 	const contractDetails = readDetailsObject(contract.details)
+	const unitsLabel = isRu ? 'шт.' : 'dona'
 	const oneIdCode = contract.one_id_code || readDetailsString(contractDetails, 'one_id_code')
 	const agreedAmount =
 		(contract.agreed_amount != null ? String(contract.agreed_amount) : '') ||
@@ -938,7 +957,13 @@ export function ContractsDetailPanel({
 					<div className='rounded-lg bg-surface-subtle/80 p-3'>
 						<p className={labelClassName}>{tx.fields.requestedPower}</p>
 						<p className={`mt-1 ${valueClassName}`}>
-							{formatSmartValue('requested_power_kw', contract.requested_power_kw, locale, currencyLabel)}
+							{formatSmartValue(
+								'requested_power_kw',
+								contract.requested_power_kw,
+								locale,
+								currencyLabel,
+								unitsLabel,
+							)}
 						</p>
 					</div>
 					<div className='rounded-lg bg-surface-subtle/80 p-3'>
@@ -952,13 +977,19 @@ export function ContractsDetailPanel({
 					<div className='rounded-lg bg-surface-subtle/80 p-3'>
 						<p className={labelClassName}>{tx.fields.inverter}</p>
 						<p className={`mt-1 ${valueClassName}`}>
-							{contract.inverter_type_label || contract.inverter_type || '-'}
+							{getContractBrandLabel(
+								contract.inverter_type_label || contract.inverter_type,
+								contractCatalogLanguage,
+							)}
 						</p>
 					</div>
 					<div className='rounded-lg bg-surface-subtle/80 p-3'>
 						<p className={labelClassName}>{tx.fields.panel}</p>
 						<p className={`mt-1 ${valueClassName}`}>
-							{contract.panel_type_label || contract.panel_type || '-'}
+							{getContractProductLineLabel(
+								contract.panel_type_label || contract.panel_type,
+								contractCatalogLanguage,
+							)}
 						</p>
 					</div>
 					<div className='rounded-lg bg-surface-subtle/80 p-3'>

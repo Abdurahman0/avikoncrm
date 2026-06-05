@@ -14,6 +14,7 @@ import {
 } from '../../../components/shared/data'
 import AppIcon from '../../../components/shared/icons/AppIcon'
 import { formatLocalizedDate } from '../../../i18n/date-format'
+import { resolveIntlLocale } from '../../../i18n/locale'
 import {
 	EmptyState,
 	PageHeader,
@@ -24,6 +25,12 @@ import { useList } from '../../../components/hooks'
 import ContractDeleteDialog from '../../../features/contracts/components/ContractDeleteDialog'
 import { ContractsDetailPanel } from '../../../features/contracts/components/ContractsDetailPanel'
 import { ContractsFormPanel } from '../../../features/contracts/components/ContractsFormPanel'
+import {
+	getContractBrandOptions,
+	getContractProductLineLabel,
+	getContractProductLineOptions,
+	resolveContractCatalogLanguage,
+} from '../../../features/contracts/utils/catalogOptions'
 import { services } from '../../../services'
 import { useAuth } from '../../../auth'
 import type {
@@ -76,7 +83,13 @@ function formatPricingAmount(
 function ContractsPage() {
 	const { t, i18n } = useTranslation()
 	const isRu = i18n.language.toLowerCase().startsWith('ru')
-	const locale = isRu ? 'ru-RU' : 'uz-UZ'
+	const contractCatalogLanguage = resolveContractCatalogLanguage(i18n.language)
+	const locale = resolveIntlLocale(i18n.language)
+	const unitsLabel = i18n.language.toLowerCase().startsWith('ru')
+		? 'шт.'
+		: i18n.language.toLowerCase().startsWith('en')
+			? 'units'
+			: 'dona'
 	const location = useLocation()
 	const navigate = useNavigate()
 	const { hasPermission } = useAuth()
@@ -195,20 +208,22 @@ function ContractsPage() {
 	const panelOptions = useMemo(
 		() => [
 			{ value: 'all', label: tx.allPanels },
-			{ value: 'jinko_ja', label: 'Jinko / JA Solar' },
-			{ value: 'longi_hi_mo_x10', label: 'Longi HI MO X10' },
+			...getContractProductLineOptions(contractCatalogLanguage),
 		],
-		[tx.allPanels],
+		[contractCatalogLanguage, tx.allPanels],
 	)
 
 	const inverterOptions = useMemo(
 		() => [
 			{ value: 'all', label: tx.allInverters },
-			{ value: 'deye', label: 'DEYE' },
-			{ value: 'solax', label: 'SOLAX' },
+			...getContractBrandOptions(contractCatalogLanguage),
 		],
-		[tx.allInverters],
+		[contractCatalogLanguage, tx.allInverters],
 	)
+	const brandLabels = useMemo(
+		() => Object.fromEntries(getContractBrandOptions(contractCatalogLanguage).map(item => [item.value, item.label])),
+		[contractCatalogLanguage],
+	) as Record<string, string>
 
 	const columns = useMemo<DataTableColumn<Contract>[]>(
 		() => [
@@ -764,7 +779,10 @@ function ContractsPage() {
 													<summary className='flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 transition duration-fast hover:bg-surface-subtle/65'>
 														<div className='min-w-0'>
 															<p className='m-0 truncate text-sm font-semibold text-text-primary'>
-																{panel.label || panel.panel_type}
+																{getContractProductLineLabel(
+																	panel.panel_type,
+																	contractCatalogLanguage,
+																)}
 															</p>
 															<p className='m-0 mt-0.5 text-xs text-text-secondary'>
 																{panel.rows.length} {tx.pricing.configurations}
@@ -791,7 +809,7 @@ function ContractsPage() {
 															>
 																<summary className='flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 transition duration-fast hover:bg-surface-subtle/80'>
 																	<p className='m-0 text-sm font-semibold text-text-primary'>
-																		{tx.pricing.power}: {row.power_kw} kW
+																		{tx.pricing.power}: {row.power_kw} {unitsLabel}
 																	</p>
 																	<span className='inline-flex items-center gap-1.5 text-[11px] font-semibold text-text-muted'>
 																		{tx.pricing.view}
@@ -810,10 +828,10 @@ function ContractsPage() {
 																				{tx.pricing.basePrice}
 																			</p>
 																			<p className='m-0 mt-1 text-sm font-semibold text-text-primary'>
-																				DEYE: {formatPricingAmount(row.base_prices.deye, locale, tx.pricing.currency)}
+																				{brandLabels.deye}: {formatPricingAmount(row.base_prices.deye, locale, tx.pricing.currency)}
 																			</p>
 																			<p className='m-0 mt-0.5 text-sm font-semibold text-text-primary'>
-																				SOLAX: {formatPricingAmount(row.base_prices.solax, locale, tx.pricing.currency)}
+																				{brandLabels.solax}: {formatPricingAmount(row.base_prices.solax, locale, tx.pricing.currency)}
 																			</p>
 																		</div>
 																		<div className='rounded-md bg-surface-card p-2.5 ring-1 ring-border-soft/35'>
@@ -821,10 +839,10 @@ function ContractsPage() {
 																				{tx.pricing.customerPrice}
 																			</p>
 																			<p className='m-0 mt-1 text-sm font-semibold text-text-primary'>
-																				DEYE: {formatPricingAmount(row.default_customer_prices.deye, locale, tx.pricing.currency)}
+																				{brandLabels.deye}: {formatPricingAmount(row.default_customer_prices.deye, locale, tx.pricing.currency)}
 																			</p>
 																			<p className='m-0 mt-0.5 text-sm font-semibold text-text-primary'>
-																				SOLAX: {formatPricingAmount(row.default_customer_prices.solax, locale, tx.pricing.currency)}
+																				{brandLabels.solax}: {formatPricingAmount(row.default_customer_prices.solax, locale, tx.pricing.currency)}
 																			</p>
 																		</div>
 																	</div>
@@ -840,8 +858,8 @@ function ContractsPage() {
 																					key={`${panel.panel_type}-${row.power_kw}-${power}`}
 																					className='rounded-md bg-surface-card px-2.5 py-1.5 text-xs text-text-secondary ring-1 ring-border-soft/35'
 																				>
-																					{tx.pricing.audit} {power} kW • DEYE:{' '}
-																					{formatPricingAmount(auditPrices.deye, locale, tx.pricing.currency)} • SOLAX:{' '}
+																					{tx.pricing.audit} {power} {unitsLabel} | {brandLabels.deye}:{' '}
+																					{formatPricingAmount(auditPrices.deye, locale, tx.pricing.currency)} | {brandLabels.solax}:{' '}
 																					{formatPricingAmount(auditPrices.solax, locale, tx.pricing.currency)}
 																				</div>
 																			)

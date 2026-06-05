@@ -27,6 +27,7 @@ import ProductDeleteDialog from '../../../features/products/components/ProductDe
 import ProductDetailPanel from '../../../features/products/components/ProductDetailPanel';
 import ProductFormPanel from '../../../features/products/components/ProductFormPanel';
 import { formatLocalizedDate } from '../../../i18n/date-format';
+import { resolveIntlLocale } from '../../../i18n/locale';
 import { usePersistentState } from '../../../lib/persistent-state';
 import { services } from '../../../services';
 import type {
@@ -124,7 +125,7 @@ function sortProductsByStockStatus(items: Product[]): Product[] {
 
 function ProductsPage() {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ru' ? 'ru-RU' : 'uz-UZ';
+  const locale = resolveIntlLocale(i18n.language);
   const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = usePersistentState('products:search', '');
