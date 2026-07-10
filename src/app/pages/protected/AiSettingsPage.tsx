@@ -262,21 +262,6 @@ function AiSettingsPage() {
         ),
       },
       {
-        key: 'followUp',
-        label: t('aiSettings.columns.followUp'),
-        render: (setting) => (
-          <StatusBadge
-            status={setting.resume_after_operator_minutes > 0 ? 'enabled' : 'disabled'}
-            tone={setting.resume_after_operator_minutes > 0 ? 'info' : 'neutral'}
-            label={
-              setting.resume_after_operator_minutes > 0
-                ? `${t('aiSettings.followUpOn')} (${setting.resume_after_operator_minutes}m)`
-                : t('aiSettings.followUpOff')
-            }
-          />
-        ),
-      },
-      {
         key: 'active',
         label: t('aiSettings.columns.active'),
         render: (setting) => (
@@ -641,5 +626,4 @@ function AiSettingsPage() {
 }
 
 export default AiSettingsPage;
-
 

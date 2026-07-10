@@ -21,6 +21,7 @@ interface LeadDetailPanelProps {
 	leadId: string
 	refreshToken?: number
 	canManageLeads: boolean
+	showReadOnlyHint?: boolean
 	resolveOperatorName?: (
 		operatorId: string,
 		fallbackName?: string,
@@ -91,6 +92,7 @@ function LeadDetailPanel({
 	leadId,
 	refreshToken = 0,
 	canManageLeads,
+	showReadOnlyHint = true,
 	resolveOperatorName,
 	onClose,
 	onEdit,
@@ -470,56 +472,58 @@ function LeadDetailPanel({
 								</div>
 							</PageCard>
 
-							{actionError ? (
+							{canManageLeads && actionError ? (
 								<p className='m-0 rounded-lg bg-danger-bg px-3 py-2 text-sm font-medium text-danger'>
 									{actionError}
 								</p>
 							) : null}
 
-							<PageCard allowOverflow>
-								<div className='grid gap-3'>
-									{canManageLeads ? (
-										<div className='grid gap-1.5'>
-											<span className={labelClassName}>
-												{t('leads.detail.statusControl')}
-											</span>
-											<FilterSelect
-												value={lead.status ?? 'new'}
-												options={statusOptions}
-												onChange={value =>
-													void handleStatusChange(value)
-												}
-												disabled={isStatusUpdating}
-											/>
-										</div>
-									) : (
-										<p className='m-0 rounded-lg bg-surface-subtle/90 px-3 py-2.5 text-sm text-text-secondary'>
-											{t('leads.detail.readOnlyHint')}
-										</p>
-									)}
+							{canManageLeads || showReadOnlyHint ? (
+								<PageCard allowOverflow>
+									<div className='grid gap-3'>
+										{canManageLeads ? (
+											<>
+												<div className='grid gap-1.5'>
+													<span className={labelClassName}>
+														{t('leads.detail.statusControl')}
+													</span>
+													<FilterSelect
+														value={lead.status ?? 'new'}
+														options={statusOptions}
+														onChange={value =>
+															void handleStatusChange(value)
+														}
+														disabled={isStatusUpdating}
+													/>
+												</div>
 
-									{canManageLeads ? (
-										<div className='flex flex-wrap items-center gap-2'>
-											<button
-												type='button'
-												className='inline-flex min-h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
-												onClick={() => onEdit(lead)}
-											>
-												<FiEdit2 className='h-4 w-4' />
-												{t('leads.actions.edit')}
-											</button>
-											<button
-												type='button'
-												className='inline-flex min-h-10 items-center gap-2 rounded-lg bg-danger-bg px-4 text-sm font-semibold text-danger transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/30'
-												onClick={() => onDelete(lead)}
-											>
-												<FiTrash2 className='h-4 w-4' />
-												{t('leads.actions.delete')}
-											</button>
-										</div>
-									) : null}
-								</div>
-							</PageCard>
+												<div className='flex flex-wrap items-center gap-2'>
+													<button
+														type='button'
+														className='inline-flex min-h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
+														onClick={() => onEdit(lead)}
+													>
+														<FiEdit2 className='h-4 w-4' />
+														{t('leads.actions.edit')}
+													</button>
+													<button
+														type='button'
+														className='inline-flex min-h-10 items-center gap-2 rounded-lg bg-danger-bg px-4 text-sm font-semibold text-danger transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/30'
+														onClick={() => onDelete(lead)}
+													>
+														<FiTrash2 className='h-4 w-4' />
+														{t('leads.actions.delete')}
+													</button>
+												</div>
+											</>
+										) : (
+											<p className='m-0 rounded-lg bg-surface-subtle/90 px-3 py-2.5 text-sm text-text-secondary'>
+												{t('leads.detail.readOnlyHint')}
+											</p>
+										)}
+									</div>
+								</PageCard>
+							) : null}
 						</>
 					) : null}
 				</div>

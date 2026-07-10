@@ -24,14 +24,13 @@ import type {
   SelectOption,
   SystemHealth,
 } from '../../../types/domain';
-import type { AILog, ApiLog } from '../../../services/contracts';
+import type { ApiLog } from '../../../services/contracts';
 
-type LogTypeFilter = 'api' | 'ai';
 type LogOrdering = '-created_at' | 'created_at';
 
 type RowLog = {
   id: string;
-  type: 'api' | 'ai';
+  type: 'audit';
   title: string;
   secondary: string;
   level: string;
@@ -60,7 +59,7 @@ const healthCardClassName =
   'grid gap-2 rounded-lg bg-surface-subtle/80 p-3';
 
 function getHealthTone(status: string): 'success' | 'warning' | 'danger' {
-  if (status === 'ok') {
+  if (status === 'ok' || status === 'success') {
     return 'success';
   }
 
@@ -72,7 +71,7 @@ function getHealthTone(status: string): 'success' | 'warning' | 'danger' {
 }
 
 function getHealthLabel(status: string): string {
-  if (status === 'ok') {
+  if (status === 'ok' || status === 'success') {
     return 'OK';
   }
 
@@ -86,7 +85,7 @@ function getHealthLabel(status: string): string {
 function mapApiLogToRow(log: ApiLog): RowLog {
   return {
     id: log.id,
-    type: 'api',
+    type: 'audit',
     title: `${log.method || 'GET'} ${log.endpoint || '-'}`,
     secondary: String(log.error ?? log.status_code ?? '-'),
     level: String(log.level ?? '-'),
@@ -94,21 +93,8 @@ function mapApiLogToRow(log: ApiLog): RowLog {
   };
 }
 
-function mapAILogToRow(log: AILog): RowLog {
-  return {
-    id: log.id,
-    type: 'ai',
-    title: `${String(log.action ?? '-')}${log.model ? ` (${String(log.model)})` : ''}`,
-    secondary: String(log.error ?? log.response ?? '-'),
-    level: String(log.level ?? '-'),
-    createdAt: log.created_at ?? '',
-  };
-}
-
 function LogsPage() {
   const [search, setSearch] = usePersistentState('logs:search', '');
-  const [typeFilter, setTypeFilter] = useState<LogTypeFilter>('api');
-  const [levelFilter, setLevelFilter] = useState<'all' | string>('all');
   const [ordering, setOrdering] = useState<LogOrdering>(DEFAULT_ORDERING);
   const [currentPage, setCurrentPage] = useState(1);
   const [logs, setLogs] = useState<RowLog[]>([]);
@@ -121,7 +107,7 @@ function LogsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search, typeFilter, ordering, levelFilter]);
+  }, [search, ordering]);
 
   useEffect(() => {
     let isActive = true;
@@ -168,14 +154,10 @@ function LogsPage() {
           page: currentPage,
           page_size: PAGE_SIZE,
           search: search.trim() || undefined,
-          level: levelFilter === 'all' ? undefined : levelFilter,
           ordering,
         };
 
-        const result =
-          typeFilter === 'api'
-            ? await services.logs.listApiLogs(params)
-            : await services.logs.listAILogs(params);
+        const result = await services.logs.listApiLogs(params);
 
         if (!isActive) {
           return;
@@ -190,11 +172,7 @@ function LogsPage() {
           return;
         }
 
-        setLogs(
-          typeFilter === 'api'
-            ? (result.items as ApiLog[]).map(mapApiLogToRow)
-            : (result.items as AILog[]).map(mapAILogToRow),
-        );
+        setLogs((result.items as ApiLog[]).map(mapApiLogToRow));
         setPaginationMeta({
           page: result.page ?? currentPage,
           pageSize,
@@ -222,27 +200,7 @@ function LogsPage() {
     return () => {
       isActive = false;
     };
-  }, [currentPage, ordering, search, typeFilter, levelFilter]);
-
-  const typeOptions = useMemo<SelectOption[]>(
-    () => [
-      { value: 'api', label: 'API' },
-      { value: 'ai', label: 'AI' },
-    ],
-    [],
-  );
-
-  const levelOptions = useMemo<SelectOption[]>(
-    () => [
-      { value: 'all', label: 'Barcha darajalar' },
-      { value: 'debug', label: 'Debug' },
-      { value: 'info', label: 'Info' },
-      { value: 'warning', label: 'Warning' },
-      { value: 'error', label: 'Error' },
-      { value: 'critical', label: 'Critical' },
-    ],
-    [],
-  );
+  }, [currentPage, ordering, search]);
 
   const orderingOptions = useMemo<SelectOption[]>(
     () => [
@@ -260,7 +218,7 @@ function LogsPage() {
         render: (log) => (
           <StatusBadge
             status={log.type}
-            tone={log.type === 'api' ? 'info' : 'success'}
+            tone="info"
             label={log.type.toUpperCase()}
           />
         ),
@@ -335,26 +293,6 @@ function LogsPage() {
         <FilterBar>
           <SearchInput value={search} onChange={setSearch} placeholder="Xabar bo'yicha qidirish" />
 
-          <label className="grid min-w-[min(160px,100%)] flex-[1_1_160px] gap-1.5 min-[640px]:flex-[0_1_170px]">
-            <span className={labelClassName}>Turi</span>
-            <FilterSelect
-              value={typeFilter}
-              options={typeOptions}
-              onChange={(value) => setTypeFilter(value as LogTypeFilter)}
-              disabled={isLoading}
-            />
-          </label>
-
-          <label className="grid min-w-[min(180px,100%)] flex-[1_1_180px] gap-1.5 min-[640px]:flex-[0_1_180px]">
-            <span className={labelClassName}>Daraja</span>
-            <FilterSelect
-              value={levelFilter}
-              options={levelOptions}
-              onChange={(value) => setLevelFilter(value)}
-              disabled={isLoading}
-            />
-          </label>
-
           <label className="grid min-w-[min(220px,100%)] flex-[1_1_220px] gap-1.5 min-[640px]:flex-[0_1_240px]">
             <span className={labelClassName}>Saralash</span>
             <FilterSelect
@@ -367,7 +305,7 @@ function LogsPage() {
         </FilterBar>
 
         <PageCard>
-          <div className="grid gap-3 px-1 pb-3 min-[820px]:grid-cols-3">
+          <div className="grid gap-3 px-1 pb-3">
             <div className={healthCardClassName}>
               <span className={labelClassName}>API status</span>
               {isHealthLoading ? (
@@ -377,30 +315,6 @@ function LogsPage() {
                   status={health?.status ?? 'warning'}
                   tone={getHealthTone(health?.status ?? 'warning')}
                   label={getHealthLabel(health?.status ?? 'warning')}
-                />
-              )}
-            </div>
-            <div className={healthCardClassName}>
-              <span className={labelClassName}>Database</span>
-              {isHealthLoading ? (
-                <span className={tableSecondaryTextClassName}>Yuklanmoqda...</span>
-              ) : (
-                <StatusBadge
-                  status={health?.database ?? 'warning'}
-                  tone={getHealthTone(health?.database ?? 'warning')}
-                  label={getHealthLabel(health?.database ?? 'warning')}
-                />
-              )}
-            </div>
-            <div className={healthCardClassName}>
-              <span className={labelClassName}>Redis</span>
-              {isHealthLoading ? (
-                <span className={tableSecondaryTextClassName}>Yuklanmoqda...</span>
-              ) : (
-                <StatusBadge
-                  status={health?.redis ?? 'warning'}
-                  tone={getHealthTone(health?.redis ?? 'warning')}
-                  label={getHealthLabel(health?.redis ?? 'warning')}
                 />
               )}
             </div>

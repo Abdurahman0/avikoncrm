@@ -14,7 +14,7 @@ import { apiClient } from '../../lib/api-client';
 
 export const apiDashboardService: DashboardService = {
   async getOverview(params?: DashboardOverviewParams): Promise<DashboardOverview> {
-    const { data } = await apiClient.get<DashboardOverviewDto>('/api/common/dashboard/', {
+    const { data } = await apiClient.get<DashboardOverviewDto>('/api/dashboard/overview/', {
       params: {
         date_from: params?.date_from,
         date_to: params?.date_to,
@@ -30,4 +30,3 @@ export const apiDashboardService: DashboardService = {
     return mapDashboardOverviewDtoToModel(payload as DashboardOverviewDto);
   },
 };
-

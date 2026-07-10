@@ -12,7 +12,7 @@ import {
 } from '../../../components/shared/data'
 import { useList } from '../../../components/hooks'
 import { services } from '../../../services'
-import type { Client, ClientsListParams } from '../../../services/contracts'
+import type { Client, ClientsListParams, ClientStatusRecord } from '../../../services/contracts'
 
 export interface ClientsListViewProps {
 	onRowClick?: (client: Client) => void
@@ -151,7 +151,8 @@ export function ClientsListView({
 
 	const [searchQuery, setSearchQuery] = useState('')
 	const [statusFilter, setStatusFilter] = useState<string>('all')
-	const [sourceFilter, setSourceFilter] = useState<string>('all')
+	const [statusCatalog, setStatusCatalog] = useState<ClientStatusRecord[]>([])
+	const [clientTypeFilter, setClientTypeFilter] = useState<string>('all')
 	const [ordering, setOrdering] = useState<string>('-updated_at')
 	const [filters, setFilters] = useState<ClientsListParams>({
 		search: '',
@@ -171,6 +172,18 @@ export function ClientsListView({
 	})
 
 	useEffect(() => {
+		let active = true
+		services.clients.listClientStatuses()
+			.then((items: ClientStatusRecord[]) => {
+				if (active) setStatusCatalog(items)
+			})
+			.catch(() => {
+				if (active) setStatusCatalog([])
+			})
+		return () => { active = false }
+	}, [])
+
+	useEffect(() => {
 		onStatsChange?.({
 			visible: state.items.length,
 			total: state.total,
@@ -179,7 +192,10 @@ export function ClientsListView({
 	}, [onStatsChange, state.items.length, state.total, state.isLoading])
 
 	const statusOptions = useMemo<SelectOption[]>(
-		() => [
+		() => statusCatalog.length > 0 ? [
+			{ value: 'all', label: tx.allStatuses },
+			...statusCatalog.map(status => ({ value: status.slug, label: status.name })),
+		] : [
 			{ value: 'all', label: tx.allStatuses },
 			{ value: 'new', label: tx.statuses.new },
 			{ value: 'contacted', label: tx.statuses.contacted },
@@ -193,17 +209,16 @@ export function ClientsListView({
 			{ value: 'lost', label: tx.statuses.lost },
 			{ value: 'postponed', label: tx.statuses.postponed },
 		],
-		[tx],
+		[statusCatalog, tx],
 	)
 
 	const sourceOptions = useMemo<SelectOption[]>(
 		() => [
-			{ value: 'all', label: tx.allSources },
-			{ value: 'manual', label: isRu ? 'Вручную' : 'Qo\'lda' },
-			{ value: 'telegram', label: 'Telegram' },
-			{ value: 'instagram', label: 'Instagram' },
+			{ value: 'all', label: isRu ? 'Все типы' : 'Barcha turlar' },
+			{ value: 'individual', label: isRu ? 'Физ. лицо' : 'Jismoniy shaxs' },
+			{ value: 'company', label: isRu ? 'Компания' : 'Kompaniya' },
 		],
-		[isRu, tx],
+		[isRu],
 	)
 
 	const orderingOptions = useMemo<SelectOption[]>(
@@ -239,17 +254,11 @@ export function ClientsListView({
 				render: client => <span className={tablePrimaryTextClassName}>{client.region || '-'}</span>,
 			},
 			{
-				key: 'source_platform',
-				label: tx.columns.source,
+				key: 'client_type',
+				label: isRu ? 'Тип' : 'Turi',
 				render: client => (
 					<span className={tablePrimaryTextClassName}>
-						{client.source_platform === 'manual'
-							? (isRu ? 'Вручную' : 'Qo\'lda')
-							: client.source_platform === 'telegram'
-							? 'Telegram'
-							: client.source_platform === 'instagram'
-							? 'Instagram'
-							: (client.source_platform_label || client.source_platform || '-')}
+						{client.client_type_display || (client.client_type === 'company' ? (isRu ? 'Компания' : 'Kompaniya') : client.client_type === 'individual' ? (isRu ? 'Физ. лицо' : 'Jismoniy shaxs') : '-')}
 					</span>
 				),
 			},
@@ -324,12 +333,12 @@ export function ClientsListView({
 	}
 
 	const applySourceFilter = (value: string) => {
-		setSourceFilter(value)
+		setClientTypeFilter(value)
 		actions.setPage(1)
 		setFilters(prev => ({
 			...prev,
 			page: 1,
-			source_platform: value === 'all' ? undefined : (value as any),
+			client_type: value === 'all' ? undefined : (value as any),
 		}))
 	}
 
@@ -362,9 +371,9 @@ export function ClientsListView({
 				</label>
 
 				<label className='grid min-w-[min(180px,100%)] flex-[1_1_180px] gap-1.5 min-[640px]:flex-[0_1_200px]'>
-					<span className={labelClassName}>{tx.sourceLabel}</span>
+					<span className={labelClassName}>{isRu ? 'Тип' : 'Turi'}</span>
 					<FilterSelect
-						value={sourceFilter}
+						value={clientTypeFilter}
 						options={sourceOptions}
 						onChange={applySourceFilter}
 						disabled={state.isLoading}

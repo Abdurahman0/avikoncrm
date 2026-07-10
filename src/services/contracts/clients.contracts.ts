@@ -30,13 +30,33 @@ export interface ClientRecentContract {
 	items?: ClientSelectedProduct[]
 }
 
+export interface ClientReviewDetail extends Client {
+	company?: {
+		legal_name?: string
+		inn?: string
+		bank?: string
+		mfo?: string
+		director?: string
+		documents?: Array<{ id?: string; type?: string; file?: string }>
+		addresses?: Array<Record<string, unknown>>
+		branches_count?: number
+	} | null
+}
+
 export interface Client extends BaseEntity {
+	client_type?: 'individual' | 'company' | 'jismoniy' | 'yuridik' | 'budjet'
+	client_type_display?: string
 	lead?: string | null
 	lead_id?: string | null
 	chat_session_id?: string | null
 	full_name: string
 	phone?: string
+	email?: string
+	preferred_contact_time?: string
 	region?: string
+	company_name?: string
+	inn?: string
+	interested_product?: string
 	address?: string
 	object_type?: string
 	customer_segment?: string
@@ -50,6 +70,8 @@ export interface Client extends BaseEntity {
 	budget_range?: string
 	source_platform?: 'instagram' | 'manual' | 'telegram'
 	source_platform_label?: string
+	source?: string
+	source_display?: string
 	status?:
 		| 'new'
 		| 'contacted'
@@ -63,6 +85,11 @@ export interface Client extends BaseEntity {
 		| 'lost'
 		| 'postponed'
 	status_label?: string
+	verification_status?: 'pending' | 'verified' | 'rejected'
+	verification_status_display?: string
+	verified_at?: string | null
+	rejection_reason?: string
+	can_order?: boolean
 	manager?: string | null
 	manager_username?: string
 	notes?: string
@@ -73,6 +100,14 @@ export interface Client extends BaseEntity {
 	recent_contracts?: ClientRecentContract[]
 }
 
+export interface ClientStatusRecord extends BaseEntity {
+	name: string
+	slug: string
+	color?: string
+	is_default?: boolean
+	sort_order?: number
+}
+
 export interface CreateClientInput extends CreateInput<Client> {
 	full_name: string
 }
@@ -80,8 +115,11 @@ export interface CreateClientInput extends CreateInput<Client> {
 export interface UpdateClientInput extends UpdateInput<Client> {}
 
 export interface ClientsListParams extends ListParams {
+	client_type?: Client['client_type']
 	status?: Client['status']
 	source_platform?: Client['source_platform']
+	source?: string
+	verification_status?: Client['verification_status']
 	customer_segment?: string
 	manager?: string
 	region?: string
@@ -92,6 +130,12 @@ export interface IClientsService {
 	// Read operations
 	listClients(params?: ClientsListParams): Promise<PaginatedResponse<Client>>
 	getClient(id: string): Promise<Client>
+	listClientStatuses(): Promise<ClientStatusRecord[]>
+	listClientReviews?(params?: { verification_status?: Client['verification_status']; search?: string }): Promise<Client[]>
+	getClientReview?(id: string): Promise<ClientReviewDetail>
+	updateClientReview?(id: string, input: Partial<Pick<Client, 'full_name' | 'phone' | 'email' | 'region' | 'company_name' | 'inn' | 'notes'>>): Promise<ClientReviewDetail>
+	verifyClient?(id: string): Promise<ClientReviewDetail>
+	rejectClient?(id: string, reason: string): Promise<ClientReviewDetail>
 
 	// Write operations
 	createClient(input: CreateClientInput): Promise<Client>

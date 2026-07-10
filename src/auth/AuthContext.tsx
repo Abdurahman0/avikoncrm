@@ -24,6 +24,7 @@ import {
   subscribeAuthState,
 } from '../features/auth/auth-store';
 import { getAccessToken, getRefreshToken } from '../lib/auth-storage';
+import { setAuthFailureHandler } from '../lib/api-client';
 
 interface AuthContextValue {
   currentUser: AuthenticatedUser | null;
@@ -45,9 +46,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const unsubscribe = subscribeAuthState(setStoreState);
+    setAuthFailureHandler(() => logoutFromApi({ redirectToLogin: true }));
     void restoreSession();
 
-    return unsubscribe;
+    return () => {
+      setAuthFailureHandler(null);
+      unsubscribe();
+    };
   }, []);
 
   const currentUser = storeState.user;

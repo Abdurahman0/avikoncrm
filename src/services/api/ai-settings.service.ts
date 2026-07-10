@@ -78,19 +78,14 @@ function toMutationPayload(
   if (input.system_prompt !== undefined) {
     payload.system_prompt = input.system_prompt;
   }
-  if (input.follow_up_message !== undefined) {
-    payload.follow_up_message = input.follow_up_message;
-  }
   if (input.model_name !== undefined) {
     payload.model = input.model_name;
   }
   if (input.temperature !== undefined) {
     payload.temperature = Number(input.temperature);
   }
-  if (input.resume_after_operator_minutes !== undefined) {
-    payload.follow_up_minutes = Math.round(
-      Number(input.resume_after_operator_minutes),
-    );
+  if (input.auto_order_enabled !== undefined) {
+    payload.function_calling_enabled = input.auto_order_enabled;
   }
   if (input.is_active !== undefined) {
     payload.is_active = input.is_active;
@@ -128,7 +123,7 @@ function mapSingleAISetting(value: unknown, fallbackId?: EntityId): AISetting | 
 export async function listAiSettings(
   params?: AISettingsListParams,
 ): Promise<PaginatedResult<AISetting>> {
-  const { data } = await apiClient.get<unknown>('/api/ai/settings/', {
+  const { data } = await apiClient.get<unknown>('/api/settings/ai/', {
     params: {
       page: params?.page,
       page_size: params?.pageSize,
@@ -150,18 +145,18 @@ export async function listAiSettings(
 }
 
 export async function getAiSettingById(id: EntityId): Promise<AISetting | null> {
-  const { data } = await apiClient.get<unknown>(`/api/ai/settings/${id}/`);
+  const { data } = await apiClient.get<unknown>(`/api/settings/ai/${id}/`);
   return mapSingleAISetting(data, id);
 }
 
 export async function getActiveAiSetting(): Promise<AISetting | null> {
-  const { data } = await apiClient.get<unknown>('/api/ai/settings/active/');
+  const { data } = await apiClient.get<unknown>('/api/settings/ai/active/');
   return mapSingleAISetting(data);
 }
 
 export async function createAiSetting(input: AISettingMutationInput): Promise<AISetting> {
   const { data } = await apiClient.post<unknown>(
-    '/api/ai/settings/',
+    '/api/settings/ai/',
     toMutationPayload(input),
   );
 
@@ -178,7 +173,7 @@ export async function updateAiSetting(
   input: AISettingMutationInput,
 ): Promise<AISetting | null> {
   const { data } = await apiClient.put<unknown>(
-    `/api/ai/settings/${id}/`,
+    `/api/settings/ai/${id}/`,
     toMutationPayload(input),
   );
 
@@ -190,7 +185,7 @@ export async function patchAiSetting(
   input: AISettingPatchInput,
 ): Promise<AISetting | null> {
   const { data } = await apiClient.patch<unknown>(
-    `/api/ai/settings/${id}/`,
+    `/api/settings/ai/${id}/`,
     toMutationPayload(input),
   );
 
@@ -198,7 +193,7 @@ export async function patchAiSetting(
 }
 
 export async function deleteAiSetting(id: EntityId): Promise<boolean> {
-  await apiClient.delete(`/api/ai/settings/${id}/`);
+  await apiClient.delete(`/api/settings/ai/${id}/`);
   return true;
 }
 
@@ -272,4 +267,3 @@ export const apiAISettingsService: AISettingsService = {
     return getActiveAiSetting();
   },
 };
-

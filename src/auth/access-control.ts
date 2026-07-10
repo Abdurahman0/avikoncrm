@@ -2,13 +2,14 @@
 import type { AppRouteId } from '../config/routes'
 import type { AppRole } from '../types/architecture'
 import type { AuthenticatedUser, PermissionCode } from './types'
+import { isBackendModuleAvailable } from '../config/backend-capabilities'
 
 // Avikontex CRM - Route to Permission Mapping
 const ROUTE_REQUIRED_PERMISSIONS: Partial<Record<AppRouteId, PermissionCode>> =
 	{
 		dashboard: 'can_view_dashboard',
 		leads: 'can_view_leads',
-		clients: 'can_view_clients',
+	clients: 'can_view_clients',
 		products: 'can_view_products',
 		contracts: 'can_view_contracts',
 		chats: 'can_access_chats',
@@ -96,6 +97,10 @@ export function canAccessRouteForUser(
 		return false
 	}
 
+	if (!isBackendModuleAvailable(routeId)) {
+		return false
+	}
+
 	if (user.role === 'developer') {
 		return true
 	}
@@ -134,9 +139,7 @@ export function resolveDefaultLandingPathForUser(
 	}
 
 	const fallbackRouteOrder: AppRouteId[] = [
-		'leads',
 		'clients',
-		'products',
 		'chats',
 	]
 

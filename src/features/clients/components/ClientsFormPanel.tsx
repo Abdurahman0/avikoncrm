@@ -1,13 +1,9 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import AppIcon from '../../../components/shared/icons/AppIcon';
 import { FilterSelect } from '../../../components/shared/data';
 import { services } from '../../../services';
-import type { Client, CreateClientInput, UpdateClientInput } from '../../../services/contracts';
-import {
-  ClientRecallScheduleField,
-  readClientRecallAt,
-} from './ClientRecallSchedule';
+import type { Client, ClientStatusRecord, CreateClientInput, UpdateClientInput } from '../../../services/contracts';
 
 export interface ClientsFormPanelProps {
   client?: Client;
@@ -28,7 +24,6 @@ const labelClassName =
 export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPanelProps) {
   const { i18n } = useTranslation();
   const isRu = i18n.language === 'ru';
-  const locale = isRu ? 'ru-RU' : 'uz-UZ';
   const isEditing = Boolean(client);
 
   const tx = isRu
@@ -80,41 +75,47 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
       };
 
   const [form, setForm] = useState<CreateClientInput>({
-    lead: client?.lead || undefined,
+    client_type: client?.client_type || 'individual',
     full_name: client?.full_name || '',
     phone: client?.phone || '',
+    email: client?.email || '',
+    preferred_contact_time: client?.preferred_contact_time || '',
     region: client?.region || '',
-    address: client?.address || '',
-    object_type: client?.object_type || '',
-    customer_segment: client?.customer_segment || '',
-    electricity_consumption: client?.electricity_consumption || '',
-    desired_power_kw: client?.desired_power_kw ?? null,
-    audit_conclusion_kw: client?.audit_conclusion_kw ?? null,
-    eligible_subsidy_kw: client?.eligible_subsidy_kw ?? null,
-    estimated_subsidy_amount: client?.estimated_subsidy_amount ?? '',
-    monthly_bill: client?.monthly_bill || '',
-    solution_type: client?.solution_type || '',
-    budget_range: client?.budget_range || '',
-    source_platform: client?.source_platform || 'manual',
+    company_name: client?.company_name || '',
+    inn: client?.inn || '',
+    interested_product: client?.interested_product || '',
     status: client?.status || 'new',
-    manager: client?.manager || undefined,
     notes: client?.notes || '',
-    metadata: client?.metadata || undefined,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [recallAt, setRecallAt] = useState<string | null>(() => readClientRecallAt(client));
+  const [statusCatalog, setStatusCatalog] = useState<ClientStatusRecord[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    services.clients.listClientStatuses()
+      .then((items: ClientStatusRecord[]) => {
+        if (active) setStatusCatalog(items);
+      })
+      .catch(() => {
+        if (active) setStatusCatalog([]);
+      });
+    return () => { active = false; };
+  }, []);
+
   const canSubmit = useMemo(() => {
     const fullNameOk = (form.full_name ?? '').trim().length > 0;
     const phoneOk = (form.phone ?? '').trim().length > 0;
     const statusOk = String(form.status ?? 'new').trim().length > 0;
-    const sourceOk = String(form.source_platform ?? 'manual').trim().length > 0;
-    return fullNameOk && phoneOk && statusOk && sourceOk;
-  }, [form.full_name, form.phone, form.source_platform, form.status]);
+    return fullNameOk && phoneOk && statusOk;
+  }, [form.full_name, form.phone, form.status]);
 
   const statusOptions = useMemo(
-    () => [
+    () => statusCatalog.length > 0 ? statusCatalog.map(status => ({
+      label: status.name,
+      value: status.slug,
+    })) : [
       { label: isRu ? 'Новый' : 'Yangi', value: 'new' },
       { label: isRu ? 'Связались' : "Bog'lanildi", value: 'contacted' },
       { label: isRu ? 'Квалифицирован' : 'Saralangan', value: 'qualified' },
@@ -127,14 +128,13 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
       { label: isRu ? 'Потерян' : "Yo'qotildi", value: 'lost' },
       { label: isRu ? 'Отложен' : 'Kechiktirildi', value: 'postponed' },
     ],
-    [isRu],
+    [isRu, statusCatalog],
   );
 
-  const sourceOptions = useMemo(
+  const clientTypeOptions = useMemo(
     () => [
-      { label: 'Instagram', value: 'instagram' },
-      { label: 'Telegram', value: 'telegram' },
-      { label: isRu ? 'Вручную' : 'Qo\'lda', value: 'manual' },
+      { label: isRu ? 'Физ. лицо' : 'Jismoniy shaxs', value: 'individual' },
+      { label: isRu ? 'Компания' : 'Kompaniya', value: 'company' },
     ],
     [isRu],
   );
@@ -159,16 +159,10 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
       setErrorMessage(tx.requiredStatus);
       return;
     }
-    if (!form.source_platform) {
-      setErrorMessage(tx.requiredSource);
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const payload: CreateClientInput | UpdateClientInput = {
         ...form,
-        recall_at: recallAt,
       };
 
       const result = isEditing
@@ -218,11 +212,11 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
             <input className={inputClassName} value={form.phone || ''} onChange={(e) => updateField('phone', e.target.value)} disabled={isSubmitting} />
           </div>
           <div className="grid gap-1.5">
-            <label className={labelClassName}>{tx.labels.source}</label>
+            <label className={labelClassName}>{isRu ? 'Тип клиента' : 'Mijoz turi'}</label>
             <FilterSelect
-              value={form.source_platform || 'manual'}
-              options={sourceOptions}
-              onChange={(value) => updateField('source_platform', value as any)}
+              value={form.client_type || 'individual'}
+              options={clientTypeOptions}
+              onChange={(value) => updateField('client_type', value as any)}
               disabled={isSubmitting}
             />
           </div>
@@ -240,29 +234,28 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
             <input className={inputClassName} value={form.region || ''} onChange={(e) => updateField('region', e.target.value)} disabled={isSubmitting} />
           </div>
           <div className="grid gap-1.5">
-            <label className={labelClassName}>{tx.labels.address}</label>
-            <input className={inputClassName} value={form.address || ''} onChange={(e) => updateField('address', e.target.value)} disabled={isSubmitting} />
+            <label className={labelClassName}>Email</label>
+            <input type="email" className={inputClassName} value={form.email || ''} onChange={(e) => updateField('email', e.target.value)} disabled={isSubmitting} />
           </div>
           <div className="grid gap-1.5">
-            <label className={labelClassName}>{tx.labels.electricity}</label>
-            <input className={inputClassName} value={form.electricity_consumption || ''} onChange={(e) => updateField('electricity_consumption', e.target.value)} disabled={isSubmitting} />
+            <label className={labelClassName}>{isRu ? 'Удобное время связи' : 'Bog‘lanish vaqti'}</label>
+            <input className={inputClassName} value={form.preferred_contact_time || ''} onChange={(e) => updateField('preferred_contact_time', e.target.value)} disabled={isSubmitting} />
           </div>
           <div className="grid gap-1.5">
-            <label className={labelClassName}>{tx.labels.budgetRange}</label>
-            <input className={inputClassName} value={form.budget_range || ''} onChange={(e) => updateField('budget_range', e.target.value)} disabled={isSubmitting} />
+            <label className={labelClassName}>{isRu ? 'Компания' : 'Kompaniya'}</label>
+            <input className={inputClassName} value={form.company_name || ''} onChange={(e) => updateField('company_name', e.target.value)} disabled={isSubmitting} />
+          </div>
+          <div className="grid gap-1.5">
+            <label className={labelClassName}>INN</label>
+            <input className={inputClassName} value={form.inn || ''} onChange={(e) => updateField('inn', e.target.value)} disabled={isSubmitting} />
+          </div>
+          <div className="grid gap-1.5 sm:col-span-2">
+            <label className={labelClassName}>{isRu ? 'Интересующий продукт' : 'Qiziqtirgan mahsulot'}</label>
+            <input className={inputClassName} value={form.interested_product || ''} onChange={(e) => updateField('interested_product', e.target.value)} disabled={isSubmitting} />
           </div>
           <div className="grid gap-1.5 sm:col-span-2">
             <label className={labelClassName}>{tx.labels.notes}</label>
             <textarea className={`${inputClassName} min-h-[92px] resize-y`} value={form.notes || ''} onChange={(e) => updateField('notes', e.target.value)} disabled={isSubmitting} />
-          </div>
-          <div className="grid gap-1.5 sm:col-span-2">
-            <ClientRecallScheduleField
-              value={recallAt}
-              onChange={setRecallAt}
-              language={i18n.language}
-              locale={locale}
-              disabled={isSubmitting}
-            />
           </div>
         </div>
 

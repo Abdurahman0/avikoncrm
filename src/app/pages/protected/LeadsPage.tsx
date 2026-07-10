@@ -27,6 +27,7 @@ import { resolveIntlLocale } from '../../../i18n/locale'
 import { usePersistentState } from '../../../lib/persistent-state'
 import { services } from '../../../services'
 import { useAuth } from '../../../auth'
+import { backendCapabilities } from '../../../config/backend-capabilities'
 import { routePaths } from '../../../config/routes'
 import type {
 	Lead,
@@ -244,6 +245,7 @@ function LeadsPage() {
 	const { t, i18n } = useTranslation()
 	const { hasPermission, currentUser } = useAuth()
 	const canManageLeads = hasPermission('can_manage_leads')
+	const canMutateLeads = canManageLeads && backendCapabilities.leads.canWrite
 	const locale = resolveIntlLocale(i18n.language)
 	const relativeLocale = i18n.language === 'ru' ? 'ru' : 'uz'
 
@@ -810,7 +812,7 @@ function LeadsPage() {
 			},
 		]
 
-		if (!canManageLeads) {
+		if (!canMutateLeads) {
 			return baseColumns
 		}
 
@@ -849,7 +851,7 @@ function LeadsPage() {
 			},
 		]
 	}, [
-		canManageLeads,
+		canMutateLeads,
 		conversationByLeadId,
 		locale,
 		navigate,
@@ -870,7 +872,7 @@ function LeadsPage() {
 			subtitle={t('leads.subtitle')}
 			actions={
 				<div className='flex w-full flex-wrap items-center gap-2 min-[768px]:w-auto'>
-					{canManageLeads ? (
+					{canMutateLeads ? (
 						<button
 							type='button'
 							className='inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
@@ -1023,7 +1025,8 @@ function LeadsPage() {
 				<LeadDetailPanel
 					leadId={selectedLeadId}
 					refreshToken={detailRefreshToken}
-					canManageLeads={canManageLeads}
+					canManageLeads={canMutateLeads}
+					showReadOnlyHint={false}
 					onClose={() => setSelectedLeadId(null)}
 					onEdit={lead => {
 						openEditForm(lead)
@@ -1040,7 +1043,7 @@ function LeadsPage() {
 				/>
 			) : null}
 
-			{isFormOpen ? (
+			{canMutateLeads && isFormOpen ? (
 				<LeadFormPanel
 					mode={formMode}
 					lead={editingLead}
@@ -1060,7 +1063,7 @@ function LeadsPage() {
 				/>
 			) : null}
 
-			{leadToDelete ? (
+			{canMutateLeads && leadToDelete ? (
 				<LeadDeleteDialog
 					lead={leadToDelete}
 					isDeleting={isDeleting}

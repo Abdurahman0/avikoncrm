@@ -9,6 +9,8 @@ import type {
   ProductCategoryPatchInput,
   ProductMutationInput,
   ProductPatchInput,
+  Product,
+  ProductCategory,
   TableQueryParams,
 } from '../../types/domain';
 import { apiClient } from '../../lib/api-client';
@@ -50,6 +52,70 @@ function toRecord(value: unknown): Record<string, unknown> | null {
   }
 
   return value as Record<string, unknown>;
+}
+
+function readString(value: unknown): string {
+  if (typeof value === 'string') return value.trim();
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  return '';
+}
+
+function mapUnfProductDto(value: unknown): ProductDto {
+  const item = toRecord(value) ?? {};
+  const code = readString(item.code) || readString(item.id);
+  return {
+    id: code,
+    sku: code,
+    name: readString(item.name) || readString(item.full_name),
+    description: readString(item.description),
+    price: item.price ?? 0,
+    stock_quantity: item.stock ?? 0,
+    minimal_stock: 0,
+    is_active: true,
+    image_url: readString(item.imageUrl) || readString(item.image_url),
+    category_name: readString(item.group),
+    metadata: {
+      article: readString(item.article),
+      segment: readString(item.segment),
+      manufacturer: readString(item.manufacturer),
+      country: readString(item.country),
+      unit: readString(item.unit),
+      source: '1C',
+    },
+  };
+}
+
+function mapUnfProductList(value: unknown): Product[] {
+  const payload = toRecord(value);
+  const rawItems = Array.isArray(payload?.items)
+    ? payload.items
+    : Array.isArray(payload?.data)
+      ? payload.data
+      : Array.isArray(value)
+        ? value
+        : [];
+  return rawItems.map((item) => mapProductDtoToModel(mapUnfProductDto(item)));
+}
+
+function mapUnfCategoryList(value: unknown): ProductCategory[] {
+  const payload = toRecord(value);
+  const rawItems = Array.isArray(payload?.data)
+    ? payload.data
+    : Array.isArray(payload?.items)
+      ? payload.items
+      : Array.isArray(value)
+        ? value
+        : [];
+  return rawItems.map((item, index) => {
+    const record = toRecord(item) ?? {};
+    return mapProductCategoryDtoToModel({
+      id: readString(record.code) || `unf-group-${index}`,
+      code: readString(record.code),
+      name: readString(record.name),
+      sort_order: index,
+      is_active: true,
+    });
+  });
 }
 
 function toPaginatedResult<T>(
@@ -174,46 +240,30 @@ export const apiProductService: ProductService = {
   },
 
   async listProducts(params) {
-    const ordering =
-      params?.ordering ??
-      (params?.sortBy
-        ? `${params?.sortDirection === 'desc' ? '-' : ''}${params.sortBy}`
-        : undefined);
-
-    const sort =
-      ordering === 'price'
-        ? 'price_asc'
-        : ordering === '-price'
-          ? 'price_desc'
-          : ordering === 'cheap_first'
-            ? 'cheap_first'
-            : ordering === 'expensive_first'
-              ? 'expensive_first'
-              : undefined;
-
-    const { data } = await apiClient.get<unknown>('/api/products/', {
+    const page = Math.max(1, params?.page ?? 1);
+    const pageSize = Math.max(1, params?.pageSize ?? params?.page_size ?? 25);
+    const { data } = await apiClient.get<unknown>('/api/unf/products/', {
       params: {
-        page: params?.page ?? 1,
-        page_size: params?.pageSize ?? params?.page_size,
         search: params?.search,
-        ordering: sort ? undefined : ordering,
-        sort,
+        limit: pageSize,
+        offset: (page - 1) * pageSize,
+        include: 'all',
+        sortBy: params?.sortBy,
+        sortOrder: params?.sortDirection,
       },
     });
-
-    const items = mapProductListDtoToItems(data);
-    const payload =
-      data && typeof data === 'object' && !Array.isArray(data)
-        ? (data as Record<string, unknown>)
-        : null;
-    const totalItemsHint = readNumber(payload?.count);
-
-    return toPaginatedResult(items, params, totalItemsHint);
+    const responsePayload = toRecord(data)?.data ?? data;
+    const items = mapUnfProductList(responsePayload);
+    const payload = toRecord(responsePayload);
+    return toPaginatedResult(items, { page, pageSize }, readNumber(payload?.totalCount ?? payload?.count));
   },
 
   async getProductById(id) {
-    const { data } = await apiClient.get<ProductDto>(`/api/products/${id}/`);
-    return mapProductDtoToModel(data);
+    const { data } = await apiClient.get<unknown>('/api/unf/products/', {
+      params: { code: id, limit: 1, include: 'all' },
+    });
+    const items = mapUnfProductList(toRecord(data)?.data ?? data);
+    return items[0] ?? null;
   },
 
   async create(input) {
@@ -277,28 +327,18 @@ export const apiProductService: ProductService = {
   },
 
   async listProductCategories(params?: ProductCategoryListParams) {
-    const { data } = await apiClient.get<unknown>('/api/products/categories/', {
-      params: {
-        page: params?.page ?? 1,
-        page_size: params?.pageSize ?? params?.page_size,
-        search: params?.search,
-        ordering: params?.ordering,
-      },
-    });
-
-    const items = mapProductCategoryListDtoToItems(data);
-    const payload =
-      data && typeof data === 'object' && !Array.isArray(data)
-        ? (data as Record<string, unknown>)
-        : null;
-    const totalItemsHint = readNumber(payload?.count);
-
-    return toPaginatedResult(items, params, totalItemsHint);
+    const { data } = await apiClient.get<unknown>('/api/unf/product-groups/');
+    const items = mapUnfCategoryList(toRecord(data)?.data ?? data);
+    const query = (params?.search ?? '').trim().toLowerCase();
+    const filtered = query
+      ? items.filter(item => item.name.toLowerCase().includes(query) || item.code.toLowerCase().includes(query))
+      : items;
+    return toPaginatedResult(filtered, params, filtered.length);
   },
 
   async getProductCategoryById(id) {
-    const { data } = await apiClient.get<ProductCategoryDto>(`/api/products/categories/${id}/`);
-    return mapProductCategoryDtoToModel(data);
+    const { data } = await apiClient.get<unknown>('/api/unf/product-groups/');
+    return mapUnfCategoryList(toRecord(data)?.data ?? data).find(item => item.id === id) ?? null;
   },
 
   async createProductCategory(input) {

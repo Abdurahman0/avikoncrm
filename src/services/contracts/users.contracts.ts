@@ -26,6 +26,7 @@ export interface UserRoleCatalogItem {
 }
 
 export interface ManagedUser extends BaseEntity {
+	username: string
 	email: string
 	full_name: string
 	phone?: string | null
@@ -42,6 +43,7 @@ export interface ManagedUser extends BaseEntity {
 }
 
 export interface CreateUserInput extends CreateInput<ManagedUser> {
+	username: string
 	email: string
 	full_name: string
 	password: string

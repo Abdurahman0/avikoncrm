@@ -156,7 +156,7 @@ export const apiConversationService: ConversationService = {
   },
 
   async listSessions(params?: SessionListParams): Promise<PaginatedResult<Conversation>> {
-    const { data } = await apiClient.get<unknown>('/api/chat/sessions/', {
+    const { data } = await apiClient.get<unknown>('/api/chats/sessions/', {
       params: {
         page: params?.page,
         page_size: params?.pageSize,
@@ -179,7 +179,7 @@ export const apiConversationService: ConversationService = {
   },
 
   async getSessionById(id) {
-    const { data } = await apiClient.get<ConversationDto>(`/api/chat/sessions/${id}/`);
+    const { data } = await apiClient.get<ConversationDto>(`/api/chats/sessions/${id}/`);
     return mapConversationDtoToModel(data);
   },
 
@@ -193,7 +193,7 @@ export const apiConversationService: ConversationService = {
       return toPaginatedResult([], params);
     }
 
-    const { data } = await apiClient.get<unknown>(`/api/chat/sessions/${sessionId}/messages/`, {
+    const { data } = await apiClient.get<unknown>(`/api/chats/sessions/${sessionId}/messages/`, {
       params: {
         page: params?.page,
         page_size: params?.pageSize,
@@ -215,19 +215,18 @@ export const apiConversationService: ConversationService = {
   },
 
   async getMessageById(id) {
-    const { data } = await apiClient.get<ChatMessageDto>(`/api/chat/messages/${id}/`);
-    return mapChatMessageDtoToModel(data);
+    throw new Error(`Individual message retrieval is not exposed by the backend (${id}).`);
   },
 
   async deleteSession(sessionId) {
-    await apiClient.delete(`/api/chat/sessions/${sessionId}/`);
+    await apiClient.delete(`/api/chats/sessions/${sessionId}/`);
     return true;
   },
 
   async sendMessage(sessionId, payload: SendMessageInput) {
     try {
       const { data } = await apiClient.post<unknown>(
-        `/api/chat/sessions/${sessionId}/send-message/`,
+        `/api/chats/sessions/${sessionId}/send-message/`,
         {
           content: payload.content,
         },
@@ -244,44 +243,13 @@ export const apiConversationService: ConversationService = {
       // Request succeeded but payload shape is unexpected. Preserve optimistic UX.
       return createFallbackOperatorMessage(sessionId, payload.content);
     } catch (error) {
-      const status =
-        typeof (error as any)?.response?.status === 'number'
-          ? (error as any).response.status
-          : typeof (error as any)?.statusCode === 'number'
-            ? (error as any).statusCode
-            : null;
-
-      // Only fall back when the endpoint is missing/not allowed.
-      if (status !== 404 && status !== 405) {
-        throw error;
-      }
-    }
-
-    try {
-      const { data } = await apiClient.post<unknown>(
-        `/api/chat/sessions/${sessionId}/operator-message/`,
-        {
-          content: payload.content,
-        },
-      );
-
-      const sessionRecord = unwrapResponseData(data);
-      if (sessionRecord) {
-        const candidateMessage = extractMessageRecord(sessionRecord);
-        if (candidateMessage) {
-          return mapChatMessageDtoToModel(candidateMessage, sessionId);
-        }
-      }
-
-      return createFallbackOperatorMessage(sessionId, payload.content);
-    } catch (error) {
       throw error ?? new Error('Failed to send operator message');
     }
   },
 
   async markSessionRead(sessionId) {
     const { data } = await apiClient.post<unknown>(
-      `/api/chat/sessions/${sessionId}/mark-read/`,
+      `/api/chats/sessions/${sessionId}/mark-read/`,
       {},
     );
     return mapConversationDtoToModel(unwrapResponseData(data) ?? {});
@@ -289,7 +257,7 @@ export const apiConversationService: ConversationService = {
 
   async pauseSessionAI(sessionId, pausedUntilIso) {
     const { data } = await apiClient.post<unknown>(
-      `/api/chat/sessions/${sessionId}/pause-ai/`,
+      `/api/chats/sessions/${sessionId}/pause-ai/`,
       pausedUntilIso ? { paused_until: pausedUntilIso } : {},
     );
     return mapConversationDtoToModel(unwrapResponseData(data) ?? {});
@@ -297,7 +265,7 @@ export const apiConversationService: ConversationService = {
 
   async resumeSessionAI(sessionId) {
     const { data } = await apiClient.post<unknown>(
-      `/api/chat/sessions/${sessionId}/resume-ai/`,
+      `/api/chats/sessions/${sessionId}/resume-ai/`,
       {},
     );
     return mapConversationDtoToModel(unwrapResponseData(data) ?? {});
@@ -305,10 +273,9 @@ export const apiConversationService: ConversationService = {
 
   async requestOperator(sessionId) {
     const { data } = await apiClient.post<unknown>(
-      `/api/chat/sessions/${sessionId}/request-operator/`,
+      `/api/chats/sessions/${sessionId}/request-operator/`,
       {},
     );
     return mapConversationDtoToModel(unwrapResponseData(data) ?? {});
   },
 };
-

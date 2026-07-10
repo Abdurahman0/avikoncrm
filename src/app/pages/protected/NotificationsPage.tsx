@@ -19,6 +19,7 @@ import ConfirmDialog from '../../../components/shared/dialogs/ConfirmDialog';
 import NotificationDetailPanel from '../../../features/notifications/components/NotificationDetailPanel';
 import NotificationList from '../../../features/notifications/components/NotificationList';
 import { getNotificationChannelLabel } from '../../../features/notifications/utils/notification-format';
+import { backendCapabilities } from '../../../config/backend-capabilities';
 import { services } from '../../../services';
 import type {
   AppNotification,
@@ -59,6 +60,7 @@ function toBooleanReadFilter(value: ReadFilter): boolean | undefined {
 
 function NotificationsPage() {
   const { t, i18n } = useTranslation();
+  const canMutateNotifications = backendCapabilities.notifications.canWrite;
   const location = useLocation();
   const navigate = useNavigate();
   const [channelFilter, setChannelFilter] = useState<ChannelFilter>('all');
@@ -249,30 +251,34 @@ function NotificationsPage() {
       subtitle={t('notifications.subtitle')}
       actions={
         <div className="flex w-full flex-wrap items-center justify-end gap-2 min-[768px]:w-auto">
-          <button
-            type="button"
-            className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-subtle px-3 text-sm font-semibold text-text-primary ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-60"
-            onClick={() => {
-              void handleMarkAllRead();
-            }}
-            disabled={isLoading || isMarkingAllRead || isDeletingAll || !hasNotifications}
-          >
-            <AppIcon name="mark-read-all" className="h-4 w-4" aria-hidden="true" />
-            {isMarkingAllRead
-              ? t('notifications.bulk.markingAllRead')
-              : t('notifications.bulk.markAllRead')}
-          </button>
-          <button
-            type="button"
-            className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-danger-bg px-3 text-sm font-semibold text-danger transition duration-fast hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
-            onClick={handleDeleteAll}
-            disabled={isLoading || isMarkingAllRead || isDeletingAll || !hasNotifications}
-          >
-            <AppIcon name="trash" className="h-4 w-4" aria-hidden="true" />
-            {isDeletingAll
-              ? t('notifications.bulk.deletingAll')
-              : t('notifications.bulk.deleteAll')}
-          </button>
+          {canMutateNotifications ? (
+            <>
+              <button
+                type="button"
+                className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-subtle px-3 text-sm font-semibold text-text-primary ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={() => {
+                  void handleMarkAllRead();
+                }}
+                disabled={isLoading || isMarkingAllRead || isDeletingAll || !hasNotifications}
+              >
+                <AppIcon name="mark-read-all" className="h-4 w-4" aria-hidden="true" />
+                {isMarkingAllRead
+                  ? t('notifications.bulk.markingAllRead')
+                  : t('notifications.bulk.markAllRead')}
+              </button>
+              <button
+                type="button"
+                className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-danger-bg px-3 text-sm font-semibold text-danger transition duration-fast hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={handleDeleteAll}
+                disabled={isLoading || isMarkingAllRead || isDeletingAll || !hasNotifications}
+              >
+                <AppIcon name="trash" className="h-4 w-4" aria-hidden="true" />
+                {isDeletingAll
+                  ? t('notifications.bulk.deletingAll')
+                  : t('notifications.bulk.deleteAll')}
+              </button>
+            </>
+          ) : null}
           <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-primary/12 px-3 text-[12px] font-semibold text-text-accent">
             <AppIcon name="notifications" className="h-3.5 w-3.5" aria-hidden="true" />
             {paginationMeta.totalItems} {t('notifications.countSuffix')}
@@ -391,13 +397,14 @@ function NotificationsPage() {
       {selectedNotificationId ? (
         <NotificationDetailPanel
           notificationId={selectedNotificationId}
+          canManageNotifications={canMutateNotifications}
           onClose={() => setSelectedNotificationId(null)}
           onNotificationRead={handleNotificationRead}
           onNotificationDeleted={handleNotificationDeleted}
         />
       ) : null}
 
-      {isDeleteAllDialogOpen ? (
+      {canMutateNotifications && isDeleteAllDialogOpen ? (
         <ConfirmDialog
           eyebrow={t('notifications.bulk.deleteAll')}
           title={t('notifications.bulk.deleteAll')}

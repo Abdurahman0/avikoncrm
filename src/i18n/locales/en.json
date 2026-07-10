@@ -1452,8 +1452,8 @@
     "loadingDescription": "Retrieving configurations and active profile information.",
     "errorTitle": "Failed to load AI settings",
     "errorDescription": "An error occurred while retrieving information from the service.",
-    "autoOrderOn": "Auto order is enabled",
-    "autoOrderOff": "Auto order is disabled",
+    "autoOrderOn": "Function calling enabled",
+    "autoOrderOff": "Function calling disabled",
     "followUpOn": "Follow-up is enabled",
     "followUpOff": "Follow-up is disabled",
     "filters": {
@@ -1510,8 +1510,8 @@
       "followUpMessagePlaceholder": "For example: Need more help?",
       "followUpMessageHint": "The text of the message sent to the client when follow-up is enabled.",
       "resumeAfterOperatorMinutes": "Resume after operator pause (in minutes)",
-      "autoOrderEnabled": "Auto order",
-      "autoOrderHint": "The AI ​​will automatically prepare the order if it has enough confidence.",
+      "autoOrderEnabled": "Function calling",
+      "autoOrderHint": "Allow the AI model to invoke configured functions.",
       "isActive": "Active configuration",
       "isActiveHint": "If enabled, other active configurations are automatically disabled.",
       "requiredError": "Fill in the required fields.",
@@ -2279,6 +2279,9 @@
     }
   },
   "clients": {
+    "review": {
+      "openQueue": "Review queue", "backToClients": "Back to clients", "search": "Search", "searchPlaceholder": "Name, phone, tax ID or company...", "status": "Verification status", "pending": "Pending review", "verifiedStatus": "Verified", "rejectedStatus": "Rejected", "refresh": "Refresh", "loadingTitle": "Loading reviews", "loadingDescription": "Getting the shop verification queue.", "errorTitle": "Reviews could not be loaded", "loadError": "Reviews could not be loaded.", "emptyTitle": "No shops found", "emptyDescription": "There are no shops in the selected verification state.", "notAvailable": "The verification API is not available.", "detailError": "Shop details could not be loaded.", "detailLoadingTitle": "Loading shop details", "detailLoadingDescription": "Getting client, company and AI summary data.", "selectTitle": "Select a shop", "selectDescription": "Select a shop from the list to review its details and actions.", "detailEyebrow": "Shop verification", "aiSummary": "AI summary", "companyDetails": "Company details", "rejectionReason": "Rejection reason", "rejectReason": "Rejection reason", "rejectReasonPlaceholder": "Explain the issue...", "save": "Save", "verify": "Verify", "reject": "Reject", "saved": "Changes saved.", "saveError": "Changes could not be saved.", "verifyConfirm": "Verify this shop?", "verified": "Shop verified.", "rejected": "Shop rejected.", "actionError": "The action could not be completed.", "reasonRequired": "A rejection reason is required.", "fields": {"full_name": "Full name", "phone": "Phone", "email": "Email", "region": "Region", "company_name": "Company", "inn": "Tax ID", "notes": "Notes"}
+    },
     "importExport": {
       "importClients": "Import",
       "exportClients": "Export",

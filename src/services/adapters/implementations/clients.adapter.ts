@@ -8,6 +8,7 @@ import { apiClient } from '../../../lib/api-client'
 import { ApiRequestor } from './api-requestor'
 import type {
 	Client,
+	ClientStatusRecord,
 	ClientsListParams,
 	CreateClientInput,
 	IClientsService,
@@ -42,6 +43,13 @@ export class ClientsAdapter
 
 	async getClient(id: string): Promise<Client> {
 		return this.get(id)
+	}
+
+	async listClientStatuses(): Promise<ClientStatusRecord[]> {
+		const response = await this.extraRequestor.get<
+			ClientStatusRecord[] | { results?: ClientStatusRecord[] }
+		>('/api/clients/statuses/')
+		return Array.isArray(response) ? response : response.results ?? []
 	}
 
 	async createClient(input: CreateClientInput): Promise<Client> {

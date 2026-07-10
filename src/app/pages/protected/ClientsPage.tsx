@@ -7,6 +7,7 @@ import ClientDeleteDialog from '../../../features/clients/components/ClientDelet
 import { ClientsDetailPanel } from '../../../features/clients/components/ClientsDetailPanel';
 import { ClientsFormPanel } from '../../../features/clients/components/ClientsFormPanel';
 import { ClientsListView } from '../../../features/clients/components/ClientsListView';
+import { ClientReviewQueue } from '../../../features/clients/components/ClientReviewQueue';
 import { services } from '../../../services';
 import { useAuth } from '../../../auth';
 import type { Client } from '../../../services/contracts';
@@ -17,6 +18,7 @@ function ClientsPage() {
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
   const canManageClients = hasPermission('can_manage_clients');
+  const canVerifyClients = hasPermission('can_verify_clients');
 
   const tx = {
     eyebrow: t('clients.page.eyebrow'),
@@ -56,6 +58,7 @@ function ClientsPage() {
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [importPayload, setImportPayload] = useState('');
   const [isImporting, setIsImporting] = useState(false);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -175,11 +178,12 @@ function ClientsPage() {
   function handleDownloadImportTemplate() {
     const sample = [
       {
+        client_type: 'individual',
         full_name: 'Ali Valiyev',
         phone: '+998901234567',
+        email: 'ali@example.com',
         region: 'Toshkent',
-        address: 'Yunusobod tumani',
-        source_platform: 'manual',
+        interested_product: 'Solar panel',
         status: 'new',
       },
     ];
@@ -301,6 +305,19 @@ function ClientsPage() {
               {tx.newClient}
             </button>
           ) : null}
+          {canVerifyClients ? (
+            <button
+              type="button"
+              className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-warning-bg px-3.5 text-sm font-semibold text-warning transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warning/35"
+              onClick={() => {
+                setIsReviewOpen((current) => !current);
+                setSelectedClientId(null);
+              }}
+            >
+              <AppIcon name="check-circle" className="h-4 w-4" aria-hidden="true" />
+              {isReviewOpen ? t('clients.review.backToClients') : t('clients.review.openQueue')}
+            </button>
+          ) : null}
           <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-success-bg px-3 text-[12px] font-semibold text-success">
             <AppIcon name="clients" className="h-3.5 w-3.5" aria-hidden="true" />
             {stats.visible} {tx.visible}
@@ -328,15 +345,15 @@ function ClientsPage() {
     <>
       <PageLayout header={header}>
         <PageSection>
-          <ClientsListView
-            key={listRefreshKey}
-            onRowClick={(client) => setSelectedClientId(client.id)}
-            onEditClient={openEditForm}
-            onDeleteClient={handleDeleteFromList}
-            selectedClientId={selectedClientId}
-            canManageClients={canManageClients}
-            onStatsChange={handleStatsChange}
-          />
+          {isReviewOpen ? <ClientReviewQueue /> : <ClientsListView
+              key={listRefreshKey}
+              onRowClick={(client) => setSelectedClientId(client.id)}
+              onEditClient={openEditForm}
+              onDeleteClient={handleDeleteFromList}
+              selectedClientId={selectedClientId}
+              canManageClients={canManageClients}
+              onStatsChange={handleStatsChange}
+            />}
         </PageSection>
       </PageLayout>
 

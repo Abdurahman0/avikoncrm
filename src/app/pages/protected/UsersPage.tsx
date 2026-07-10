@@ -260,16 +260,18 @@ function UsersPage() {
 
     try {
       if (formMode === 'create') {
+        const username = payload.username?.trim();
         const email = payload.email?.trim();
         const fullName = payload.full_name?.trim();
         const role = payload.role;
         const password = payload.password;
 
-        if (!email || !fullName || !role || !password) {
+        if (!username || !email || !fullName || !role || !password) {
           throw new Error(t('users.form.passwordError'));
         }
 
         const createPayload: CreateUserInput = {
+          username,
           email,
           full_name: fullName,
           role,
@@ -699,5 +701,4 @@ function UsersPage() {
 }
 
 export default UsersPage;
-
 

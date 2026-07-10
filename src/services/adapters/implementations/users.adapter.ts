@@ -158,6 +158,7 @@ function mapUserPayload(value: unknown): ManagedUser | null {
 
 	return {
 		id,
+		username: toStringValue(payload.username),
 		email: toStringValue(payload.email),
 		full_name: fullName,
 		phone: toStringValue(payload.phone) || null,

@@ -1446,8 +1446,8 @@
     "loadingDescription": "Получение конфигураций и данных активного профиля.",
     "errorTitle": "Не удалось загрузить настройки ИИ",
     "errorDescription": "Произошла ошибка при получении данных из сервиса.",
-    "autoOrderOn": "Автозаказ включён",
-    "autoOrderOff": "Автозаказ выключен",
+    "autoOrderOn": "Вызов функций включён",
+    "autoOrderOff": "Вызов функций выключен",
     "followUpOn": "Фоллоу-ап включён",
     "followUpOff": "Фоллоу-ап выключен",
     "filters": {
@@ -1504,8 +1504,8 @@
       "followUpMessagePlaceholder": "Например: Нужна ещё помощь?",
       "followUpMessageHint": "Текст сообщения, которое будет отправлено клиенту при фоллоу-апе.",
       "resumeAfterOperatorMinutes": "Продолжить после паузы оператора (в минутах)",
-      "autoOrderEnabled": "Автозаказ",
-      "autoOrderHint": "Если ИИ достаточно уверен, он автоматически подготовит заказ.",
+      "autoOrderEnabled": "Вызов функций",
+      "autoOrderHint": "Разрешить модели ИИ вызывать настроенные функции.",
       "isActive": "Активная конфигурация",
       "isActiveHint": "Если включено, другие активные конфигурации будут автоматически отключены.",
       "requiredError": "Заполните обязательные поля.",
@@ -2273,6 +2273,9 @@
     }
   },
   "clients": {
+    "review": {
+      "openQueue": "Очередь проверки", "backToClients": "К клиентам", "search": "Поиск", "searchPlaceholder": "Имя, телефон, ИНН или компания...", "status": "Статус проверки", "pending": "На проверке", "verifiedStatus": "Подтверждено", "rejectedStatus": "Отклонено", "refresh": "Обновить", "loadingTitle": "Загрузка проверок", "loadingDescription": "Получаем очередь проверки shop.", "errorTitle": "Не удалось загрузить проверки", "loadError": "Не удалось загрузить проверки.", "emptyTitle": "Shop не найден", "emptyDescription": "В выбранном статусе нет записей.", "notAvailable": "API проверки недоступно.", "detailError": "Не удалось загрузить детали shop.", "detailLoadingTitle": "Загрузка деталей shop", "detailLoadingDescription": "Получаем данные клиента, компании и AI.", "selectTitle": "Выберите shop", "selectDescription": "Выберите shop из списка для проверки деталей.", "detailEyebrow": "Проверка shop", "aiSummary": "AI-резюме", "companyDetails": "Данные компании", "rejectionReason": "Причина отклонения", "rejectReason": "Причина отклонения", "rejectReasonPlaceholder": "Опишите проблему...", "save": "Сохранить", "verify": "Подтвердить", "reject": "Отклонить", "saved": "Изменения сохранены.", "saveError": "Не удалось сохранить изменения.", "verifyConfirm": "Подтвердить этот shop?", "verified": "Shop подтвержден.", "rejected": "Shop отклонен.", "actionError": "Не удалось выполнить действие.", "reasonRequired": "Укажите причину отклонения.", "fields": {"full_name": "ФИО", "phone": "Телефон", "email": "Email", "region": "Регион", "company_name": "Компания", "inn": "ИНН", "notes": "Заметки"}
+    },
     "importExport": {
       "importClients": "Импорт",
       "exportClients": "Экспорт",

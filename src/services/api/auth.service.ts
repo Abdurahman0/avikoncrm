@@ -7,12 +7,8 @@ import { PERMISSION_CODES, type AuthenticatedUser, type PermissionCode } from '.
 import type { AppRole } from '../../types/architecture';
 
 interface LoginRequest {
-  username: string;
+  login: string;
   password: string;
-}
-
-interface LoginResponse extends Partial<AuthTokens> {
-  user?: unknown;
 }
 
 type MeResponse = unknown;
@@ -91,6 +87,7 @@ function mapBackendPermissionToken(token: string): PermissionCode[] {
 
     'clients.view': ['can_view_clients'],
     'clients.manage': ['can_manage_clients'],
+    'clients.verify': ['can_verify_clients'],
 
     'products.view': ['can_view_products'],
     'products.manage': ['can_manage_products'],
@@ -126,6 +123,35 @@ function mapBackendPermissionToken(token: string): PermissionCode[] {
   const direct = alias[normalized];
   if (direct?.length) {
     return direct.filter((code) => PERMISSION_CODE_SET.has(code));
+  }
+
+  const codename = normalized.split('.').pop()?.replace(/-/g, '_') ?? normalized;
+  const codenameAliases: Record<string, PermissionCode[]> = {
+    view_dashboard: ['can_view_dashboard'],
+    view_client: ['can_view_clients'],
+    view_clients: ['can_view_clients'],
+    add_client: ['can_view_clients', 'can_manage_clients'],
+    change_client: ['can_view_clients', 'can_manage_clients'],
+    delete_client: ['can_view_clients', 'can_manage_clients'],
+    manage_clients: ['can_view_clients', 'can_manage_clients'],
+    verify_clients: ['can_verify_clients'],
+    verify_client: ['can_verify_clients'],
+    view_chatsession: ['can_access_chats'],
+    view_chat_session: ['can_access_chats'],
+    access_chats: ['can_access_chats'],
+    view_user: ['can_manage_users'],
+    manage_users: ['can_manage_users'],
+    view_auditlog: ['can_view_logs'],
+    view_audit_log: ['can_view_logs'],
+    view_logs: ['can_view_logs'],
+    view_integrationconfig: ['can_manage_integrations'],
+    manage_integrations: ['can_manage_integrations'],
+    view_aisettings: ['can_manage_ai_settings'],
+    manage_ai_settings: ['can_manage_ai_settings'],
+  };
+  const codenameMatch = codenameAliases[codename];
+  if (codenameMatch) {
+    return codenameMatch;
   }
 
   const parts = normalized.split('.').filter(Boolean);
@@ -271,10 +297,15 @@ function normalizeUser(rawUser: unknown): AuthenticatedUser {
   const userRecord = unwrapUserPayload(rawUser);
   const role = resolveRole(userRecord.role);
   const email = readString(userRecord.email) ?? '';
+  const personName = [readString(userRecord.first_name), readString(userRecord.last_name)]
+    .filter(Boolean)
+    .join(' ');
   const fullName =
     readString(userRecord.fullName) ??
     readString(userRecord.full_name) ??
     readString(userRecord.name) ??
+    readString(personName) ??
+    readString(userRecord.username) ??
     email;
 
   const statusValue = userRecord.status;
@@ -287,7 +318,11 @@ function normalizeUser(rawUser: unknown): AuthenticatedUser {
         : 'active';
 
   return {
-    id: readString(userRecord.id) ?? email ?? `user-${Date.now()}`,
+    id:
+      readString(userRecord.id) ||
+      email ||
+      readString(userRecord.username) ||
+      `user-${Date.now()}`,
     fullName: fullName || "Noma'lum foydalanuvchi",
     email,
     phone: readString(userRecord.phone) ?? undefined,
@@ -307,12 +342,12 @@ function normalizeUser(rawUser: unknown): AuthenticatedUser {
 }
 
 export interface AuthLoginResult extends AuthTokens {
-  user: AuthenticatedUser;
+  user?: AuthenticatedUser;
 }
 
 export const authService = {
   async login(username: string, password: string): Promise<AuthLoginResult> {
-    const payload: LoginRequest = { username, password };
+    const payload: LoginRequest = { login: username, password };
     const { data } = await apiClient.post<any>('/api/auth/login/', payload, {
       _skipAuthRefresh: true,
     });
@@ -326,19 +361,29 @@ export const authService = {
       throw new Error('Invalid login response.');
     }
 
+    const rawUser = responseData.user ?? data.user;
+
     return {
       access: responseData.access,
       refresh: responseData.refresh,
-      user: normalizeUser(responseData.user),
+      user: rawUser ? normalizeUser(rawUser) : undefined,
     };
   },
 
   async getMe(): Promise<AuthenticatedUser> {
-    const { data } = await apiClient.get<any>('/api/auth/me/');
-    // Handle both response formats
+    const [{ data }, permissionsResponse] = await Promise.all([
+      apiClient.get<any>('/api/auth/me/'),
+      apiClient.get<any>('/api/auth/permissions/').catch(() => null),
+    ]);
     const responseData = data.data || data;
     const userData = responseData?.user ?? responseData;
-    return normalizeUser(userData);
+    const userRecord = unwrapUserPayload(userData);
+    const permissionsData = permissionsResponse?.data?.data ?? permissionsResponse?.data;
+
+    return normalizeUser({
+      ...userRecord,
+      effective_permissions: permissionsData ?? userRecord.effective_permissions,
+    });
   },
 
   async refreshToken(refresh: string): Promise<AuthTokens> {
@@ -363,4 +408,3 @@ export const authService = {
     };
   },
 };
-

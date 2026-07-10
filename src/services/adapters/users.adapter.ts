@@ -66,7 +66,8 @@ function resolveUserName(dto: UserDto): string {
   const explicitName =
     readString(dto.full_name) ||
     readString(dto.fullName) ||
-    readString(dto.name);
+    readString(dto.name) ||
+    [readString(dto.first_name), readString(dto.last_name)].filter(Boolean).join(' ');
   if (explicitName && !isUuidLike(explicitName)) {
     return explicitName;
   }
@@ -232,6 +233,7 @@ export function mapUserDtoToModel(dto: UserDto): ManagedUser {
 
   return {
     id,
+    username: readString(dto.username),
     email: readString(dto.email),
     full_name: resolveUserName(dto),
     phone: readString(dto.phone) || null,
@@ -271,4 +273,3 @@ export function mapUserListDtoToItems(value: unknown): ManagedUser[] {
 
   return fromArray(items);
 }
-

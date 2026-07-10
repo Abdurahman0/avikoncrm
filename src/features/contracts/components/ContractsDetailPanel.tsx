@@ -881,6 +881,7 @@ export function ContractsDetailPanel({
 		{ key: 'house', label: tx.fields.companyContractFile, url: houseImageUrl },
 		{ key: 'additional', label: tx.fields.additionalFile, url: additionalFileUrl },
 	].filter(item => Boolean(item.url))
+	const hasActions = Boolean(onRecalculate || onEdit || onRequestDelete)
 	return (
 		<div className='grid gap-3'>
 			<header className='mb-1 rounded-xl bg-surface-card p-4 shadow-sm ring-1 ring-border-soft/40'>
@@ -1153,33 +1154,41 @@ export function ContractsDetailPanel({
 			</div>
 		</PageCard>
 
-		<div className='mt-1 flex flex-wrap items-center gap-2'>
-			<button
-				type='button'
-				className='inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-info-bg px-4 text-sm font-semibold text-info shadow-sm ring-1 ring-info/25 transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/30 disabled:cursor-not-allowed disabled:opacity-60'
-				onClick={() => onRecalculate?.(contract)}
-				disabled={isRecalculating}
-			>
-				<AppIcon name='activity' className='h-4 w-4' />
-				{recalculateLabel}
-			</button>
-			<button
-				type='button'
-				className='inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
-				onClick={() => onEdit?.(contract)}
-			>
-				<FiEdit2 className='h-4 w-4' />
-				{tx.edit}
-			</button>
-			<button
-				type='button'
-				className='inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-surface-card px-4 text-sm font-semibold text-danger shadow-sm ring-1 ring-danger/25 transition duration-fast hover:bg-danger/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/25'
-				onClick={() => onRequestDelete?.(contract)}
-			>
-				<FiTrash2 className='h-4 w-4' />
-				{tx.delete}
-			</button>
-		</div>
+		{hasActions ? (
+			<div className='mt-1 flex flex-wrap items-center gap-2'>
+				{onRecalculate ? (
+					<button
+						type='button'
+						className='inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-info-bg px-4 text-sm font-semibold text-info shadow-sm ring-1 ring-info/25 transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-info/30 disabled:cursor-not-allowed disabled:opacity-60'
+						onClick={() => onRecalculate(contract)}
+						disabled={isRecalculating}
+					>
+						<AppIcon name='activity' className='h-4 w-4' />
+						{recalculateLabel}
+					</button>
+				) : null}
+				{onEdit ? (
+					<button
+						type='button'
+						className='inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
+						onClick={() => onEdit(contract)}
+					>
+						<FiEdit2 className='h-4 w-4' />
+						{tx.edit}
+					</button>
+				) : null}
+				{onRequestDelete ? (
+					<button
+						type='button'
+						className='inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-surface-card px-4 text-sm font-semibold text-danger shadow-sm ring-1 ring-danger/25 transition duration-fast hover:bg-danger/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/25'
+						onClick={() => onRequestDelete(contract)}
+					>
+						<FiTrash2 className='h-4 w-4' />
+						{tx.delete}
+					</button>
+				) : null}
+			</div>
+		) : null}
 
 		</div>
 	)

@@ -29,6 +29,7 @@ interface UserFormPanelProps {
 }
 
 interface UserFormState {
+  username: string;
   email: string;
   fullName: string;
   phone: string;
@@ -54,6 +55,7 @@ function createInitialState(
 ): UserFormState {
   if (mode === 'edit' && user) {
     return {
+      username: user.username,
       email: user.email,
       fullName: user.full_name,
       phone: user.phone ?? '',
@@ -65,6 +67,7 @@ function createInitialState(
   }
 
   return {
+    username: '',
     email: '',
     fullName: '',
     phone: '',
@@ -185,10 +188,11 @@ function UserFormPanel({
     const isPasswordValid = mode === 'edit' || form.password.trim().length >= 8;
     return (
       form.email.trim().length > 0 &&
+      form.username.trim().length > 0 &&
       form.fullName.trim().length > 0 &&
       isPasswordValid
     );
-  }, [form.email, form.fullName, form.password, mode]);
+  }, [form.email, form.fullName, form.password, form.username, mode]);
 
   function togglePermission(permissionId: string) {
     setForm((current) => {
@@ -219,11 +223,12 @@ function UserFormPanel({
     setFieldError(null);
 
     const email = form.email.trim().toLowerCase();
+    const username = form.username.trim();
     const fullName = form.fullName.trim();
     const phone = form.phone.trim();
     const password = form.password.trim();
 
-    if (!email || !fullName) {
+    if (!username || !email || !fullName) {
       setFieldError(t('users.form.requiredError'));
       return;
     }
@@ -239,6 +244,7 @@ function UserFormPanel({
     }
 
     const payloadBase = {
+      username,
       email,
       full_name: fullName,
       phone: phone || null,
@@ -313,6 +319,20 @@ function UserFormPanel({
         >
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="grid gap-1.5">
+              <label className={labelClassName} htmlFor="user-form-username">Username</label>
+              <input
+                id="user-form-username"
+                type="text"
+                autoComplete="off"
+                value={form.username}
+                onChange={(event) => setForm((current) => ({ ...current, username: event.target.value }))}
+                className={inputClassName}
+                placeholder="username"
+                disabled={isSubmitting}
+                required
+              />
+            </div>
+            <div className="grid gap-1.5">
               <label className={labelClassName} htmlFor="user-form-full-name">
                 {t('users.form.fullName')}
               </label>
@@ -350,22 +370,6 @@ function UserFormPanel({
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="grid gap-1.5">
-              <label className={labelClassName} htmlFor="user-form-phone">
-                {t('users.form.phone')}
-              </label>
-              <input
-                id="user-form-phone"
-                type="tel"
-                value={form.phone}
-                onChange={(event) =>
-                  setForm((current) => ({ ...current, phone: event.target.value }))
-                }
-                className={inputClassName}
-                placeholder="+998 90 000 00 00"
-                disabled={isSubmitting}
-              />
-            </div>
             <div className="grid gap-1.5">
               <label className={labelClassName} htmlFor="user-form-password">
                 {t('users.form.password')}
@@ -552,4 +556,3 @@ function UserFormPanel({
 }
 
 export default UserFormPanel;
-

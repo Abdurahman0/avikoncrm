@@ -25,6 +25,7 @@ import { useAuth } from '../../../auth';
 import IntegrationConfigDeleteDialog from '../../../features/integrations/components/IntegrationConfigDeleteDialog';
 import IntegrationConfigDetailPanel from '../../../features/integrations/components/IntegrationConfigDetailPanel';
 import IntegrationConfigFormPanel from '../../../features/integrations/components/IntegrationConfigFormPanel';
+import IntegrationEventsPanel from '../../../features/integrations/components/IntegrationEventsPanel';
 import { formatLocalizedDate } from '../../../i18n/date-format';
 import { resolveIntlLocale } from '../../../i18n/locale';
 import {
@@ -114,6 +115,7 @@ function IntegrationsPage() {
   const { hasPermission, hasRole } = useAuth();
   const locale = resolveIntlLocale(i18n.language);
   const canManageIntegrations = hasRole('developer') || hasPermission('can_manage_integrations');
+  const [view, setView] = useState<'configs' | 'events'>('configs');
 
   const [configSearch, setConfigSearch] = usePersistentState('integrations:config-search', '');
   const [providerFilter, setProviderFilter] = useState<ProviderFilter>('all');
@@ -457,7 +459,11 @@ function IntegrationsPage() {
       subtitle={t('integrations.subtitle')}
       actions={
         <div className="flex w-full flex-wrap items-center gap-2 min-[768px]:w-auto">
-          {canManageIntegrations ? (
+          <div className="flex rounded-lg bg-surface-subtle p-1">
+            <button type="button" className={`rounded-md px-3 py-1.5 text-sm font-semibold ${view === 'configs' ? 'bg-surface-card text-text-primary shadow-sm' : 'text-text-secondary'}`} onClick={() => setView('configs')}>Configs</button>
+            <button type="button" className={`rounded-md px-3 py-1.5 text-sm font-semibold ${view === 'events' ? 'bg-surface-card text-text-primary shadow-sm' : 'text-text-secondary'}`} onClick={() => setView('events')}>Events</button>
+          </div>
+          {view === 'configs' && canManageIntegrations ? (
             <button
               type="button"
               className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
@@ -467,14 +473,18 @@ function IntegrationsPage() {
               {t('integrations.configForm.createSubmit')}
             </button>
           ) : null}
-          <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-primary/12 px-3 text-[12px] font-semibold text-text-accent">
+          {view === 'configs' ? <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-primary/12 px-3 text-[12px] font-semibold text-text-accent">
             <AppIcon name="integrations" className="h-3.5 w-3.5" aria-hidden="true" />
             {paginationMeta.totalItems} {t('integrations.configRecords')}
-          </span>
+          </span> : null}
         </div>
       }
     />
   );
+
+  if (view === 'events') {
+    return <PageLayout header={header}><IntegrationEventsPanel language={i18n.language} /></PageLayout>;
+  }
 
   if (!hasLoadedOnce && isLoading) {
     return (

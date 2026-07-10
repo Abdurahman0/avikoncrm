@@ -1452,8 +1452,8 @@
     "loadingDescription": "Konfiguratsiyalar va faol profil ma'lumotlari olinmoqda.",
     "errorTitle": "AI sozlamalarini yuklab bo'lmadi",
     "errorDescription": "Xizmatdan ma'lumot olishda xatolik yuz berdi.",
-    "autoOrderOn": "Avto buyurtma yoqilgan",
-    "autoOrderOff": "Avto buyurtma o'chirilgan",
+    "autoOrderOn": "Funksiya chaqirish yoqilgan",
+    "autoOrderOff": "Funksiya chaqirish o'chirilgan",
     "followUpOn": "Follow-up yoqilgan",
     "followUpOff": "Follow-up o'chirilgan",
     "filters": {
@@ -1510,8 +1510,8 @@
       "followUpMessagePlaceholder": "Masalan: Yana yordam kerakmi?",
       "followUpMessageHint": "Follow-up yoqilganda mijozga yuboriladigan xabar matni.",
       "resumeAfterOperatorMinutes": "Operator pauzasidan keyin davom etish (daqiqada)",
-      "autoOrderEnabled": "Avto buyurtma",
-      "autoOrderHint": "AI yetarli ishonchga ega bo'lsa buyurtmani avtomatik tayyorlaydi.",
+      "autoOrderEnabled": "Funksiyalarni chaqirish",
+      "autoOrderHint": "AI modeliga sozlangan funksiyalarni chaqirishga ruxsat berish.",
       "isActive": "Faol konfiguratsiya",
       "isActiveHint": "Yoqilsa, boshqa faol konfiguratsiyalar avtomatik o'chiriladi.",
       "requiredError": "Majburiy maydonlarni to'ldiring.",
@@ -2279,6 +2279,9 @@
     }
   },
   "clients": {
+    "review": {
+      "openQueue": "Tasdiqlash navbati", "backToClients": "Mijozlarga qaytish", "search": "Qidiruv", "searchPlaceholder": "Ism, telefon, INN yoki kompaniya...", "status": "Tasdiqlash holati", "pending": "Tekshirilmoqda", "verifiedStatus": "Tasdiqlangan", "rejectedStatus": "Rad etilgan", "refresh": "Yangilash", "loadingTitle": "Tekshiruvlar yuklanmoqda", "loadingDescription": "Shop tasdiqlash navbati olinmoqda.", "errorTitle": "Tekshiruvlar yuklanmadi", "loadError": "Tekshiruvlar yuklanmadi.", "emptyTitle": "Shoplar topilmadi", "emptyDescription": "Tanlangan holat bo'yicha yozuvlar mavjud emas.", "notAvailable": "Tasdiqlash API mavjud emas.", "detailError": "Shop tafsilotlarini yuklab bo'lmadi.", "detailLoadingTitle": "Shop tafsilotlari yuklanmoqda", "detailLoadingDescription": "Mijoz, kompaniya va AI xulosasi olinmoqda.", "selectTitle": "Shopni tanlang", "selectDescription": "To'liq ma'lumot va tekshiruv amallarini ko'rish uchun shop tanlang.", "detailEyebrow": "Shop tasdiqlash", "aiSummary": "AI xulosasi", "companyDetails": "Kompaniya ma'lumotlari", "rejectionReason": "Rad etish sababi", "rejectReason": "Rad etish sababi", "rejectReasonPlaceholder": "Muammoni yozing...", "save": "Saqlash", "verify": "Tasdiqlash", "reject": "Rad etish", "saved": "O'zgarishlar saqlandi.", "saveError": "O'zgarishlarni saqlab bo'lmadi.", "verifyConfirm": "Ushbu shopni tasdiqlaysizmi?", "verified": "Shop tasdiqlandi.", "rejected": "Shop rad etildi.", "actionError": "Amalni bajarib bo'lmadi.", "reasonRequired": "Rad etish sababi majburiy.", "fields": {"full_name": "To'liq ism", "phone": "Telefon", "email": "Email", "region": "Hudud", "company_name": "Kompaniya", "inn": "INN", "notes": "Izohlar"}
+    },
     "importExport": {
       "importClients": "Import",
       "exportClients": "Eksport",

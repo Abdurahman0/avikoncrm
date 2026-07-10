@@ -4,11 +4,13 @@ Frontend for Avikontex CRM (admin/developer panel only).
 
 ## Source of Truth
 
-Backend/API mapping is defined in:
+The live OpenAPI schema is the backend source of truth:
 
-- `Avikontex CRM Frontend Pages.txt`
+- `https://api.avikontex.cognilabs.org/api/docs/`
+- `https://api.avikontex.cognilabs.org/api/schema/`
 
-Template documentation from the original CRM template has been removed.
+Live mode exposes only modules present in that schema. Mock mode is opt-in with
+`VITE_USE_MOCK_API=true`.
 
 ## Run
 
@@ -28,4 +30,8 @@ npm run build
 
 - Includes: CRM admin/developer pages
 - Excludes: Telegram WebApp (separate project)
+
+Current live modules: dashboard, clients, chats, users, integrations, AI
+settings, audit logs, and health. Leads, products, contracts, notifications,
+and operator KPI remain unavailable until the backend exposes their APIs.
 

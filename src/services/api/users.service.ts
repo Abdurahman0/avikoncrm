@@ -98,16 +98,19 @@ function toMutationPayload(
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {};
   const normalizeText = (value: string | null | undefined): string =>
-    typeof value === 'string' ? value : '';
+    typeof value === 'string' ? value.trim() : '';
+  const fullName = normalizeText(input.full_name);
+  const nameParts = fullName.split(/\s+/).filter(Boolean);
+  const firstName = nameParts[0] ?? '';
+  const lastName = nameParts.slice(1).join(' ');
+  const username = normalizeText(input.username) || (normalizeText(input.email).split('@')[0] ?? '');
 
   if (input.email !== undefined) {
     payload.email = input.email;
   }
   if (input.full_name !== undefined) {
-    payload.full_name = input.full_name;
-  }
-  if (input.phone !== undefined) {
-    payload.phone = normalizeText(input.phone);
+    payload.first_name = firstName || null;
+    payload.last_name = lastName || null;
   }
   if (input.password !== undefined) {
     payload.password = input.password;
@@ -119,7 +122,13 @@ function toMutationPayload(
     payload.is_active = input.is_active;
   }
   if (input.custom_permission_ids !== undefined) {
-    payload.custom_permission_ids = input.custom_permission_ids;
+    payload.permissions = input.custom_permission_ids;
+  }
+  if (username) {
+    payload.username = username;
+  }
+  if (input.role !== undefined) {
+    payload.is_staff = input.role === 'developer' || input.role === 'admin';
   }
 
   return payload;
@@ -213,23 +222,22 @@ export async function deleteUser(id: EntityId): Promise<boolean> {
 }
 
 export async function toggleUserActive(id: EntityId): Promise<ManagedUser | null> {
-  const { data } = await apiClient.post<unknown>(`/api/users/${id}/toggle_active/`, {});
-  const mapped = mapSingleUser(data, id);
-  if (mapped) {
-    return mapped;
+  const current = await getUserById(id);
+  if (!current) {
+    return null;
   }
 
-  return getUserById(id);
+  return patchUser(id, {
+    is_active: !current.is_active,
+  });
 }
 
 export async function listPermissions(): Promise<UserPermission[]> {
   // Preferred backend endpoint (Solar API): /api/auth/all-permissions/
   // Fallbacks are kept for older deployments.
   const candidates = [
-    '/api/auth/all-permissions/',
-    '/api/auth/permissions/catalog/',
+    '/api/auth/permissions/all/',
     '/api/auth/permissions/',
-    '/api/users/permissions/',
   ] as const;
 
   for (const path of candidates) {
@@ -293,4 +301,3 @@ export const apiUserService: UserService = {
     return getPermissionById(id);
   },
 };
-

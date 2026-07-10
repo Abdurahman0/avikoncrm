@@ -91,15 +91,10 @@ function toConfigPayload(
     payload.key = input.key;
   }
   if (input.label !== undefined) {
-    payload.label = input.label;
-    // Newer API schema uses `description` instead of `label`.
     payload.description = input.label;
   }
   if (input.value !== undefined) {
     payload.value = input.value;
-  }
-  if (input.is_secret !== undefined) {
-    payload.is_secret = input.is_secret;
   }
   if (input.is_active !== undefined) {
     payload.is_active = input.is_active;
@@ -178,7 +173,7 @@ async function patchConfigRaw(
   }
 
   const { data } = await apiClient.patch<unknown>(
-    `/api/integrations/configs/${id}/`,
+    `/api/settings/integrations/${id}/`,
     payload,
   );
 
@@ -225,14 +220,13 @@ export async function listConfigs(
   const page = params?.page ?? 1;
   const pageSize = params?.pageSize ?? 10;
 
-  const { data } = await apiClient.get<unknown>('/api/integrations/configs/', {
+  const { data } = await apiClient.get<unknown>('/api/settings/integrations/', {
     params: {
       page,
       page_size: pageSize,
       search: params?.search,
       provider: params?.provider,
       is_active: params?.is_active,
-      is_secret: params?.is_secret,
       ordering:
         params?.ordering ??
         (params?.sortBy
@@ -249,7 +243,7 @@ export async function listConfigs(
 }
 
 export async function getConfigById(id: EntityId): Promise<IntegrationConfig | null> {
-  const { data } = await apiClient.get<unknown>(`/api/integrations/configs/${id}/`);
+  const { data } = await apiClient.get<unknown>(`/api/settings/integrations/${id}/`);
   return mapSingleConfig(data, id);
 }
 
@@ -257,7 +251,7 @@ export async function createConfig(
   input: IntegrationConfigMutationInput,
 ): Promise<IntegrationConfig> {
   const { data } = await apiClient.post<unknown>(
-    '/api/integrations/configs/',
+    '/api/settings/integrations/',
     toConfigPayload(input),
   );
 
@@ -280,7 +274,7 @@ export async function updateConfig(
   input: IntegrationConfigMutationInput,
 ): Promise<IntegrationConfig | null> {
   const { data } = await apiClient.put<unknown>(
-    `/api/integrations/configs/${id}/`,
+    `/api/settings/integrations/${id}/`,
     toConfigPayload(input),
   );
 
@@ -317,7 +311,7 @@ export async function patchConfig(
 }
 
 export async function deleteConfig(id: EntityId): Promise<boolean> {
-  await apiClient.delete(`/api/integrations/configs/${id}/`);
+  await apiClient.delete(`/api/settings/integrations/${id}/`);
   return true;
 }
 
@@ -327,7 +321,7 @@ export async function listEvents(
   const page = params?.page ?? 1;
   const pageSize = params?.pageSize ?? 10;
 
-  const { data } = await apiClient.get<unknown>('/api/integrations/events/', {
+  const { data } = await apiClient.get<unknown>('/api/settings/integrations/events/', {
     params: {
       page,
       page_size: pageSize,
@@ -350,22 +344,19 @@ export async function listEvents(
 }
 
 export async function getInstagramBusinessProfile(): Promise<unknown> {
-  const { data } = await apiClient.get<unknown>(
-    '/api/integrations/instagram/business-profile/',
-  );
-  return data;
+  throw new Error('Instagram business profile is not exposed by the backend.');
 }
 
 export async function getInstagramWebhook(): Promise<unknown> {
   const { data } = await apiClient.get<unknown>(
-    '/api/integrations/instagram/webhook/',
+    '/api/settings/integrations/webhooks/instagram/',
   );
   return data;
 }
 
 export async function postInstagramWebhook(payload: string): Promise<boolean> {
   const { data } = await apiClient.post<unknown>(
-    '/api/integrations/instagram/webhook/',
+    '/api/settings/integrations/webhooks/instagram/',
     { payload },
   );
   const response = toRecord(data);
@@ -378,7 +369,7 @@ export async function postInstagramWebhook(payload: string): Promise<boolean> {
 
 export async function postTelegramInbound(payload: string): Promise<boolean> {
   const { data } = await apiClient.post<unknown>(
-    '/api/integrations/telegram/inbound/',
+    '/api/settings/integrations/webhooks/telegram/',
     { payload },
   );
   const response = toRecord(data);
@@ -390,7 +381,7 @@ export async function postTelegramInbound(payload: string): Promise<boolean> {
 }
 
 export async function getEventById(id: EntityId): Promise<IntegrationEvent | null> {
-  const { data } = await apiClient.get<unknown>(`/api/integrations/events/${id}/`);
+  const { data } = await apiClient.get<unknown>(`/api/settings/integrations/events/${id}/`);
   return mapSingleEvent(data, id);
 }
 
@@ -443,4 +434,3 @@ export const apiIntegrationsService: IntegrationsService = {
     return postTelegramInbound(payload);
   },
 };
-

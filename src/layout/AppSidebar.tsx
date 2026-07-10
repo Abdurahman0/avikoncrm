@@ -239,4 +239,3 @@ function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
 }
 
 export default AppSidebar
-

@@ -215,36 +215,28 @@ export function ClientsDetailPanel({
             <p className={`mt-1 ${valueClassName}`}>{client.region || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{tx.fields.address}</p>
-            <p className={`mt-1 ${valueClassName}`}>{client.address || '-'}</p>
+            <p className={labelClassName}>Email</p>
+            <p className={`mt-1 ${valueClassName}`}>{client.email || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{tx.fields.electricity}</p>
-            <p className={`mt-1 ${valueClassName}`}>{client.electricity_consumption || '-'}</p>
+            <p className={labelClassName}>{isRu ? 'Тип клиента' : 'Mijoz turi'}</p>
+            <p className={`mt-1 ${valueClassName}`}>{client.client_type_display || client.client_type || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{tx.fields.budget}</p>
-            <p className={`mt-1 ${valueClassName}`}>{client.budget_range || '-'}</p>
+            <p className={labelClassName}>{isRu ? 'Удобное время связи' : 'Bog‘lanish vaqti'}</p>
+            <p className={`mt-1 ${valueClassName}`}>{client.preferred_contact_time || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{tx.fields.source}</p>
-            <p className={`mt-1 ${valueClassName}`}>
-              {client.source_platform === 'manual' 
-                ? (isRu ? 'Вручную' : 'Qo\'lda') 
-                : client.source_platform === 'telegram'
-                ? 'Telegram'
-                : client.source_platform === 'instagram'
-                ? 'Instagram'
-                : (client.source_platform_label || client.source_platform || '-')}
-            </p>
+            <p className={labelClassName}>{isRu ? 'Компания' : 'Kompaniya'}</p>
+            <p className={`mt-1 ${valueClassName}`}>{client.company_name || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{tx.fields.manager}</p>
-            <p className={`mt-1 ${valueClassName}`}>
-              {client.manager_username && !isUuidLike(client.manager_username)
-                ? client.manager_username
-                : '-'}
-            </p>
+            <p className={labelClassName}>INN</p>
+            <p className={`mt-1 ${valueClassName}`}>{client.inn || '-'}</p>
+          </div>
+          <div className="rounded-lg bg-surface-subtle/80 p-3">
+            <p className={labelClassName}>{isRu ? 'Интересующий продукт' : 'Qiziqtirgan mahsulot'}</p>
+            <p className={`mt-1 ${valueClassName}`}>{client.interested_product || '-'}</p>
           </div>
           <button
             type="button"

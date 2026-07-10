@@ -162,15 +162,20 @@ export function mapDashboardOverviewDtoToModel(
   const dateRange = toRecord(data.date_range) ?? {};
   const filteredSummary = toRecord(data.filtered_summary) ?? {};
   const breakdowns = toRecord(data.breakdowns) ?? {};
+  const crmClients = toRecord(data.clients) ?? {};
+  const crmChats = toRecord(data.chats) ?? {};
+  const crmClientStatuses = mapBreakdownItems(crmClients.by_status);
 
   const mappedLeadStatus =
     mapBreakdownItems(breakdowns.leads_by_status).length > 0
       ? mapBreakdownItems(breakdowns.leads_by_status)
+      : crmClientStatuses.length > 0
+        ? crmClientStatuses
       : [
-          { key: 'new', label: 'New', count: readCount(data.leads) },
-          { key: 'lost', label: 'Lost', count: readCount(data.lost_leads) },
-          { key: 'converted', label: 'Converted', count: readCount(data.clients) },
-        ];
+            { key: 'new', label: 'New', count: readCount(data.leads) },
+            { key: 'lost', label: 'Lost', count: readCount(data.lost_leads) },
+            { key: 'converted', label: 'Converted', count: readCount(data.clients) },
+          ];
 
   const mappedLeadSource =
     mapBreakdownItems(breakdowns.leads_by_source).length > 0
@@ -241,11 +246,11 @@ export function mapDashboardOverviewDtoToModel(
 
   return {
     leads: readCount(data.leads),
-    clients: readCount(data.clients),
+    clients: readCount(data.clients ?? crmClients.total_clients),
     products: readCount(data.products),
-    chats: readCount(data.chats),
+    chats: readCount(data.chats ?? crmChats.total_sessions),
     notifications: readCount(data.notifications),
-    customers: readCount(data.customers ?? data.clients),
+    customers: readCount(data.customers ?? data.clients ?? crmClients.total_clients),
     orders: readCount(data.orders ?? data.contracts),
     pending_payments: readCount(data.pending_payments),
     contracts: readCount(data.contracts),
@@ -264,8 +269,8 @@ export function mapDashboardOverviewDtoToModel(
       leads: readCount(filteredSummary.leads ?? data.leads),
       new_leads: readCount(filteredSummary.new_leads),
       converted_leads: readCount(filteredSummary.converted_leads),
-      customers: readCount(filteredSummary.customers ?? data.clients),
-      clients: readCount(filteredSummary.clients ?? data.clients),
+      customers: readCount(filteredSummary.customers ?? data.clients ?? crmClients.total_clients),
+      clients: readCount(filteredSummary.clients ?? data.clients ?? crmClients.total_clients),
       new_customers: readCount(filteredSummary.new_customers),
       new_clients: readCount(filteredSummary.new_clients),
       orders: readCount(filteredSummary.orders ?? data.contracts),
@@ -282,8 +287,8 @@ export function mapDashboardOverviewDtoToModel(
       approved_payments: readCount(filteredSummary.approved_payments),
       verified_payments: readCount(filteredSummary.verified_payments),
       unread_messages: readCount(filteredSummary.unread_messages ?? data.notifications),
-      total_chat_sessions: readCount(filteredSummary.total_chat_sessions ?? data.chats),
-      active_chat_sessions: readCount(filteredSummary.active_chat_sessions ?? data.chats),
+      total_chat_sessions: readCount(filteredSummary.total_chat_sessions ?? data.chats ?? crmChats.total_sessions),
+      active_chat_sessions: readCount(filteredSummary.active_chat_sessions ?? data.chats ?? crmChats.total_sessions),
       revenue: readDecimalString(filteredSummary.revenue ?? data.revenue),
       collected_amount: readDecimalString(filteredSummary.collected_amount ?? data.collected_amount),
       pending_payment_amount: readDecimalString(filteredSummary.pending_payment_amount),
@@ -310,4 +315,3 @@ export function mapDashboardOverviewDtoToModel(
     manager_performance: mapManagerPerformance(data.manager_performance),
   };
 }
-

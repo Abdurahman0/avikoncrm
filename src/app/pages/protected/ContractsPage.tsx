@@ -31,6 +31,7 @@ import {
 	getContractProductLineOptions,
 	resolveContractCatalogLanguage,
 } from '../../../features/contracts/utils/catalogOptions'
+import { backendCapabilities } from '../../../config/backend-capabilities'
 import { services } from '../../../services'
 import { useAuth } from '../../../auth'
 import type {
@@ -94,6 +95,9 @@ function ContractsPage() {
 	const navigate = useNavigate()
 	const { hasPermission } = useAuth()
 	const canManageContracts = hasPermission('can_manage_contracts')
+	const canMutateContracts =
+		canManageContracts && backendCapabilities.contracts.canWrite
+	const canViewPricingMatrix = backendCapabilities.contracts.canViewPricingMatrix
 
 	const tx = {
 		eyebrow: t('contractsPage.eyebrow'),
@@ -288,7 +292,7 @@ function ContractsPage() {
 					</span>
 				),
 			},
-			...(canManageContracts
+			...(canMutateContracts
 				? [
 						{
 							key: 'actions',
@@ -325,7 +329,7 @@ function ContractsPage() {
 					]
 				: []),
 		],
-		[canManageContracts, isRu, tx],
+		[canMutateContracts, isRu, tx],
 	)
 
 	function applyFilters(next: Partial<ContractsListParams>) {
@@ -425,29 +429,33 @@ function ContractsPage() {
 						subtitle={tx.subtitle}
 						actions={
 							<div className='flex w-full flex-wrap items-center gap-2 min-[768px]:w-auto'>
-								{canManageContracts ? (
+								{canViewPricingMatrix || canMutateContracts ? (
 									<>
-										<button
-											type='button'
-											className='inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-card px-3.5 text-sm font-semibold text-text-primary shadow-sm ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25'
-											onClick={() => {
-												void openPricingMatrix()
-											}}
-										>
-											<AppIcon name='activity' className='h-4 w-4' aria-hidden='true' />
-											{tx.pricing.button}
-										</button>
-										<button
-											type='button'
-											className='inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
-											onClick={() => {
-												setEditingContract(null)
-												setIsFormOpen(true)
-											}}
-										>
-											<AppIcon name='plus' className='h-4 w-4' aria-hidden='true' />
-											{tx.newContract}
-										</button>
+										{canViewPricingMatrix ? (
+											<button
+												type='button'
+												className='inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-card px-3.5 text-sm font-semibold text-text-primary shadow-sm ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25'
+												onClick={() => {
+													void openPricingMatrix()
+												}}
+											>
+												<AppIcon name='activity' className='h-4 w-4' aria-hidden='true' />
+												{tx.pricing.button}
+											</button>
+										) : null}
+										{canMutateContracts ? (
+											<button
+												type='button'
+												className='inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35'
+												onClick={() => {
+													setEditingContract(null)
+													setIsFormOpen(true)
+												}}
+											>
+												<AppIcon name='plus' className='h-4 w-4' aria-hidden='true' />
+												{tx.newContract}
+											</button>
+										) : null}
 									</>
 								) : null}
 								<span className='inline-flex min-h-8 items-center gap-2 rounded-pill bg-success-bg px-3 text-[12px] font-semibold text-success'>
@@ -647,24 +655,36 @@ function ContractsPage() {
 							refreshToken={detailRefreshToken}
 							isRecalculating={isRecalculating}
 							onClose={() => setSelectedContractId(null)}
-							onEdit={contract => {
-								setSelectedContractId(null)
-								setEditingContract(contract)
-								setIsFormOpen(true)
-							}}
-							onRecalculate={contract => {
-								void handleRecalculate(contract)
-							}}
-							onRequestDelete={contract => {
-								setSelectedContractId(null)
-								setContractToDelete(contract)
-							}}
+							onEdit={
+								canMutateContracts
+									? contract => {
+											setSelectedContractId(null)
+											setEditingContract(contract)
+											setIsFormOpen(true)
+										}
+									: undefined
+							}
+							onRecalculate={
+								canMutateContracts
+									? contract => {
+											void handleRecalculate(contract)
+										}
+									: undefined
+							}
+							onRequestDelete={
+								canMutateContracts
+									? contract => {
+											setSelectedContractId(null)
+											setContractToDelete(contract)
+										}
+									: undefined
+							}
 						/>
 					</div>
 				</div>
 			) : null}
 
-			{isFormOpen ? (
+			{canMutateContracts && isFormOpen ? (
 				<div
 					className='fixed inset-0 z-[150] flex justify-end bg-background-overlay/72 backdrop-blur-[3px]'
 					role='presentation'
@@ -692,7 +712,7 @@ function ContractsPage() {
 				</div>
 			) : null}
 
-			{contractToDelete ? (
+			{canMutateContracts && contractToDelete ? (
 				<ContractDeleteDialog
 					contract={contractToDelete}
 					isDeleting={isDeleting}
@@ -707,7 +727,7 @@ function ContractsPage() {
 				/>
 			) : null}
 
-			{isPricingOpen ? (
+			{canViewPricingMatrix && isPricingOpen ? (
 				<div
 					className='fixed inset-0 z-[160] flex justify-end bg-background-overlay/72 backdrop-blur-[3px]'
 					role='presentation'

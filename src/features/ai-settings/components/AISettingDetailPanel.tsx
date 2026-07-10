@@ -221,11 +221,6 @@ function AISettingDetailPanel({
 									? t('aiSettings.autoOrderOn')
 									: t('aiSettings.autoOrderOff')}
 							</span>
-							<span className='inline-flex min-h-7 items-center rounded-pill bg-info-bg px-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-info'>
-								{setting.resume_after_operator_minutes > 0
-									? `${t('aiSettings.followUpOn')} (${setting.resume_after_operator_minutes}m)`
-									: t('aiSettings.followUpOff')}
-							</span>
 						</div>
 					) : null}
 				</header>
@@ -275,24 +270,6 @@ function AISettingDetailPanel({
 												{setting.temperature.toFixed(2)}
 											</p>
 										</div>
-										<div className='rounded-lg bg-surface-subtle/80 p-3'>
-											<p className={labelClassName}>
-												{t('aiSettings.form.orderConfidenceThreshold')}
-											</p>
-											<p className={`mt-1 ${valueClassName}`}>
-												{setting.order_confidence_threshold.toFixed(2)}
-											</p>
-										</div>
-										<div className='rounded-lg bg-surface-subtle/80 p-3'>
-											<p className={labelClassName}>
-												{t('aiSettings.form.followUpMinutes')}
-											</p>
-											<p className={`mt-1 ${valueClassName}`}>
-												{setting.resume_after_operator_minutes > 0
-													? setting.resume_after_operator_minutes
-													: t('aiSettings.followUpOff')}
-											</p>
-										</div>
 										<div className='rounded-lg bg-surface-subtle/80 p-3 sm:col-span-2'>
 											<p className={labelClassName}>
 												{t('aiSettings.detail.updatedBy')}
@@ -313,21 +290,6 @@ function AISettingDetailPanel({
 									<div className='max-h-[320px] overflow-y-auto rounded-lg bg-surface-subtle/80 p-3'>
 										<p className='m-0 whitespace-pre-wrap text-sm leading-6 text-text-primary'>
 											{setting.system_prompt}
-										</p>
-									</div>
-								</div>
-							</PageCard>
-
-							<PageCard>
-								<div className='grid gap-3'>
-									<h3 className='m-0 text-[1rem] font-semibold text-text-primary'>
-										{t('aiSettings.form.followUpMessage')}
-									</h3>
-									<div className='max-h-[220px] overflow-y-auto rounded-lg bg-surface-subtle/80 p-3'>
-										<p className='m-0 whitespace-pre-wrap text-sm leading-6 text-text-primary'>
-											{setting.follow_up_message?.trim()?.length
-												? setting.follow_up_message
-												: t('common.na')}
 										</p>
 									</div>
 								</div>
@@ -400,4 +362,3 @@ function AISettingDetailPanel({
 }
 
 export default AISettingDetailPanel
-

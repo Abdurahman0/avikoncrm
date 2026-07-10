@@ -1,4 +1,5 @@
 import { mockAuthService, MOCK_AUTH_USER_STORAGE_KEY } from '../../services/mock/mock-auth.service'
+import { authService } from '../../services/api/auth.service'
 import {
 	clearTokens,
 	getAccessToken,
@@ -29,6 +30,8 @@ const authState: AuthState = {
 const listeners = new Set<AuthStateListener>()
 let restoreSessionPromise: Promise<void> | null = null
 let hasAttemptedInitialRestore = false
+const useMockApi = import.meta.env.VITE_USE_MOCK_API === 'true'
+const activeAuthService = useMockApi ? mockAuthService : authService
 
 function emitChange() {
 	const snapshot = { ...authState }
@@ -141,10 +144,13 @@ export async function login(username: string, password: string): Promise<Authent
 	setState({ loading: true })
 
 	try {
-		const result = await mockAuthService.login(username, password)
+		const result = await activeAuthService.login(username, password)
 		setTokens({ access: result.access, refresh: result.refresh })
 
-		const effectiveUser = await mockAuthService.getMe()
+		const effectiveUser =
+			!useMockApi && result.user
+				? result.user
+				: await activeAuthService.getMe()
 		setState({
 			user: effectiveUser,
 			isAuthenticated: true,
@@ -177,7 +183,7 @@ export function logout(options?: LogoutOptions): void {
 }
 
 export async function fetchMe(): Promise<AuthenticatedUser> {
-	const user = await mockAuthService.getMe()
+	const user = await activeAuthService.getMe()
 
 	setState({
 		user,
@@ -198,31 +204,25 @@ export async function restoreSession(): Promise<void> {
 	restoreSessionPromise = (async () => {
 		const accessToken = getAccessToken()
 		const refreshToken = getRefreshToken()
-		const fallbackUser = readPersistedUser()
-
-		if (fallbackUser) {
-			setState({
-				user: fallbackUser,
-				isAuthenticated: true,
-				loading: false,
-			})
-			return
-		}
 
 		if (!accessToken && !refreshToken) {
 			logout()
 			return
 		}
 
-		if (!accessToken && refreshToken) {
-			// In mock mode we issue a deterministic replacement access token.
-			setTokens({
-				access: `mock-restored-access-${Date.now()}`,
-				refresh: refreshToken,
-			})
-		}
-
 		try {
+			if (!accessToken && refreshToken) {
+				if (useMockApi) {
+					setTokens({
+						access: `mock-restored-access-${Date.now()}`,
+						refresh: refreshToken,
+					})
+				} else {
+					const refreshedTokens = await activeAuthService.refreshToken(refreshToken)
+					setTokens(refreshedTokens)
+				}
+			}
+
 			await fetchMe()
 		} catch {
 			logout({ redirectToLogin: true })
@@ -236,4 +236,3 @@ export async function restoreSession(): Promise<void> {
 
 	return restoreSessionPromise
 }
-

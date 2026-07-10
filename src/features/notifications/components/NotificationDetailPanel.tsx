@@ -25,6 +25,7 @@ import {
 
 interface NotificationDetailPanelProps {
 	notificationId: EntityId
+	canManageNotifications?: boolean
 	onClose: () => void
 	onNotificationRead: (notification: AppNotification) => void
 	onNotificationDeleted: (notificationId: EntityId) => void
@@ -38,6 +39,7 @@ const valueClassName =
 
 function NotificationDetailPanel({
 	notificationId,
+	canManageNotifications = true,
 	onClose,
 	onNotificationRead,
 	onNotificationDeleted,
@@ -67,7 +69,11 @@ function NotificationDetailPanel({
 					return
 				}
 
-				if (resolvedNotification && !resolvedNotification.is_read) {
+				if (
+					canManageNotifications &&
+					resolvedNotification &&
+					!resolvedNotification.is_read
+				) {
 					try {
 						const updatedNotification = await services.notifications.markAsRead(
 							resolvedNotification.id,
@@ -107,7 +113,7 @@ function NotificationDetailPanel({
 		return () => {
 			isActive = false
 		}
-	}, [notificationId, onNotificationRead])
+	}, [canManageNotifications, notificationId, onNotificationRead])
 
 	useEffect(() => {
 		function handleEscape(event: KeyboardEvent) {
@@ -303,29 +309,31 @@ function NotificationDetailPanel({
 								</div>
 							</PageCard>
 
-							<PageCard>
-								<div className='flex flex-wrap items-center gap-2'>
-									<button
-										type='button'
-										className='inline-flex min-h-10 items-center gap-2 rounded-lg bg-danger-bg px-4 text-sm font-semibold text-danger transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/30 disabled:cursor-not-allowed disabled:opacity-60'
-										onClick={() => {
-											setIsDeleteDialogOpen(true)
-										}}
-										disabled={isDeleting}
-									>
-										<AppIcon name='trash' className='h-4 w-4' aria-hidden='true' />
-										{isDeleting
-											? t('notifications.bulk.deletingOne')
-											: t('notifications.bulk.deleteOne')}
-									</button>
-								</div>
-							</PageCard>
+							{canManageNotifications ? (
+								<PageCard>
+									<div className='flex flex-wrap items-center gap-2'>
+										<button
+											type='button'
+											className='inline-flex min-h-10 items-center gap-2 rounded-lg bg-danger-bg px-4 text-sm font-semibold text-danger transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger/30 disabled:cursor-not-allowed disabled:opacity-60'
+											onClick={() => {
+												setIsDeleteDialogOpen(true)
+											}}
+											disabled={isDeleting}
+										>
+											<AppIcon name='trash' className='h-4 w-4' aria-hidden='true' />
+											{isDeleting
+												? t('notifications.bulk.deletingOne')
+												: t('notifications.bulk.deleteOne')}
+										</button>
+									</div>
+								</PageCard>
+							) : null}
 						</>
 					) : null}
 				</div>
 			</aside>
 
-			{isDeleteDialogOpen ? (
+			{canManageNotifications && isDeleteDialogOpen ? (
 				<ConfirmDialog
 					eyebrow={t('notifications.bulk.deleteOne')}
 					title={t('notifications.bulk.deleteOne')}

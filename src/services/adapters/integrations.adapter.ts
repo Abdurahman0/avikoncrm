@@ -266,19 +266,24 @@ export function mapIntegrationConfigDtoToModel(dto: IntegrationConfigDto): Integ
       ? explicitUpdatedByName
       : updatedBy.updatedByName;
 
+  const key = readString(dto.key);
+
   return {
     id: readString(dto.id) || `integration-config-${nowIso}`,
     created_at: readString(dto.created_at, nowIso) || readString(dto.createdAt, nowIso),
     updated_at: readString(dto.updated_at, nowIso) || readString(dto.updatedAt, nowIso),
     provider: normalizeProvider(dto.provider),
-    key: readString(dto.key),
+    key,
     label:
       readString(dto.label) ||
       readString(dto.description) ||
       readString(dto.name) ||
       readString(dto.key),
     value: readString(dto.value),
-    is_secret: readBoolean(dto.is_secret ?? dto.isSecret, false),
+    is_secret: readBoolean(
+      dto.is_secret ?? dto.isSecret,
+      /(?:token|secret|password|api[_-]?key)/i.test(key),
+    ),
     is_active: readBoolean(dto.is_active ?? dto.isActive, false),
     updated_by: updatedBy.updatedById,
     updated_by_name: updatedByName || null,
@@ -379,4 +384,3 @@ export function mapIntegrationEventListDtoToItems(value: unknown): IntegrationEv
     .filter((item): item is IntegrationEventDto => item !== null)
     .map((item) => mapIntegrationEventDtoToModel(item));
 }
-

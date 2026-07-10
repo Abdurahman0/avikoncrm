@@ -26,6 +26,7 @@ import ProductCategoryFormDialog from '../../../features/products/components/Pro
 import ProductDeleteDialog from '../../../features/products/components/ProductDeleteDialog';
 import ProductDetailPanel from '../../../features/products/components/ProductDetailPanel';
 import ProductFormPanel from '../../../features/products/components/ProductFormPanel';
+import { backendCapabilities } from '../../../config/backend-capabilities';
 import { formatLocalizedDate } from '../../../i18n/date-format';
 import { resolveIntlLocale } from '../../../i18n/locale';
 import { usePersistentState } from '../../../lib/persistent-state';
@@ -126,6 +127,7 @@ function sortProductsByStockStatus(items: Product[]): Product[] {
 function ProductsPage() {
   const { t, i18n } = useTranslation();
   const locale = resolveIntlLocale(i18n.language);
+  const canMutateProducts = backendCapabilities.products.canWrite;
   const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = usePersistentState('products:search', '');
@@ -616,7 +618,7 @@ function ProductsPage() {
   }
 
   const productColumns = useMemo<DataTableColumn<Product>[]>(() => {
-    return [
+    const baseColumns: DataTableColumn<Product>[] = [
       {
         key: 'name',
         label: t('products.columns.product'),
@@ -717,6 +719,14 @@ function ProductsPage() {
           </span>
         ),
       },
+    ];
+
+    if (!canMutateProducts) {
+      return baseColumns;
+    }
+
+    return [
+      ...baseColumns,
       {
         key: 'actions',
         label: t('products.columns.actions'),
@@ -749,10 +759,10 @@ function ProductsPage() {
         ),
       },
     ];
-  }, [locale, t]);
+  }, [canMutateProducts, locale, t]);
 
   const categoryColumns = useMemo<DataTableColumn<ProductCategory>[]>(() => {
-    return [
+    const baseColumns: DataTableColumn<ProductCategory>[] = [
       {
         key: 'name',
         label: t('products.categoryColumns.name'),
@@ -788,6 +798,14 @@ function ProductsPage() {
           </span>
         ),
       },
+    ];
+
+    if (!canMutateProducts) {
+      return baseColumns;
+    }
+
+    return [
+      ...baseColumns,
       {
         key: 'actions',
         label: t('products.categoryColumns.actions'),
@@ -820,7 +838,7 @@ function ProductsPage() {
         ),
       },
     ];
-  }, [locale, t]);
+  }, [canMutateProducts, locale, t]);
 
   const orderedCategories = useMemo(() => {
     return [...categories].sort((left, right) => {
@@ -937,14 +955,16 @@ function ProductsPage() {
       subtitle={t('products.subtitle')}
       actions={
         <div className="flex w-full flex-wrap items-center gap-2 min-[768px]:w-auto">
-          <button
-            type="button"
-            className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
-            onClick={isCategoriesView ? openCreateCategoryForm : openCreateForm}
-          >
-            <AppIcon name="plus" className="h-4 w-4" aria-hidden="true" />
-            {isCategoriesView ? t('products.newCategory') : t('products.newProduct')}
-          </button>
+          {canMutateProducts ? (
+            <button
+              type="button"
+              className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
+              onClick={isCategoriesView ? openCreateCategoryForm : openCreateForm}
+            >
+              <AppIcon name="plus" className="h-4 w-4" aria-hidden="true" />
+              {isCategoriesView ? t('products.newCategory') : t('products.newProduct')}
+            </button>
+          ) : null}
           <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-primary/12 px-3 text-[12px] font-semibold text-text-accent">
             <AppIcon name="products" className="h-3.5 w-3.5" aria-hidden="true" />
             {totalItemsCount} {isCategoriesView ? t('products.categoriesRecords') : t('products.records')}
@@ -1068,9 +1088,9 @@ function ProductsPage() {
                 rowKey="id"
                 selectedRowKey={selectedCategoryId}
                 loading={isCategoryOptionsLoading}
-                onRowClick={(category) => setSelectedCategoryId(category.id)}
+                onRowClick={canMutateProducts ? (category) => setSelectedCategoryId(category.id) : undefined}
                 rowReorder={{
-                  disabled: isCategoryOptionsLoading || isCategoryReordering,
+                  disabled: !canMutateProducts || isCategoryOptionsLoading || isCategoryReordering,
                   onReorder: (fromIndex, toIndex) => {
                     void handleReorderCategories(fromIndex, toIndex);
                   },
@@ -1129,6 +1149,7 @@ function ProductsPage() {
           productId={selectedProductId}
           onClose={() => setSelectedProductId(null)}
           onProductChanged={() => setReloadCursor((current) => current + 1)}
+          canManageProducts={canMutateProducts}
           onEdit={(product) => {
             openEditForm(product);
             setSelectedProductId(null);
@@ -1144,6 +1165,7 @@ function ProductsPage() {
         <ProductCategoryDetailPanel
           categoryId={selectedCategoryId}
           onClose={() => setSelectedCategoryId(null)}
+          canManageCategories={canMutateProducts}
           onEdit={(category) => {
             openEditCategoryForm(category);
             setSelectedCategoryId(null);
@@ -1155,7 +1177,7 @@ function ProductsPage() {
         />
       ) : null}
 
-      {isFormOpen ? (
+      {canMutateProducts && isFormOpen ? (
         <ProductFormPanel
           mode={formMode}
           product={editingProduct}
@@ -1176,7 +1198,7 @@ function ProductsPage() {
         />
       ) : null}
 
-      {productToDelete ? (
+      {canMutateProducts && productToDelete ? (
         <ProductDeleteDialog
           product={productToDelete}
           isDeleting={isDeleting}
@@ -1191,7 +1213,7 @@ function ProductsPage() {
         />
       ) : null}
 
-      {isCategoryFormOpen ? (
+      {canMutateProducts && isCategoryFormOpen ? (
         <ProductCategoryFormDialog
           mode={categoryFormMode}
           category={editingCategory}
@@ -1210,7 +1232,7 @@ function ProductsPage() {
         />
       ) : null}
 
-      {categoryToDelete ? (
+      {canMutateProducts && categoryToDelete ? (
         <ProductCategoryDeleteDialog
           category={categoryToDelete}
           isDeleting={isCategoryDeleting}
