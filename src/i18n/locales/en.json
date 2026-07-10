@@ -715,6 +715,9 @@
     "permissionCount": "{{count}} permissions",
     "systemRole": "System role",
     "customRole": "Custom role",
+    "catalogTitle": "Complete permission catalog",
+    "catalogDescription": "All company-member permissions returned by the backend.",
+    "catalogCount": "{{count}} permissions",
     "roleNames": {
       "owner": "Owner",
       "director": "Director",
@@ -751,6 +754,8 @@
       "nameRequired": "Enter a role name.",
       "permissionsTitle": "Role permissions",
       "permissionsDescription": "{{count}} permissions selected",
+      "selectAll": "Select all permissions",
+      "clearAll": "Clear selection",
       "saveError": "The company role could not be created.",
       "saving": "Creating...",
       "submit": "Create role"

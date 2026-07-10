@@ -715,6 +715,9 @@
     "permissionCount": "{{count}} ta ruxsat",
     "systemRole": "Tizim roli",
     "customRole": "Maxsus rol",
+    "catalogTitle": "To'liq ruxsatlar katalogi",
+    "catalogDescription": "Backend qaytargan barcha kompaniya a'zosi ruxsatlari.",
+    "catalogCount": "{{count}} ta ruxsat",
     "roleNames": {
       "owner": "Egasi",
       "director": "Direktor",
@@ -751,6 +754,8 @@
       "nameRequired": "Rol nomini kiriting.",
       "permissionsTitle": "Rol ruxsatlari",
       "permissionsDescription": "{{count}} ta ruxsat tanlandi",
+      "selectAll": "Barcha ruxsatlarni tanlash",
+      "clearAll": "Tanlovni tozalash",
       "saveError": "Kompaniya rolini yaratib bo'lmadi.",
       "saving": "Yaratilmoqda...",
       "submit": "Rol yaratish"

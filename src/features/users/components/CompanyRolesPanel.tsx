@@ -186,8 +186,9 @@ function CompanyRolesPanel({ canCreate }: CompanyRolesPanelProps) {
             description={t('companyRoles.emptyDescription')}
           />
         ) : (
-          <div className="grid gap-3 lg:grid-cols-2">
-            {roles.map((role) => (
+          <div className="grid gap-5">
+            <div className="grid gap-3 lg:grid-cols-2">
+              {roles.map((role) => (
               <article
                 key={role.id}
                 className="grid content-start gap-3 rounded-xl bg-surface-subtle/70 p-4 ring-1 ring-border-soft/40"
@@ -229,7 +230,54 @@ function CompanyRolesPanel({ canCreate }: CompanyRolesPanelProps) {
                   })}
                 </div>
               </article>
-            ))}
+              ))}
+            </div>
+
+            <section className="grid gap-3 border-t border-border-soft/50 pt-5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="m-0 text-[0.95rem] font-semibold text-text-primary">
+                    {t('companyRoles.catalogTitle')}
+                  </h3>
+                  <p className="mt-1 text-[12px] text-text-secondary">
+                    {t('companyRoles.catalogDescription')}
+                  </p>
+                </div>
+                <span className="inline-flex min-h-8 items-center rounded-lg bg-primary/10 px-3 text-[12px] font-semibold text-text-accent">
+                  {t('companyRoles.catalogCount', { count: permissions.length })}
+                </span>
+              </div>
+
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                {groupedPermissions.map((group) => (
+                  <div
+                    key={group.module}
+                    className="grid content-start gap-2 rounded-xl bg-background-default/65 p-3 ring-1 ring-border-soft/35"
+                  >
+                    <h4 className="m-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted">
+                      {t(`companyRoles.modules.${group.module}`, {
+                        defaultValue: group.module,
+                      })}
+                    </h4>
+                    <div className="grid gap-1.5">
+                      {group.items.map((permission) => (
+                        <div
+                          key={permission.code}
+                          className="rounded-lg bg-surface-card px-3 py-2 ring-1 ring-border-soft/30"
+                        >
+                          <p className="m-0 text-sm font-semibold text-text-primary">
+                            {getUserPermissionLabel(t, permission.code, permission.label)}
+                          </p>
+                          <p className="mt-0.5 text-[11px] text-text-muted">
+                            {permission.code}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
           </div>
         )}
       </PageCard>
@@ -300,6 +348,25 @@ function CompanyRolesPanel({ canCreate }: CompanyRolesPanelProps) {
                       count: selectedCodes.length,
                     })}
                   </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="inline-flex min-h-8 items-center rounded-lg bg-primary/10 px-3 text-[12px] font-semibold text-text-accent ring-1 ring-primary/20 transition duration-fast hover:bg-primary/15 disabled:opacity-60"
+                    onClick={() => setSelectedCodes(permissions.map((permission) => permission.code))}
+                    disabled={isSaving || selectedCodes.length === permissions.length}
+                  >
+                    {t('companyRoles.form.selectAll')}
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex min-h-8 items-center rounded-lg bg-surface-subtle px-3 text-[12px] font-semibold text-text-primary ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-muted disabled:opacity-60"
+                    onClick={() => setSelectedCodes([])}
+                    disabled={isSaving || selectedCodes.length === 0}
+                  >
+                    {t('companyRoles.form.clearAll')}
+                  </button>
                 </div>
 
                 {groupedPermissions.map((group) => (

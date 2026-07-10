@@ -709,6 +709,9 @@
     "permissionCount": "Разрешений: {{count}}",
     "systemRole": "Системная роль",
     "customRole": "Пользовательская роль",
+    "catalogTitle": "Полный каталог разрешений",
+    "catalogDescription": "Все разрешения участников компании, возвращаемые backend.",
+    "catalogCount": "Разрешений: {{count}}",
     "roleNames": {
       "owner": "Владелец",
       "director": "Директор",
@@ -745,6 +748,8 @@
       "nameRequired": "Введите название роли.",
       "permissionsTitle": "Разрешения роли",
       "permissionsDescription": "Выбрано разрешений: {{count}}",
+      "selectAll": "Выбрать все разрешения",
+      "clearAll": "Очистить выбор",
       "saveError": "Не удалось создать роль компании.",
       "saving": "Создание...",
       "submit": "Создать роль"
