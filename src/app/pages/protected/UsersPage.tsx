@@ -43,7 +43,8 @@ type RoleFilter = UserRole | 'all';
 type ActiveFilter = 'all' | 'active' | 'inactive';
 
 const PAGE_SIZE = 8;
-const DEFAULT_ORDERING = '-updated_at';
+const FILTER_FETCH_SIZE = 200;
+const DEFAULT_ORDERING = 'username';
 
 const tablePrimaryTextClassName =
   'block max-w-[140px] truncate text-sm font-semibold leading-[1.35] text-text-primary min-[640px]:max-w-[220px]';
@@ -111,15 +112,10 @@ function UsersPage() {
       setHasError(false);
 
       try {
-        const result = await services.users.listUsers({
-          page: currentPage,
-          page_size: PAGE_SIZE,
+        const firstResult = await services.users.listUsers({
+          page: 1,
+          page_size: FILTER_FETCH_SIZE,
           search: search.trim() || undefined,
-          role: roleFilter === 'all' ? undefined : roleFilter,
-          is_active:
-            activeFilter === 'all'
-              ? undefined
-              : activeFilter === 'active',
           ordering: DEFAULT_ORDERING,
         });
 
@@ -127,29 +123,81 @@ function UsersPage() {
           return;
         }
 
-        const resultWithOptionalResults = result as unknown as {
+        const firstPayload = firstResult as unknown as {
+          items?: ManagedUser[];
           results?: ManagedUser[];
+          meta?: PaginationMeta;
+          total?: number;
+          count?: number;
+          page_size?: number;
         };
-        const usersList = Array.isArray(result.items)
-          ? result.items
-          : Array.isArray(resultWithOptionalResults.results)
-            ? resultWithOptionalResults.results
+        const firstItems = Array.isArray(firstPayload.items)
+          ? firstPayload.items
+          : Array.isArray(firstPayload.results)
+            ? firstPayload.results
             : [];
 
-        const pageSize = result.page_size ?? PAGE_SIZE;
-        const totalItems =
-          result.total ?? result.count ?? usersList.length;
-        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        const serverPageSize =
+          firstPayload.meta?.pageSize ?? firstPayload.page_size ?? FILTER_FETCH_SIZE;
+        const serverTotalItems =
+          firstPayload.meta?.totalItems ??
+          firstPayload.total ??
+          firstPayload.count ??
+          firstItems.length;
+        const serverTotalPages = Math.max(
+          1,
+          firstPayload.meta?.totalPages ??
+            Math.ceil(serverTotalItems / serverPageSize),
+        );
+        const remainingResults = await Promise.all(
+          Array.from({ length: serverTotalPages - 1 }, (_, index) =>
+            services.users.listUsers({
+              page: index + 2,
+              page_size: serverPageSize,
+              search: search.trim() || undefined,
+              ordering: DEFAULT_ORDERING,
+            }),
+          ),
+        );
+
+        if (!isActive) {
+          return;
+        }
+
+        const allUsers = [
+          ...firstItems,
+          ...remainingResults.flatMap((result) => {
+            const payload = result as unknown as {
+              items?: ManagedUser[];
+              results?: ManagedUser[];
+            };
+            return Array.isArray(payload.items)
+              ? payload.items
+              : Array.isArray(payload.results)
+                ? payload.results
+                : [];
+          }),
+        ];
+        const filteredUsers = allUsers.filter((user) => {
+          const matchesRole = roleFilter === 'all' || user.role === roleFilter;
+          const matchesActive =
+            activeFilter === 'all' ||
+            Boolean(user.is_active) === (activeFilter === 'active');
+          return matchesRole && matchesActive;
+        });
+        const totalItems = filteredUsers.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
 
         if (currentPage > totalPages) {
           setCurrentPage(totalPages);
           return;
         }
 
-        setUsers(usersList);
+        const pageStart = (currentPage - 1) * PAGE_SIZE;
+        setUsers(filteredUsers.slice(pageStart, pageStart + PAGE_SIZE));
         setPaginationMeta({
-          page: result.page ?? currentPage,
-          pageSize,
+          page: currentPage,
+          pageSize: PAGE_SIZE,
           totalItems,
           totalPages,
         });
@@ -701,4 +749,3 @@ function UsersPage() {
 }
 
 export default UsersPage;
-

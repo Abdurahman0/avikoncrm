@@ -42,13 +42,13 @@ import type {
 } from '../../../types/domain';
 
 type ActiveFilter = 'all' | 'active' | 'inactive';
-type ProductOrdering = '-created_at' | 'created_at' | 'name' | '-name' | 'price' | '-price';
+type ProductOrdering = 'name' | '-name' | 'code' | 'article' | '-article';
 type CatalogView = 'products' | 'categories';
 type StockStatus = 'in_stock' | 'low_stock' | 'out_of_stock';
 
 const PAGE_SIZE = 24;
 const CATEGORY_FETCH_SIZE = 500;
-const DEFAULT_ORDERING: ProductOrdering = '-created_at';
+const DEFAULT_ORDERING: ProductOrdering = 'name';
 
 const DEFAULT_PAGINATION_META: PaginationMeta = {
   page: 1,
@@ -180,12 +180,11 @@ function ProductsPage() {
 
   const orderingOptions = useMemo<SelectOption[]>(
     () => [
-      { value: '-created_at', label: t('products.createdNewest') },
-      { value: 'created_at', label: t('products.createdOldest') },
       { value: 'name', label: t('products.nameAz') },
       { value: '-name', label: t('products.nameZa') },
-      { value: '-price', label: t('products.priceHighLow') },
-      { value: 'price', label: t('products.priceLowHigh') },
+      { value: 'code', label: t('products.codeAsc') },
+      { value: 'article', label: t('products.articleAsc') },
+      { value: '-article', label: t('products.articleDesc') },
     ],
     [t],
   );
@@ -931,7 +930,6 @@ function ProductsPage() {
                 options={[{ value: 'all', label: t('common.all') }, ...categoryOptions]}
                 onChange={setCategoryFilter}
                 disabled={isLoading || isCategoryOptionsLoading}
-                searchFirst
                 wideMenu
               />
             </label>

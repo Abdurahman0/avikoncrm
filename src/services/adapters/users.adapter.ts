@@ -254,6 +254,10 @@ export function mapUserListDtoToItems(value: unknown): ManagedUser[] {
     items
       .map((item) => toRecord(item))
       .filter((item): item is UserDto => item !== null)
+      // `/api/users/` is the CRM staff endpoint, but the current backend also
+      // returns marketplace customer accounts. Keep customer identities in the
+      // Clients module instead of mislabelling them as operators here.
+      .filter((item) => ['developer', 'admin', 'operator'].includes(readString(item.role)))
       .map((item) => mapUserDtoToModel(item));
 
   if (Array.isArray(value)) {

@@ -193,6 +193,10 @@ function sortSessionsByOrdering(
   });
 }
 
+function toSessionApiOrdering(ordering: SessionOrdering): string {
+  return ordering.replace('last_message_at', 'updated_at');
+}
+
 function ChatPage() {
   const { t } = useTranslation();
   const location = useLocation();
@@ -275,7 +279,7 @@ function ChatPage() {
         operatorFilter === 'all'
           ? undefined
           : operatorFilter === 'active',
-      ordering,
+      ordering: toSessionApiOrdering(ordering),
     }),
     [channelFilter, operatorFilter, ordering, search],
   );
@@ -873,6 +877,5 @@ function ChatPage() {
 }
 
 export default ChatPage;
-
 
 

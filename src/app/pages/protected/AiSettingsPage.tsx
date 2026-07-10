@@ -40,8 +40,6 @@ type ActiveFilter = 'all' | 'active' | 'inactive';
 type AISettingsOrdering =
   | '-updated_at'
   | 'updated_at'
-  | '-created_at'
-  | 'created_at'
   | 'name'
   | '-name'
   | '-temperature'
@@ -201,8 +199,6 @@ function AiSettingsPage() {
     () => [
       { value: '-updated_at', label: t('aiSettings.ordering.updatedNewest') },
       { value: 'updated_at', label: t('aiSettings.ordering.updatedOldest') },
-      { value: '-created_at', label: t('aiSettings.ordering.createdNewest') },
-      { value: 'created_at', label: t('aiSettings.ordering.createdOldest') },
       { value: 'name', label: t('aiSettings.ordering.nameAsc') },
       { value: '-name', label: t('aiSettings.ordering.nameDesc') },
       { value: '-temperature', label: t('aiSettings.ordering.temperatureHighLow') },
@@ -626,4 +622,3 @@ function AiSettingsPage() {
 }
 
 export default AiSettingsPage;
-

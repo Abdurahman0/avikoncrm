@@ -72,7 +72,7 @@ function toPaginatedResult(
   totalItemsHint?: number | null,
 ): PaginatedResult<ManagedUser> {
   const page = Math.max(1, params?.page ?? 1);
-  const pageSize = Math.max(1, params?.pageSize ?? 10);
+  const pageSize = Math.max(1, params?.pageSize ?? params?.page_size ?? 10);
   const start = (page - 1) * pageSize;
   const hasServerPaginationHint = typeof totalItemsHint === 'number' && totalItemsHint >= 0;
 
@@ -158,13 +158,12 @@ function mapSinglePermission(value: unknown): UserPermission | null {
 export async function listUsers(
   params?: UserListParams,
 ): Promise<PaginatedResult<ManagedUser>> {
+  const pageSize = params?.pageSize ?? params?.page_size;
   const { data } = await apiClient.get<unknown>('/api/users/', {
     params: {
       page: params?.page,
-      page_size: params?.pageSize,
+      page_size: pageSize,
       search: params?.search,
-      role: params?.role,
-      is_active: params?.is_active,
       ordering: params?.ordering,
     },
   });

@@ -533,7 +533,7 @@ export function mapConversationDtoToModel(dto: ConversationDto): Conversation {
     : [];
   const lastEmbeddedMessage =
     embeddedMessages.length > 0 ? embeddedMessages[embeddedMessages.length - 1] : null;
-  const rawLastMessage = dto.last_message ?? lastEmbeddedMessage;
+  const rawLastMessage = dto.last_message ?? dto.latest_message ?? lastEmbeddedMessage;
   const lastMessagePayload = toRecord(rawLastMessage)
     ? mapChatMessageDtoToModel(toRecord(rawLastMessage) as ChatMessageDto, sessionId)
     : null;
