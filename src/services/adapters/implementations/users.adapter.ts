@@ -238,6 +238,10 @@ function toMutationPayload(
 		payload.password = input.password
 	}
 
+	if (Array.isArray(input.custom_permission_ids)) {
+		payload.permissions = input.custom_permission_ids
+	}
+
 	return payload
 }
 

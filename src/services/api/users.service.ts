@@ -121,6 +121,9 @@ function toMutationPayload(
   if (input.is_active !== undefined) {
     payload.is_active = input.is_active;
   }
+  if (input.custom_permission_ids !== undefined) {
+    payload.permissions = input.custom_permission_ids;
+  }
   if (username) {
     payload.username = username;
   }
@@ -229,26 +232,32 @@ export async function toggleUserActive(id: EntityId): Promise<ManagedUser | null
 }
 
 export async function listPermissions(): Promise<UserPermission[]> {
-  // Preferred backend endpoint (Solar API): /api/auth/all-permissions/
-  // Fallbacks are kept for older deployments.
-  const candidates = [
-    '/api/auth/permissions/all/',
-    '/api/auth/permissions/',
+  // Staff permissions and company-member permissions are separate backend
+  // catalogs, but UserWrite accepts permission codes from one array.
+  const catalogCandidates = [
+    ['/api/auth/permissions/all/', '/api/auth/permissions/'],
+    ['/api/permissions/'],
   ] as const;
+  const merged = new Map<string, UserPermission>();
 
-  for (const path of candidates) {
-    try {
-      const { data } = await apiClient.get<unknown>(path);
-      const items = mapPermissionListDtoToItems(data);
-      if (items.length > 0) {
-        return items;
+  for (const candidates of catalogCandidates) {
+    for (const path of candidates) {
+      try {
+        const { data } = await apiClient.get<unknown>(path);
+        const items = mapPermissionListDtoToItems(data);
+        items.forEach((permission) => {
+          if (!merged.has(permission.code)) {
+            merged.set(permission.code, permission);
+          }
+        });
+        if (items.length > 0) break;
+      } catch {
+        // Try the compatible fallback for this catalog.
       }
-    } catch {
-      // Try next candidate.
     }
   }
 
-  return [];
+  return Array.from(merged.values());
 }
 
 export async function getPermissionById(id: EntityId): Promise<UserPermission | null> {

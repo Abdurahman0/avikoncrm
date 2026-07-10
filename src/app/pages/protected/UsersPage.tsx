@@ -339,6 +339,7 @@ function UsersPage() {
           password,
           phone: payload.phone ?? null,
           is_active: payload.is_active,
+          custom_permission_ids: payload.custom_permission_ids,
         };
 
         await services.users.createUser(createPayload);
