@@ -205,7 +205,9 @@
       "next": "Next"
     },
     "filterSelect": {
-      "select": "Choose"
+      "select": "Choose",
+      "searchOptions": "Search options...",
+      "noOptions": "No matching options"
     },
     "emptyState": {
       "title": "No information found",

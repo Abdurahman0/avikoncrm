@@ -21,6 +21,7 @@ function FilterSelect({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [openAbove, setOpenAbove] = useState(false);
+  const [query, setQuery] = useState('');
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   const selectedOption = useMemo(
@@ -54,7 +55,18 @@ function FilterSelect({
 
   useEffect(() => {
     setIsOpen(false);
+    setQuery('');
   }, [value]);
+
+  const searchable = options.length > 8;
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const visibleOptions = normalizedQuery
+    ? options.filter((option) =>
+        `${option.label} ${option.description ?? ''}`
+          .toLocaleLowerCase()
+          .includes(normalizedQuery),
+      )
+    : options;
 
   useEffect(() => {
     if (!isOpen) {
@@ -126,8 +138,21 @@ function FilterSelect({
           ].join(' ')}
           role="listbox"
         >
+          {searchable ? (
+            <div className="border-b border-border-soft/50 px-1.5 pb-2">
+              <input
+                type="search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={t('shared.filterSelect.searchOptions')}
+                className="h-9 w-full rounded-md bg-surface-subtle px-2.5 text-xs font-medium text-text-primary outline-none ring-1 ring-border-soft/50 placeholder:text-text-muted focus:ring-2 focus:ring-primary/25"
+                aria-label={t('shared.filterSelect.searchOptions')}
+                autoFocus
+              />
+            </div>
+          ) : null}
           <div className="max-h-64 overflow-y-auto py-1">
-            {options.map((option) => {
+            {visibleOptions.length > 0 ? visibleOptions.map((option) => {
               const isSelected = option.value === value;
               const isDisabled = Boolean(option.disabled);
 
@@ -136,10 +161,10 @@ function FilterSelect({
                   key={option.value}
                   type="button"
                   className={[
-                    'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition duration-fast',
+                    'flex w-full items-center justify-between gap-3 rounded-lg border-l-2 px-3 py-2.5 text-left text-sm transition duration-fast',
                     isSelected
-                      ? 'bg-primary/12 text-text-primary'
-                      : 'text-text-secondary hover:bg-surface-subtle hover:text-text-primary',
+                      ? 'border-primary bg-primary/12 text-text-primary'
+                      : 'border-transparent text-text-secondary hover:bg-surface-subtle hover:text-text-primary',
                     isDisabled ? 'cursor-not-allowed opacity-50 hover:bg-transparent hover:text-text-secondary' : '',
                   ].join(' ')}
                   onClick={() => {
@@ -154,13 +179,22 @@ function FilterSelect({
                   aria-disabled={isDisabled}
                   disabled={isDisabled}
                 >
-                  <span className="block min-w-0 flex-1 truncate">{option.label}</span>
+                  <span className="grid min-w-0 flex-1 gap-0.5">
+                    <span className="block truncate font-medium">{option.label}</span>
+                    {option.description ? (
+                      <span className="block truncate text-[11px] text-text-muted">{option.description}</span>
+                    ) : null}
+                  </span>
                   {isSelected ? (
                     <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-primary" />
                   ) : null}
                 </button>
               );
-            })}
+            }) : (
+              <p className="m-0 px-3 py-4 text-center text-xs font-medium text-text-muted">
+                {t('shared.filterSelect.noOptions')}
+              </p>
+            )}
           </div>
         </div>
       ) : null}

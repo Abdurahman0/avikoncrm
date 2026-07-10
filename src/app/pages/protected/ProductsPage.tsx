@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FiEdit2, FiTrash2 } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -46,11 +46,9 @@ type ProductOrdering = '-created_at' | 'created_at' | 'name' | '-name' | 'price'
 type CatalogView = 'products' | 'categories';
 type StockStatus = 'in_stock' | 'low_stock' | 'out_of_stock';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 24;
 const CATEGORY_FETCH_SIZE = 500;
 const DEFAULT_ORDERING: ProductOrdering = '-created_at';
-const PRODUCTS_FILTER_FETCH_PAGE_SIZE = 200;
-const PRODUCTS_FILTER_FETCH_MAX_PAGES = 20;
 
 const DEFAULT_PAGINATION_META: PaginationMeta = {
   page: 1,
@@ -131,7 +129,6 @@ function ProductsPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = usePersistentState('products:search', '');
-  const productsCacheRef = useRef<{ key: string; items: Product[] } | null>(null);
   const [catalogView, setCatalogView] = usePersistentState<CatalogView>(
     'products:catalog-view',
     'products',
@@ -283,57 +280,26 @@ function ProductsPage() {
         return;
       }
 
-      const sortConfig = parseOrdering(ordering);
       const normalizedSearch = search.trim() || undefined;
-      const cacheKey = JSON.stringify({
-        search: normalizedSearch ?? '',
-        categoryFilter,
-        activeFilter,
-        ordering,
-        reloadCursor,
-      });
-
-      const cached = productsCacheRef.current;
-      if (cached?.key === cacheKey) {
-        const totalItems = cached.items.length;
-        const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
-        const page = Math.min(currentPage, totalPages);
-
-        if (currentPage > totalPages) {
-          setCurrentPage(totalPages);
-          return;
-        }
-
-        const start = (page - 1) * PAGE_SIZE;
-        const pageItems = cached.items.slice(start, start + PAGE_SIZE);
-
-        setHasError(false);
-        setProducts(pageItems);
-        setPaginationMeta({
-          page,
-          pageSize: PAGE_SIZE,
-          totalItems,
-          totalPages,
-        });
-        setHasLoadedOnce(true);
-        setIsLoading(false);
-        return;
-      }
 
       setIsLoading(true);
       setHasError(false);
 
       try {
-        const shouldClientFilter = categoryFilter !== 'all' || activeFilter !== 'all';
+        // The 1C catalog contains 9k+ products. Always request only the visible page;
+        // search and category filters are delegated to the catalog API.
+        if (activeFilter === 'inactive') {
+          setProducts([]);
+          setPaginationMeta({ page: 1, pageSize: PAGE_SIZE, totalItems: 0, totalPages: 1 });
+          return;
+        }
 
-        // Backend schema doesn't expose category/is_active filters for products.
-        // Also: we want low-stock products to bubble to the top of the full list (not only within the current page),
-        // so we prefer fetching multiple pages and sorting client-side when the dataset size is reasonable.
-        const firstPage = await services.products.listProducts({
-          page: 1,
-          pageSize: PRODUCTS_FILTER_FETCH_PAGE_SIZE,
+        const sortConfig = parseOrdering(ordering);
+        const result = await services.products.listProducts({
+          page: currentPage,
+          pageSize: PAGE_SIZE,
           search: normalizedSearch,
-          ordering,
+          category: categoryFilter === 'all' ? undefined : categoryFilter,
           ...sortConfig,
         });
 
@@ -341,93 +307,13 @@ function ProductsPage() {
           return;
         }
 
-        const totalPagesToFetch = Math.min(
-          firstPage.meta.totalPages,
-          PRODUCTS_FILTER_FETCH_MAX_PAGES,
-        );
-        const collected: Product[] = [...firstPage.items];
-
-        for (let page = 2; page <= totalPagesToFetch; page += 1) {
-          const next = await services.products.listProducts({
-            page,
-            pageSize: PRODUCTS_FILTER_FETCH_PAGE_SIZE,
-            search: normalizedSearch,
-            ordering,
-            ...sortConfig,
-          });
-
-          if (!isActive) {
-            return;
-          }
-
-          collected.push(...next.items);
-        }
-
-        // If the dataset is larger than our safety cap, we fall back to server pagination to avoid
-        // issuing an unbounded number of requests. In that case, we still keep the "danger" styling,
-        // and only promote low-stock items within the current page.
-        if (!shouldClientFilter && firstPage.meta.totalPages > PRODUCTS_FILTER_FETCH_MAX_PAGES) {
-          productsCacheRef.current = null;
-          const result = await services.products.listProducts({
-            page: currentPage,
-            pageSize: PAGE_SIZE,
-            search: normalizedSearch,
-            ordering,
-            ...sortConfig,
-          });
-
-          if (!isActive) {
-            return;
-          }
-
-          if (currentPage > result.meta.totalPages) {
-            setCurrentPage(result.meta.totalPages);
-            return;
-          }
-
-          setProducts(sortProductsByStockStatus(result.items));
-          setPaginationMeta(result.meta);
+        if (currentPage > result.meta.totalPages) {
+          setCurrentPage(result.meta.totalPages);
           return;
         }
 
-        const filtered = sortProductsByStockStatus(collected.filter((product) => {
-          if (categoryFilter !== 'all') {
-            const productCategoryId = product.categoryId || product.category?.id;
-            if (productCategoryId !== categoryFilter) {
-              return false;
-            }
-          }
-
-          if (activeFilter !== 'all') {
-            const mustBeActive = activeFilter === 'active';
-            if (Boolean(product.isActive) !== mustBeActive) {
-              return false;
-            }
-          }
-
-          return true;
-        }));
-
-        const totalItems = filtered.length;
-        const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
-        const page = Math.min(currentPage, totalPages);
-
-        if (currentPage > totalPages) {
-          setCurrentPage(totalPages);
-          return;
-        }
-
-        const start = (page - 1) * PAGE_SIZE;
-        const pageItems = filtered.slice(start, start + PAGE_SIZE);
-
-        setProducts(pageItems);
-        productsCacheRef.current = { key: cacheKey, items: filtered };
-        setPaginationMeta({
-          page,
-          pageSize: PAGE_SIZE,
-          totalItems,
-          totalPages,
-        });
+        setProducts(sortProductsByStockStatus(result.items));
+        setPaginationMeta(result.meta);
       } catch {
         if (!isActive) {
           return;

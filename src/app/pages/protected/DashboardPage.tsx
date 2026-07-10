@@ -550,7 +550,12 @@ function DashboardPage() {
 					label: String(item.status ?? ''),
 					count: Number(item.total ?? 0),
 				}))
-			: overview.breakdowns.contracts_by_status
+			: overview.breakdowns.contracts_by_status.reduce(
+					(total, item) => total + item.count,
+					0,
+				) > 0
+				? overview.breakdowns.contracts_by_status
+				: overview.breakdowns.leads_by_status
 
 	const leadStatusData = pickForDisplay(contractStatusItems, 6).map(item => ({
 		...item,

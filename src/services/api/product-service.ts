@@ -248,6 +248,7 @@ export const apiProductService: ProductService = {
         limit: pageSize,
         offset: (page - 1) * pageSize,
         include: 'all',
+        group: params?.category,
         sortBy: params?.sortBy,
         sortOrder: params?.sortDirection,
       },

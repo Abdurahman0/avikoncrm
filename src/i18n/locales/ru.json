@@ -205,7 +205,9 @@
       "next": "Далее"
     },
     "filterSelect": {
-      "select": "Выберите"
+      "select": "Выберите",
+      "searchOptions": "Поиск по вариантам...",
+      "noOptions": "Совпадений нет"
     },
     "emptyState": {
       "title": "Данные не найдены",

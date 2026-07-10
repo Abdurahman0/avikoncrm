@@ -160,11 +160,19 @@ export function mapDashboardOverviewDtoToModel(
       : payloadWrapper) ??
     {};
   const dateRange = toRecord(data.date_range) ?? {};
+  const crmFilters = toRecord(data.filters) ?? {};
   const filteredSummary = toRecord(data.filtered_summary) ?? {};
   const breakdowns = toRecord(data.breakdowns) ?? {};
   const crmClients = toRecord(data.clients) ?? {};
   const crmChats = toRecord(data.chats) ?? {};
+  const clientTotal = toRecord(data.clients)
+    ? readCount(crmClients.total_clients)
+    : readCount(data.clients);
+  const chatTotal = toRecord(data.chats)
+    ? readCount(crmChats.total_sessions)
+    : readCount(data.chats);
   const crmClientStatuses = mapBreakdownItems(crmClients.by_status);
+  const crmClientInterest = mapBreakdownItems(crmClients.by_interested_product);
 
   const mappedLeadStatus =
     mapBreakdownItems(breakdowns.leads_by_status).length > 0
@@ -180,6 +188,8 @@ export function mapDashboardOverviewDtoToModel(
   const mappedLeadSource =
     mapBreakdownItems(breakdowns.leads_by_source).length > 0
       ? mapBreakdownItems(breakdowns.leads_by_source)
+      : crmClientInterest.length > 0
+        ? crmClientInterest
       : toArray(data.source_distribution).map((item, index) => {
           const itemRecord = toRecord(item) ?? {};
           const source = readString(itemRecord.source) || `source-${index}`;
@@ -214,17 +224,31 @@ export function mapDashboardOverviewDtoToModel(
   const mappedChatsByChannel =
     mapBreakdownItems(breakdowns.chats_by_channel).length > 0
       ? mapBreakdownItems(breakdowns.chats_by_channel)
-      : mappedLeadSource;
+      : chatTotal > 0
+        ? [{ key: 'all', label: 'Chats', count: chatTotal }]
+        : mappedLeadSource;
 
   const mappedTopProducts =
     mapTopProducts(breakdowns.top_products).length > 0
       ? mapTopProducts(breakdowns.top_products)
       : mapTopProducts(data.top_products);
 
+  const dateFrom =
+    readString(dateRange.date_from) ||
+    readString(data.date_from) ||
+    readString(crmFilters.date_from) ||
+    '';
+  const dateTo =
+    readString(dateRange.date_to) ||
+    readString(data.date_to) ||
+    readString(crmFilters.date_to) ||
+    '';
+
   const mappedTimeSeries =
     mapTimeSeries(data.time_series).length > 0
       ? mapTimeSeries(data.time_series)
-      : toArray(data.timeline).map((item, index) => {
+      : toArray(data.timeline).length > 0
+        ? toArray(data.timeline).map((item, index) => {
           const itemRecord = toRecord(item) ?? {};
           const day = readString(itemRecord.date) || `day-${index}`;
           return {
@@ -238,19 +262,28 @@ export function mapDashboardOverviewDtoToModel(
             revenue: '0',
             collected_amount: '0',
           };
-        });
-
-  const dateFrom =
-    readString(dateRange.date_from) || readString(data.date_from) || '';
-  const dateTo = readString(dateRange.date_to) || readString(data.date_to) || '';
+        })
+        : clientTotal > 0 || chatTotal > 0
+          ? [{
+              bucket_start: dateTo || dateFrom || new Date().toISOString(),
+              bucket_end: dateTo || dateFrom || new Date().toISOString(),
+              label: dateTo || dateFrom,
+              leads: 0,
+              chats: chatTotal,
+              clients: clientTotal,
+              contracts: readCount(data.contracts),
+              revenue: '0',
+              collected_amount: '0',
+            }]
+          : [];
 
   return {
     leads: readCount(data.leads),
-    clients: readCount(data.clients ?? crmClients.total_clients),
+    clients: clientTotal,
     products: readCount(data.products),
-    chats: readCount(data.chats ?? crmChats.total_sessions),
+    chats: chatTotal,
     notifications: readCount(data.notifications),
-    customers: readCount(data.customers ?? data.clients ?? crmClients.total_clients),
+    customers: readCount(data.customers) || clientTotal,
     orders: readCount(data.orders ?? data.contracts),
     pending_payments: readCount(data.pending_payments),
     contracts: readCount(data.contracts),
@@ -269,8 +302,8 @@ export function mapDashboardOverviewDtoToModel(
       leads: readCount(filteredSummary.leads ?? data.leads),
       new_leads: readCount(filteredSummary.new_leads),
       converted_leads: readCount(filteredSummary.converted_leads),
-      customers: readCount(filteredSummary.customers ?? data.clients ?? crmClients.total_clients),
-      clients: readCount(filteredSummary.clients ?? data.clients ?? crmClients.total_clients),
+      customers: readCount(filteredSummary.customers) || clientTotal,
+      clients: readCount(filteredSummary.clients) || clientTotal,
       new_customers: readCount(filteredSummary.new_customers),
       new_clients: readCount(filteredSummary.new_clients),
       orders: readCount(filteredSummary.orders ?? data.contracts),
@@ -287,8 +320,8 @@ export function mapDashboardOverviewDtoToModel(
       approved_payments: readCount(filteredSummary.approved_payments),
       verified_payments: readCount(filteredSummary.verified_payments),
       unread_messages: readCount(filteredSummary.unread_messages ?? data.notifications),
-      total_chat_sessions: readCount(filteredSummary.total_chat_sessions ?? data.chats ?? crmChats.total_sessions),
-      active_chat_sessions: readCount(filteredSummary.active_chat_sessions ?? data.chats ?? crmChats.total_sessions),
+      total_chat_sessions: readCount(filteredSummary.total_chat_sessions) || chatTotal,
+      active_chat_sessions: readCount(filteredSummary.active_chat_sessions) || chatTotal,
       revenue: readDecimalString(filteredSummary.revenue ?? data.revenue),
       collected_amount: readDecimalString(filteredSummary.collected_amount ?? data.collected_amount),
       pending_payment_amount: readDecimalString(filteredSummary.pending_payment_amount),

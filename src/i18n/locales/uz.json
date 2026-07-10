@@ -205,7 +205,9 @@
       "next": "Keyingi"
     },
     "filterSelect": {
-      "select": "Tanlang"
+      "select": "Tanlang",
+      "searchOptions": "Variantlardan qidiring...",
+      "noOptions": "Mos variant topilmadi"
     },
     "emptyState": {
       "title": "Ma'lumot topilmadi",
