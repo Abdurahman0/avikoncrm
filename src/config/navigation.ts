@@ -159,7 +159,7 @@ export const navigationConfig: NavigationGroupConfig[] = [
         iconKey: 'integrations',
         group: 'system',
         sortOrder: 3,
-        allowedRoles: ['developer'],
+        allowedRoles: ['developer', 'admin'],
       },
       {
         id: 'ai-settings',
@@ -169,7 +169,7 @@ export const navigationConfig: NavigationGroupConfig[] = [
         iconKey: 'ai-settings',
         group: 'system',
         sortOrder: 4,
-        allowedRoles: ['developer'],
+        allowedRoles: ['developer', 'admin'],
       },
       {
         id: 'logs',
@@ -179,7 +179,7 @@ export const navigationConfig: NavigationGroupConfig[] = [
         iconKey: 'logs',
         group: 'system',
         sortOrder: 5,
-        allowedRoles: ['developer'],
+        allowedRoles: ['developer', 'admin'],
       },
     ],
   },

@@ -1944,7 +1944,9 @@
       "can_view_notifications": "View notifications",
       "can_manage_users": "User management",
       "can_manage_integrations": "Managing Integrations",
+      "can_view_integrations": "View integrations",
       "can_manage_ai_settings": "Manage AI settings",
+      "can_view_ai_settings": "View AI settings",
       "can_view_logs": "View logs",
       "dashboard": {
         "view": "Control Panel"
@@ -2037,7 +2039,9 @@
       "can_view_notifications": "Allows viewing of system notifications.",
       "can_manage_users": "Allows to add, edit and delete users.",
       "can_manage_integrations": "Allows you to manage integration settings.",
+      "can_view_integrations": "Allows viewing integration settings without changing them.",
       "can_manage_ai_settings": "Allows adding and editing AI settings.",
+      "can_view_ai_settings": "Allows viewing AI settings without changing them.",
       "can_view_logs": "Allows viewing of system logs.",
       "dashboard": {
         "view": "Dashboard and KPI pages"

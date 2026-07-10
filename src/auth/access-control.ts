@@ -16,8 +16,8 @@ const ROUTE_REQUIRED_PERMISSIONS: Partial<Record<AppRouteId, PermissionCode>> =
 		notifications: 'can_view_notifications',
 		users: 'can_manage_users',
 		'operator-kpi': 'can_view_dashboard',
-		integrations: 'can_manage_integrations',
-		'ai-settings': 'can_manage_ai_settings',
+		integrations: 'can_view_integrations',
+		'ai-settings': 'can_view_ai_settings',
 		logs: 'can_view_logs',
 	}
 
@@ -25,7 +25,11 @@ const IMPLIED_PERMISSIONS: Partial<Record<PermissionCode, PermissionCode[]>> = {
 	can_view_clients: ['can_manage_clients'],
 	can_view_products: ['can_manage_products'],
 	can_view_contracts: ['can_manage_contracts'],
+	can_view_integrations: ['can_manage_integrations'],
+	can_view_ai_settings: ['can_manage_ai_settings'],
 }
+
+const STAFF_CATALOG_PERMISSIONS = new Set<PermissionCode>(['can_view_products'])
 
 const PUBLIC_ROUTE_IDS = new Set<AppRouteId>([
 	'home',
@@ -76,6 +80,13 @@ export function hasPermission(
 		return true
 	}
 
+	if (
+		(user.role === 'admin' || user.role === 'operator') &&
+		STAFF_CATALOG_PERMISSIONS.has(permission)
+	) {
+		return true
+	}
+
 	const hasDirectPermission = user.permissionKeys.includes(permission)
 	if (hasDirectPermission) {
 		return true
@@ -107,11 +118,6 @@ export function canAccessRouteForUser(
 
 	if (routeId === 'profile') {
 		return true
-	}
-
-	// Business rule: Integrations module is developer-only.
-	if (routeId === 'integrations') {
-		return false
 	}
 
 	const requiredPermission = ROUTE_REQUIRED_PERMISSIONS[routeId]

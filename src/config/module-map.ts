@@ -191,8 +191,8 @@ export const moduleMap: AppModule[] = [
     category: 'system',
     priority: 'low',
     priorityOrder: 8,
-    allowedRoles: ['developer'],
-    accessStrategy: 'static-role-based',
+    allowedRoles: ['developer', 'admin'],
+    accessStrategy: 'permission-based',
     pages: [
       {
         id: 'integrations-list',
@@ -201,7 +201,7 @@ export const moduleMap: AppModule[] = [
         path: '/integrations',
       },
     ],
-    notes: 'Developer-only module for managing integrations.',
+    notes: 'Admins can view integrations; management remains permission-gated.',
   },
   {
     id: 'ai-settings',
@@ -210,8 +210,8 @@ export const moduleMap: AppModule[] = [
     category: 'intelligence',
     priority: 'low',
     priorityOrder: 9,
-    allowedRoles: ['developer'],
-    accessStrategy: 'static-role-based',
+    allowedRoles: ['developer', 'admin'],
+    accessStrategy: 'permission-based',
     pages: [
       {
         id: 'ai-settings-overview',
@@ -220,7 +220,7 @@ export const moduleMap: AppModule[] = [
         path: '/ai-settings',
       },
     ],
-    notes: 'Developer-only AI configuration.',
+    notes: 'Admins can view AI settings; management remains permission-gated.',
   },
   {
     id: 'logs',
@@ -229,8 +229,8 @@ export const moduleMap: AppModule[] = [
     category: 'system',
     priority: 'low',
     priorityOrder: 10,
-    allowedRoles: ['developer'],
-    accessStrategy: 'static-role-based',
+    allowedRoles: ['developer', 'admin'],
+    accessStrategy: 'permission-based',
     pages: [
       {
         id: 'logs-list',
@@ -239,7 +239,7 @@ export const moduleMap: AppModule[] = [
         path: '/logs',
       },
     ],
-    notes: 'Developer-only audit and system logs.',
+    notes: 'Audit logs are available to staff with audit log permission.',
   },
   {
     id: 'users',

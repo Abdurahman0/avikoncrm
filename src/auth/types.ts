@@ -16,6 +16,8 @@ export const PERMISSION_CODES = [
 	'can_view_dashboard',
 	'can_view_leads',
 	'can_view_logs',
+	'can_view_integrations',
+	'can_view_ai_settings',
 	'can_view_notifications',
 	'can_view_products',
 ] as const

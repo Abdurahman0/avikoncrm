@@ -92,6 +92,8 @@ function mapBackendPermissionToken(token: string): PermissionCode[] {
     'products.view': ['can_view_products'],
     'products.manage': ['can_manage_products'],
 
+    'audit_logs.view': ['can_view_logs'],
+
     'contracts.view': ['can_view_contracts'],
     'contracts.manage': ['can_manage_contracts'],
 
@@ -112,12 +114,16 @@ function mapBackendPermissionToken(token: string): PermissionCode[] {
 
     'logs.view': ['can_view_logs'],
 
-    'integrations.manage': ['can_manage_integrations'],
+    'integrations.view': ['can_view_integrations'],
+    'integrations.manage': ['can_view_integrations', 'can_manage_integrations'],
 
-    'ai_settings.manage': ['can_manage_ai_settings'],
-    'ai-settings.manage': ['can_manage_ai_settings'],
-    'ai_settings.view': ['can_manage_ai_settings'],
-    'ai-settings.view': ['can_manage_ai_settings'],
+    'ai.view': ['can_view_ai_settings'],
+    'ai.manage': ['can_view_ai_settings', 'can_manage_ai_settings'],
+
+    'ai_settings.manage': ['can_view_ai_settings', 'can_manage_ai_settings'],
+    'ai-settings.manage': ['can_view_ai_settings', 'can_manage_ai_settings'],
+    'ai_settings.view': ['can_view_ai_settings'],
+    'ai-settings.view': ['can_view_ai_settings'],
   };
 
   const direct = alias[normalized];
@@ -180,7 +186,9 @@ function mapBackendPermissionToken(token: string): PermissionCode[] {
   }
 
   if (scope === 'integrations') {
-    return ['can_manage_integrations'];
+    return action === 'view'
+      ? ['can_view_integrations']
+      : ['can_view_integrations', 'can_manage_integrations'];
   }
 
   if (scope === 'logs') {

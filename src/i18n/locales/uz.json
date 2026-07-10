@@ -1944,7 +1944,9 @@
       "can_view_notifications": "Bildirishnomalarni ko'rish",
       "can_manage_users": "Foydalanuvchilarni boshqarish",
       "can_manage_integrations": "Integratsiyalarni boshqarish",
+      "can_view_integrations": "Integratsiyalarni ko'rish",
       "can_manage_ai_settings": "AI sozlamalarini boshqarish",
+      "can_view_ai_settings": "AI sozlamalarini ko'rish",
       "can_view_logs": "Jurnallarni ko'rish",
       "dashboard": {
         "view": "Boshqaruv paneli"
@@ -2037,7 +2039,9 @@
       "can_view_notifications": "Tizim bildirishnomalarini ko'rishga ruxsat beradi.",
       "can_manage_users": "Foydalanuvchilarni qo'shish, tahrirlash va o'chirishga ruxsat beradi.",
       "can_manage_integrations": "Integratsiya sozlamalarini boshqarishga ruxsat beradi.",
+      "can_view_integrations": "Integratsiya sozlamalarini o'zgartirmasdan ko'rishga ruxsat beradi.",
       "can_manage_ai_settings": "AI sozlamalarini qo'shish va tahrirlashga ruxsat beradi.",
+      "can_view_ai_settings": "AI sozlamalarini o'zgartirmasdan ko'rishga ruxsat beradi.",
       "can_view_logs": "Tizim jurnallarini ko'rishga ruxsat beradi.",
       "dashboard": {
         "view": "Boshqaruv paneli va KPI sahifalari"
