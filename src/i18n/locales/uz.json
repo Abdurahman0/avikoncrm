@@ -207,7 +207,8 @@
     "filterSelect": {
       "select": "Tanlang",
       "searchOptions": "Variantlardan qidiring...",
-      "noOptions": "Mos variant topilmadi"
+      "noOptions": "Mos variant topilmadi",
+      "searchToBrowse": "Kategoriya nomini yozib qidiring"
     },
     "emptyState": {
       "title": "Ma'lumot topilmadi",

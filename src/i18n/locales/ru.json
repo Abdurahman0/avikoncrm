@@ -207,7 +207,8 @@
     "filterSelect": {
       "select": "Выберите",
       "searchOptions": "Поиск по вариантам...",
-      "noOptions": "Совпадений нет"
+      "noOptions": "Совпадений нет",
+      "searchToBrowse": "Введите название категории для поиска"
     },
     "emptyState": {
       "title": "Данные не найдены",

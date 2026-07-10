@@ -107,12 +107,12 @@ function mapTimeSeries(value: unknown): DashboardTimeSeriesPoint[] {
     const itemRecord = toRecord(item) ?? {};
 
     return {
-      bucket_start: readString(itemRecord.bucket_start) || `bucket-${index}`,
-      bucket_end: readString(itemRecord.bucket_end),
-      label: readString(itemRecord.label),
+      bucket_start: readString(itemRecord.bucket_start) || readString(itemRecord.date) || `bucket-${index}`,
+      bucket_end: readString(itemRecord.bucket_end) || readString(itemRecord.date),
+      label: readString(itemRecord.label) || readString(itemRecord.date),
       leads: readCount(itemRecord.leads),
-      chats: readCount(itemRecord.chats),
-      clients: readCount(itemRecord.clients ?? itemRecord.customers),
+      chats: readCount(itemRecord.chats ?? itemRecord.total_sessions),
+      clients: readCount(itemRecord.clients ?? itemRecord.customers ?? itemRecord.total_clients),
       contracts: readCount(itemRecord.contracts ?? itemRecord.orders),
       revenue: readDecimalString(itemRecord.revenue),
       collected_amount: readDecimalString(itemRecord.collected_amount),
@@ -245,8 +245,10 @@ export function mapDashboardOverviewDtoToModel(
     '';
 
   const mappedTimeSeries =
-    mapTimeSeries(data.time_series).length > 0
+    (mapTimeSeries(data.time_series).length > 0
       ? mapTimeSeries(data.time_series)
+      : mapTimeSeries(data.trend).length > 0
+        ? mapTimeSeries(data.trend)
       : toArray(data.timeline).length > 0
         ? toArray(data.timeline).map((item, index) => {
           const itemRecord = toRecord(item) ?? {};
@@ -275,7 +277,7 @@ export function mapDashboardOverviewDtoToModel(
               revenue: '0',
               collected_amount: '0',
             }]
-          : [];
+          : []);
 
   return {
     leads: readCount(data.leads),

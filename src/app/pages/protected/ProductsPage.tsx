@@ -241,7 +241,9 @@ function ProductsPage() {
 
         const options = result.items
           .map((category: ProductCategory): SelectOption => ({
-            value: category.id,
+            // The 1C endpoint filters by the human-readable group name,
+            // while the groups endpoint also exposes a separate code.
+            value: category.name,
             label: category.name,
             description: category.code,
           }))
@@ -929,6 +931,8 @@ function ProductsPage() {
                 options={[{ value: 'all', label: t('common.all') }, ...categoryOptions]}
                 onChange={setCategoryFilter}
                 disabled={isLoading || isCategoryOptionsLoading}
+                searchFirst
+                wideMenu
               />
             </label>
           ) : null}

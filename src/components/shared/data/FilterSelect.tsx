@@ -9,6 +9,8 @@ interface FilterSelectProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   size?: 'default' | 'compact';
+  searchFirst?: boolean;
+  wideMenu?: boolean;
 }
 
 function FilterSelect({
@@ -17,6 +19,8 @@ function FilterSelect({
   onChange,
   disabled = false,
   size = 'default',
+  searchFirst = false,
+  wideMenu = false,
 }: FilterSelectProps) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -66,7 +70,9 @@ function FilterSelect({
           .toLocaleLowerCase()
           .includes(normalizedQuery),
       )
-    : options;
+    : searchFirst
+      ? []
+      : options;
 
   useEffect(() => {
     if (!isOpen) {
@@ -133,7 +139,8 @@ function FilterSelect({
       {isOpen ? (
         <div
           className={[
-            'absolute left-0 z-[150] w-full overflow-hidden rounded-lg bg-surface-card p-1.5 shadow-[0_22px_44px_-30px_rgba(25,28,30,0.38)] ring-1 ring-border-soft/30',
+            'absolute left-0 z-[150] overflow-hidden rounded-lg bg-surface-card p-1.5 shadow-[0_22px_44px_-30px_rgba(25,28,30,0.38)] ring-1 ring-border-soft/30',
+            wideMenu ? 'w-[min(28rem,calc(100vw-2rem))]' : 'w-full',
             openAbove ? 'bottom-[calc(100%+8px)]' : 'top-[calc(100%+8px)]',
           ].join(' ')}
           role="listbox"
@@ -152,7 +159,11 @@ function FilterSelect({
             </div>
           ) : null}
           <div className="max-h-64 overflow-y-auto py-1">
-            {visibleOptions.length > 0 ? visibleOptions.map((option) => {
+            {searchFirst && !normalizedQuery ? (
+              <p className="m-0 px-3 py-5 text-center text-xs font-medium text-text-muted">
+                {t('shared.filterSelect.searchToBrowse')}
+              </p>
+            ) : visibleOptions.length > 0 ? visibleOptions.map((option) => {
               const isSelected = option.value === value;
               const isDisabled = Boolean(option.disabled);
 

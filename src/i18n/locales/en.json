@@ -207,7 +207,8 @@
     "filterSelect": {
       "select": "Choose",
       "searchOptions": "Search options...",
-      "noOptions": "No matching options"
+      "noOptions": "No matching options",
+      "searchToBrowse": "Type a category name to search"
     },
     "emptyState": {
       "title": "No information found",
