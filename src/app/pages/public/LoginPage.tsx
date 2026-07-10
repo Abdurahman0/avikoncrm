@@ -129,21 +129,21 @@ function LoginPage() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-8 sm:px-6"
       style={{
         background:
-          'radial-gradient(130% 120% at 0% 0%, #e8f5e9 0%, #f1f8f5 48%, #ebf5f0 100%)',
+          'radial-gradient(130% 120% at 0% 0%, #e8effe 0%, #f1f5fe 48%, #ebf1fe 100%)',
       }}
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div
           className="absolute -top-24 -left-16 h-72 w-72 rounded-full blur-3xl"
-          style={{ background: 'rgba(34, 139, 34, 0.13)' }}
+          style={{ background: 'rgba(37, 99, 235, 0.13)' }}
         />
         <div
           className="absolute -bottom-24 -right-20 h-80 w-80 rounded-full blur-3xl"
-          style={{ background: 'rgba(60, 179, 113, 0.11)' }}
+          style={{ background: 'rgba(59, 130, 246, 0.11)' }}
         />
         <div
           className="absolute left-1/2 top-[14%] h-52 w-52 -translate-x-1/2 rounded-full blur-3xl"
-          style={{ background: 'rgba(34, 139, 34, 0.11)' }}
+          style={{ background: 'rgba(37, 99, 235, 0.11)' }}
         />
       </div>
 
@@ -153,20 +153,20 @@ function LoginPage() {
           style={{
             backgroundColor: '#ffffff',
             boxShadow:
-              '0 34px 72px -40px rgba(34, 139, 34, 0.52), 0 14px 24px -22px rgba(15, 23, 42, 0.26)',
-            border: '1px solid rgba(144, 238, 144, 0.4)',
+              '0 34px 72px -40px rgba(37, 99, 235, 0.52), 0 14px 24px -22px rgba(15, 23, 42, 0.26)',
+            border: '1px solid rgba(191, 219, 254, 0.4)',
           }}
         >
           <div className="text-center">
             <p
               className="text-[11px] font-semibold uppercase tracking-[0.24em]"
-              style={{ color: '#2d6b2d' }}
+              style={{ color: '#1e40af' }}
             >
               {t('auth.login.eyebrow')}
             </p>
             <h1
               className="mt-2 text-[2.2rem] font-extrabold leading-none tracking-[-0.038em]"
-              style={{ color: '#228b22' }}
+              style={{ color: '#2563eb' }}
             >
               Avikontex
             </h1>
@@ -186,13 +186,13 @@ function LoginPage() {
               <span
                 className="relative flex h-[52px] items-center rounded-[14px] border transition duration-fast focus-within:ring-4"
                 style={{
-                  backgroundColor: '#f8fdf8',
-                  borderColor: usernameHasError ? '#ef4444' : '#b3e5b3',
+                  backgroundColor: '#f8faff',
+                  borderColor: usernameHasError ? '#ef4444' : '#bfdbfe',
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95)',
-                  ['--tw-ring-color' as string]: 'rgba(60, 179, 113, 0.28)',
+                  ['--tw-ring-color' as string]: 'rgba(59, 130, 246, 0.28)',
                 }}
               >
-                <FiUser className="ml-4 h-[18px] w-[18px] shrink-0" style={{ color: '#4a8f4a' }} />
+                <FiUser className="ml-4 h-[18px] w-[18px] shrink-0" style={{ color: '#3b82f6' }} />
                 <input
                   type="text"
                   value={username}
@@ -203,7 +203,7 @@ function LoginPage() {
                   aria-describedby={usernameHasError ? 'login-username-error' : undefined}
                   placeholder={t('auth.login.usernamePlaceholder')}
                   className="h-full w-full rounded-[14px] border-0 bg-transparent px-3.5 pr-3.5 text-[15px] font-medium placeholder:text-[14px] placeholder:text-slate-400 focus:outline-none"
-                  style={{ color: '#0f172a', caretColor: '#155015' }}
+                  style={{ color: '#0f172a', caretColor: '#1e3a8a' }}
                 />
               </span>
               {usernameHasError ? (
@@ -227,13 +227,13 @@ function LoginPage() {
               <span
                 className="relative flex h-[52px] items-center rounded-[14px] border transition duration-fast focus-within:ring-4"
                 style={{
-                  backgroundColor: '#f8fdf8',
-                  borderColor: passwordHasError ? '#ef4444' : '#b3e5b3',
+                  backgroundColor: '#f8faff',
+                  borderColor: passwordHasError ? '#ef4444' : '#bfdbfe',
                   boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.95)',
-                  ['--tw-ring-color' as string]: 'rgba(60, 179, 113, 0.28)',
+                  ['--tw-ring-color' as string]: 'rgba(59, 130, 246, 0.28)',
                 }}
               >
-                <FiLock className="ml-4 h-[18px] w-[18px] shrink-0" style={{ color: '#4a8f4a' }} />
+                <FiLock className="ml-4 h-[18px] w-[18px] shrink-0" style={{ color: '#3b82f6' }} />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
@@ -244,7 +244,7 @@ function LoginPage() {
                   aria-invalid={passwordHasError}
                   aria-describedby={passwordHasError ? 'login-password-error' : undefined}
                   className="h-full w-full rounded-[14px] border-0 bg-transparent px-3.5 pr-12 text-[15px] font-medium placeholder:text-[14px] placeholder:text-slate-400 focus:outline-none"
-                  style={{ color: '#0f172a', caretColor: '#155015' }}
+                  style={{ color: '#0f172a', caretColor: '#1e3a8a' }}
                 />
                 <button
                   type="button"
@@ -290,8 +290,8 @@ function LoginPage() {
               disabled={isSubmitting || !isFormValid}
               className="mt-2 inline-flex h-[52px] items-center justify-center gap-2 rounded-[14px] px-4 text-[1.02rem] font-semibold text-white transition duration-fast hover:-translate-y-px hover:brightness-105 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60"
               style={{
-                background: 'linear-gradient(102deg, #228b22 0%, #1e7b1e 54%, #155015 100%)',
-                boxShadow: '0 18px 34px -20px rgba(34, 139, 34, 0.78)',
+                background: 'linear-gradient(102deg, #2563eb 0%, #1d4ed8 54%, #1e3a8a 100%)',
+                boxShadow: '0 18px 34px -20px rgba(37, 99, 235, 0.78)',
               }}
             >
               <FiArrowRight className="h-4 w-4" />
@@ -308,7 +308,7 @@ function LoginPage() {
               href="https://www.cognilabs.org"
               target="_blank"
               rel="noreferrer"
-              style={{ color: '#155015', fontWeight: 700 }}
+              style={{ color: '#1e3a8a', fontWeight: 700 }}
             >
               Cognilabs
             </a>

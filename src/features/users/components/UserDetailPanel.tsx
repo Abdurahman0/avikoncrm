@@ -66,8 +66,10 @@ function canManageTarget(
 	actorRole: UserRole | null,
 	targetRole: UserRole,
 	canManageDeveloperRole: boolean,
+	isSelf: boolean,
 ): boolean {
-	if (!actorRole) {
+	// Users can never manage their own account or permissions.
+	if (!actorRole || isSelf) {
 		return false
 	}
 
@@ -75,7 +77,16 @@ function canManageTarget(
 		return false
 	}
 
-	return true
+	if (actorRole === 'developer') {
+		return true
+	}
+
+	// Admins only manage users strictly below them (operators).
+	if (actorRole === 'admin') {
+		return targetRole === 'operator'
+	}
+
+	return false
 }
 
 function UserDetailPanel({
@@ -164,15 +175,20 @@ function UserDetailPanel({
 			)
 	}, [permissions, t, user])
 
-	const targetManageable = user
-		? canManageTarget(currentRole, user.role, canManageDeveloperRole)
-		: false
 	const isCurrentManagedUser = Boolean(
 		user &&
 		currentManagedUserId &&
 		(user.id === currentManagedUserId ||
 			user.id === `managed-${currentManagedUserId}`),
 	)
+	const targetManageable = user
+		? canManageTarget(
+				currentRole,
+				user.role,
+				canManageDeveloperRole,
+				isCurrentManagedUser,
+			)
+		: false
 
 	return (
 		<div

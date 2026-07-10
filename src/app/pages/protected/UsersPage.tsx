@@ -20,7 +20,7 @@ import {
   PageLayout,
   PageSection,
 } from '../../../components/shared/page';
-import { useAuth } from '../../../auth';
+import { useAuth, canManageTargetUser } from '../../../auth';
 import UserDeleteDialog from '../../../features/users/components/UserDeleteDialog';
 import UserDetailPanel from '../../../features/users/components/UserDetailPanel';
 import UserFormPanel from '../../../features/users/components/UserFormPanel';
@@ -289,7 +289,7 @@ function UsersPage() {
   }
 
   function openEditForm(user: ManagedUser) {
-    if (!canManageUsers) {
+    if (!canManageUsers || !canManageTargetUser(currentUser, user)) {
       return;
     }
 
@@ -304,7 +304,7 @@ function UsersPage() {
   }
 
   function requestDelete(user: ManagedUser) {
-    if (!canManageUsers) {
+    if (!canManageUsers || !canManageTargetUser(currentUser, user)) {
       return;
     }
 
@@ -514,7 +514,10 @@ function UsersPage() {
                 event.stopPropagation();
                 openEditForm(user);
               }}
-              disabled={user.role === 'developer' && !canManageDeveloperRole}
+              disabled={
+                !canManageTargetUser(currentUser, user) ||
+                (user.role === 'developer' && !canManageDeveloperRole)
+              }
               aria-label={`${t('users.actions.edit')} ${user.full_name}`}
             >
               <FiEdit2 className="h-3.5 w-3.5" />
@@ -527,9 +530,7 @@ function UsersPage() {
                 requestDelete(user);
               }}
               disabled={
-                (currentManagedUserId !== null &&
-                  (user.id === currentManagedUserId ||
-                    user.id === `managed-${currentManagedUserId}`)) ||
+                !canManageTargetUser(currentUser, user) ||
                 user.role === 'developer'
               }
               aria-label={`${t('users.actions.delete')} ${user.full_name}`}
@@ -543,7 +544,7 @@ function UsersPage() {
   }, [
     canManageDeveloperRole,
     canManageUsers,
-    currentManagedUserId,
+    currentUser,
     i18n.language,
     locale,
     t,

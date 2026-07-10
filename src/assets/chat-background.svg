@@ -6,8 +6,8 @@
       <stop offset="1" stop-color="#f1f8f5"/>
     </linearGradient>
     <radialGradient id="glowBlue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(940 360) rotate(120) scale(430 430)">
-      <stop stop-color="#90ee90" stop-opacity="0.5"/>
-      <stop offset="1" stop-color="#90ee90" stop-opacity="0"/>
+      <stop stop-color="#93c5fd" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#93c5fd" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="glowMint" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(260 650) rotate(72) scale(380 380)">
       <stop stop-color="#8EE7DA" stop-opacity="0.45"/>

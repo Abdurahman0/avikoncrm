@@ -53,6 +53,50 @@ const MODULE_PATH_BY_ROUTE_ID: Record<string, string> = {
 	logs: routePaths.logs,
 }
 
+// Role hierarchy: only a strictly higher role can manage a user's account
+// and permissions. Users can never manage themselves.
+const ROLE_RANK: Record<string, number> = {
+	developer: 3,
+	admin: 2,
+	operator: 1,
+}
+
+export function isSameManagedUser(
+	currentUserId: string | null | undefined,
+	targetUserId: string,
+): boolean {
+	if (!currentUserId) {
+		return false
+	}
+
+	return (
+		targetUserId === currentUserId ||
+		targetUserId === `managed-${currentUserId}`
+	)
+}
+
+export function canManageTargetUser(
+	user: AuthenticatedUser | null,
+	target: { id: string; role: string },
+): boolean {
+	if (!user) {
+		return false
+	}
+
+	// A user can never edit their own account or grant themselves permissions.
+	if (isSameManagedUser(user.id, target.id)) {
+		return false
+	}
+
+	// Developers manage everyone below them (and other developers, except self).
+	if (user.role === 'developer') {
+		return true
+	}
+
+	// Everyone else can only manage users strictly below their own role.
+	return (ROLE_RANK[user.role] ?? 0) > (ROLE_RANK[target.role] ?? 0)
+}
+
 export function hasRole(
 	user: AuthenticatedUser | null,
 	role: AppRole | readonly AppRole[],

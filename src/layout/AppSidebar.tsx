@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { navigationConfig } from '../config/navigation'
 import AppIcon from '../components/shared/icons/AppIcon'
+import avikonLogo from '../assets/avikon.jfif'
 import { useAuth } from '../auth'
 import { services } from '../services'
 
@@ -131,11 +132,11 @@ function AppSidebar({ isOpen, onClose }: AppSidebarProps) {
 		>
 			<div className='flex min-h-topbar items-center justify-between gap-3 py-3'>
 				<div className='flex items-center gap-2.5'>
-					<span className='inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm'>
-						<AppIcon
-							name='dashboard'
-							className='h-[17px] w-[17px]'
-							aria-hidden='true'
+					<span className='inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-surface-card shadow-sm ring-1 ring-border-soft/40'>
+						<img
+							src={avikonLogo}
+							alt='Avikontex logo'
+							className='h-full w-full object-cover'
 						/>
 					</span>
 					<div>
