@@ -160,16 +160,16 @@ export function mapUserPermissionDtoToModel(
   // Backend variants:
   // - { id, code, name, description }
   // - { key, label, module, description } (e.g. /api/auth/all-permissions/)
-  const id = readString(dto.id) || readString(dto.key) || readString(dto.code);
-  if (!id) {
-    return null;
-  }
-
   const codeCandidate =
     readString(dto.code) ||
     readString(dto.key) ||
     readString(dto.permission) ||
     readString(dto.permission_code);
+  // User write payloads and role defaults use permission codes, not catalog UUIDs.
+  const id = codeCandidate || readString(dto.id);
+  if (!id) {
+    return null;
+  }
 
   const name =
     readString(dto.name) ||
@@ -191,7 +191,11 @@ export function mapUserPermissionDtoToModel(
 export function mapPermissionListDtoToItems(value: unknown): UserPermission[] {
   const fromArray = (items: unknown[]): UserPermission[] =>
     items
-      .map((item) => toRecord(item))
+      .map((item) =>
+        typeof item === 'string'
+          ? { id: item, code: item, name: item, description: '' }
+          : toRecord(item),
+      )
       .filter((item): item is UserPermissionDto => item !== null)
       .map((item) => mapUserPermissionDtoToModel(item))
       .filter((item): item is UserPermission => item !== null);
@@ -240,7 +244,7 @@ export function mapUserDtoToModel(dto: UserDto): ManagedUser {
     role: normalizeRole(dto.role),
     is_active: readBoolean(dto.is_active, true),
     custom_permissions: mapCustomPermissionIds(
-      dto.custom_permissions ?? dto.custom_permission_ids,
+      dto.custom_permissions ?? dto.custom_permission_ids ?? dto.permissions,
     ),
     created_by: createdBy.createdById,
     created_by_name: createdByName || null,

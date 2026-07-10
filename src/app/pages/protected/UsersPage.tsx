@@ -24,6 +24,7 @@ import { useAuth } from '../../../auth';
 import UserDeleteDialog from '../../../features/users/components/UserDeleteDialog';
 import UserDetailPanel from '../../../features/users/components/UserDetailPanel';
 import UserFormPanel from '../../../features/users/components/UserFormPanel';
+import CompanyRolesPanel from '../../../features/users/components/CompanyRolesPanel';
 import { formatLocalizedDate } from '../../../i18n/date-format';
 import { getUserRoleLabel } from '../../../i18n/labels';
 import { resolveIntlLocale } from '../../../i18n/locale';
@@ -41,6 +42,7 @@ import type { PaginationMeta, SelectOption } from '../../../types/common';
 
 type RoleFilter = UserRole | 'all';
 type ActiveFilter = 'all' | 'active' | 'inactive';
+type ManagementView = 'users' | 'company-roles';
 
 const PAGE_SIZE = 8;
 const FILTER_FETCH_SIZE = 200;
@@ -75,6 +77,10 @@ function UsersPage() {
   const locale = resolveIntlLocale(i18n.language);
 
   const [search, setSearch] = usePersistentState('users:search', '');
+  const [managementView, setManagementView] = usePersistentState<ManagementView>(
+    'users:view',
+    'users',
+  );
   const [roleFilter, setRoleFilter] = useState<RoleFilter>('all');
   const [activeFilter, setActiveFilter] = useState<ActiveFilter>('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -103,6 +109,13 @@ function UsersPage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [search, roleFilter, activeFilter]);
+
+  useEffect(() => {
+    if (managementView === 'users') return;
+    setSelectedUserId(null);
+    setIsFormOpen(false);
+    setUserToDelete(null);
+  }, [managementView]);
 
   useEffect(() => {
     let isActive = true;
@@ -326,7 +339,6 @@ function UsersPage() {
           password,
           phone: payload.phone ?? null,
           is_active: payload.is_active,
-          custom_permission_ids: payload.custom_permission_ids,
         };
 
         await services.users.createUser(createPayload);
@@ -380,24 +392,13 @@ function UsersPage() {
   }
 
   const roleOptions = useMemo<SelectOption[]>(
-    () => {
-      const catalogOptions = roleCatalog.map((role) => ({
-        value: role.key,
-        label: role.label || getUserRoleLabel(t, role.key),
-      }));
-
-      if (catalogOptions.length > 0) {
-        return [{ value: 'all', label: t('users.filters.allRoles') }, ...catalogOptions];
-      }
-
-      return [
+    () => [
         { value: 'all', label: t('users.filters.allRoles') },
         { value: 'developer', label: getUserRoleLabel(t, 'developer') },
         { value: 'admin', label: getUserRoleLabel(t, 'admin') },
         { value: 'operator', label: getUserRoleLabel(t, 'operator') },
-      ];
-    },
-    [roleCatalog, t],
+      ],
+    [t],
   );
 
   const activeOptions = useMemo<SelectOption[]>(
@@ -557,7 +558,7 @@ function UsersPage() {
       subtitle={t('users.subtitle')}
       actions={
         <div className="flex w-full flex-wrap items-center gap-2 min-[768px]:w-auto">
-          {canManageUsers ? (
+          {managementView === 'users' && canManageUsers ? (
             <button
               type="button"
               className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3.5 text-sm font-semibold text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
@@ -567,16 +568,18 @@ function UsersPage() {
               {t('users.newUser')}
             </button>
           ) : null}
-          <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-primary/12 px-3 text-[12px] font-semibold text-text-accent">
-            <AppIcon name="users" className="h-3.5 w-3.5" aria-hidden="true" />
-            {paginationMeta.totalItems} {t('users.records')}
-          </span>
+          {managementView === 'users' ? (
+            <span className="inline-flex min-h-8 items-center gap-2 rounded-pill bg-primary/12 px-3 text-[12px] font-semibold text-text-accent">
+              <AppIcon name="users" className="h-3.5 w-3.5" aria-hidden="true" />
+              {paginationMeta.totalItems} {t('users.records')}
+            </span>
+          ) : null}
         </div>
       }
     />
   );
 
-  if (!hasLoadedOnce && isLoading) {
+  if (managementView === 'users' && !hasLoadedOnce && isLoading) {
     return (
       <PageLayout header={header}>
         <PageSection>
@@ -591,7 +594,7 @@ function UsersPage() {
     );
   }
 
-  if (hasError) {
+  if (managementView === 'users' && hasError) {
     return (
       <PageLayout header={header}>
         <PageSection>
@@ -609,7 +612,41 @@ function UsersPage() {
   return (
     <PageLayout header={header}>
       <PageSection>
-        <FilterBar
+        <PageCard>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0 max-w-full overflow-x-auto">
+              <div className="inline-flex min-w-max flex-nowrap items-center gap-1 rounded-pill bg-surface-subtle/85 p-1 ring-1 ring-border-soft/50">
+                {([
+                  { id: 'users', label: t('users.tabs.staff') },
+                  { id: 'company-roles', label: t('users.tabs.companyRoles') },
+                ] as const).map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setManagementView(tab.id)}
+                    className={[
+                      'shrink-0 whitespace-nowrap rounded-pill px-4 py-2 text-sm font-semibold transition duration-fast',
+                      managementView === tab.id
+                        ? 'bg-background-subtle text-text-primary shadow-sm ring-1 ring-border-soft/55'
+                        : 'text-text-secondary hover:bg-background-subtle/65 hover:text-text-primary',
+                    ].join(' ')}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <span className="text-sm text-text-secondary">
+              {managementView === 'users'
+                ? t('users.tabs.staffHint')
+                : t('users.tabs.companyRolesHint')}
+            </span>
+          </div>
+        </PageCard>
+
+        {managementView === 'users' ? (
+          <>
+          <FilterBar
           actions={
             <div className="flex w-full flex-wrap items-center gap-2 max-[820px]:justify-start min-[820px]:w-auto">
               <span className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-subtle px-3 text-sm font-semibold text-text-primary">
@@ -654,7 +691,7 @@ function UsersPage() {
               disabled={isLoading}
             />
           </label>
-        </FilterBar>
+          </FilterBar>
 
         <PageCard>
           <div className="grid gap-3">
@@ -680,14 +717,18 @@ function UsersPage() {
           </div>
         </PageCard>
 
-        {!isLoading && paginationMeta.totalItems > 0 ? (
-          <Pagination
-            currentPage={Math.min(currentPage, paginationMeta.totalPages)}
-            totalPages={paginationMeta.totalPages}
-            totalItems={paginationMeta.totalItems}
-            onPageChange={setCurrentPage}
-          />
-        ) : null}
+          {!isLoading && paginationMeta.totalItems > 0 ? (
+            <Pagination
+              currentPage={Math.min(currentPage, paginationMeta.totalPages)}
+              totalPages={paginationMeta.totalPages}
+              totalItems={paginationMeta.totalItems}
+              onPageChange={setCurrentPage}
+            />
+          ) : null}
+          </>
+        ) : (
+          <CompanyRolesPanel canCreate={canManageUsers} />
+        )}
       </PageSection>
 
       {selectedUserId ? (

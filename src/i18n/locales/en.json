@@ -598,6 +598,12 @@
     "newUser": "New user",
     "records": "user",
     "activeFilters": "active filter",
+    "tabs": {
+      "staff": "CRM staff",
+      "companyRoles": "Company roles",
+      "staffHint": "Manage internal CRM accounts",
+      "companyRolesHint": "Manage e-commerce company access"
+    },
     "searchPlaceholder": "Search by email, name or phone...",
     "loadingTitle": "Loading users",
     "loadingDescription": "Retrieving a list of accounts.",
@@ -672,8 +678,10 @@
       "role": "Role",
       "activeUser": "Active user",
       "activeHint": "An inactive user cannot log in.",
-      "permissionsTitle": "Operator permissions",
-      "permissionsDescription": "Select the required access codes for the operator.",
+      "permissionsTitle": "Role permissions",
+      "permissionsDescription": "These permissions are assigned automatically by the backend role.",
+      "rolePermissionCount": "{{count}} permissions",
+      "noRolePermissions": "No permissions are assigned to this role.",
       "requiredError": "Fill in the required fields.",
       "emailError": "Please enter a valid email address.",
       "passwordError": "Password must be at least 8 characters long.",
@@ -697,6 +705,55 @@
       "description": "This action is not reversible. The user will be permanently deleted.",
       "deleting": "Deleting...",
       "confirm": "Yes, delete"
+    }
+  },
+  "companyRoles": {
+    "title": "Company roles and permissions",
+    "description": "System and custom roles used by e-commerce company members.",
+    "records": "roles",
+    "newRole": "New role",
+    "permissionCount": "{{count}} permissions",
+    "systemRole": "System role",
+    "customRole": "Custom role",
+    "roleNames": {
+      "owner": "Owner",
+      "director": "Director",
+      "admin": "Administrator",
+      "manager": "Manager",
+      "operator": "Operator",
+      "warehouse": "Warehouse specialist",
+      "accountant": "Accountant",
+      "sales": "Sales specialist",
+      "courier": "Courier"
+    },
+    "loadingTitle": "Loading company roles",
+    "loadingDescription": "Retrieving roles and their permission catalog.",
+    "errorTitle": "Company roles are unavailable",
+    "errorDescription": "Roles or permissions could not be loaded from the service.",
+    "emptyTitle": "No company roles found",
+    "emptyDescription": "Create a custom role to define company member access.",
+    "modules": {
+      "company": "Company",
+      "members": "Members",
+      "orders": "Orders",
+      "products": "Products",
+      "reports": "Reports",
+      "roles": "Roles",
+      "warehouse": "Warehouse"
+    },
+    "form": {
+      "eyebrow": "Company access",
+      "title": "Create company role",
+      "subtitle": "Choose a clear name and the exact permissions this role needs.",
+      "close": "Close role form",
+      "name": "Role name",
+      "namePlaceholder": "For example: Regional manager",
+      "nameRequired": "Enter a role name.",
+      "permissionsTitle": "Role permissions",
+      "permissionsDescription": "{{count}} permissions selected",
+      "saveError": "The company role could not be created.",
+      "saving": "Creating...",
+      "submit": "Create role"
     }
   },
   "products": {
@@ -1892,13 +1949,41 @@
       "dashboard": {
         "view": "Control Panel"
       },
+      "audit_logs": {
+        "view": "View audit logs"
+      },
+      "company": {
+        "view": "View company",
+        "manage": "Manage company"
+      },
+      "members": {
+        "view": "View members",
+        "manage": "Manage and invite members"
+      },
+      "orders": {
+        "view": "View orders",
+        "create": "Create orders",
+        "manage": "Manage orders"
+      },
+      "reports": {
+        "view": "View reports"
+      },
+      "roles": {
+        "view": "View roles",
+        "manage": "Manage roles"
+      },
+      "warehouse": {
+        "view": "View warehouse",
+        "manage": "Manage warehouse"
+      },
       "leads": {
         "view": "View leads",
         "manage": "Lead management"
       },
       "clients": {
         "view": "View customers",
-        "manage": "Customer management"
+        "manage": "Customer management",
+        "verify": "Verify shops"
       },
       "products": {
         "view": "View products",
@@ -1957,13 +2042,41 @@
       "dashboard": {
         "view": "Dashboard and KPI pages"
       },
+      "audit_logs": {
+        "view": "View CRM audit history"
+      },
+      "company": {
+        "view": "View company profile and details",
+        "manage": "Update company profile and settings"
+      },
+      "members": {
+        "view": "View company members",
+        "manage": "Invite and manage company members"
+      },
+      "orders": {
+        "view": "View company orders and their details",
+        "create": "Create new company orders",
+        "manage": "Update and manage company orders"
+      },
+      "reports": {
+        "view": "View company reports"
+      },
+      "roles": {
+        "view": "View company roles and their permissions",
+        "manage": "Create and manage company roles"
+      },
+      "warehouse": {
+        "view": "View warehouse stock information",
+        "manage": "Manage warehouse operations and stock"
+      },
       "leads": {
         "view": "View lead list and lead detail",
         "manage": "Generate, update and manage leads"
       },
       "clients": {
         "view": "View customer list and details",
-        "manage": "Create, update and manage clients"
+        "manage": "Create, update and manage clients",
+        "verify": "Approve or reject shop verification requests"
       },
       "products": {
         "view": "View products and catalog information",

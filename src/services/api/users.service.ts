@@ -121,14 +121,11 @@ function toMutationPayload(
   if (input.is_active !== undefined) {
     payload.is_active = input.is_active;
   }
-  if (input.custom_permission_ids !== undefined) {
-    payload.permissions = input.custom_permission_ids;
-  }
   if (username) {
     payload.username = username;
   }
   if (input.role !== undefined) {
-    payload.is_staff = input.role === 'developer' || input.role === 'admin';
+    payload.is_staff = true;
   }
 
   return payload;

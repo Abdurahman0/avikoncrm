@@ -36,7 +36,6 @@ interface UserFormState {
   password: string;
   role: UserRole;
   isActive: boolean;
-  customPermissionIds: string[];
 }
 
 const inputClassName = [
@@ -62,7 +61,6 @@ function createInitialState(
       password: '',
       role: user.role,
       isActive: user.is_active ?? true,
-      customPermissionIds: user.custom_permissions ?? [],
     };
   }
 
@@ -74,7 +72,6 @@ function createInitialState(
     password: '',
     role: 'operator',
     isActive: true,
-    customPermissionIds: [],
   };
 }
 
@@ -123,18 +120,16 @@ function UserFormPanel({
 
   const roleOptions = useMemo(
     () => {
-      const catalogOptions = roleCatalog
-        .filter((role) => canManageDeveloperRole || role.key !== 'developer')
-        .map((role) => ({
-          value: role.key,
-          label: role.label || getUserRoleLabel(t, role.key),
-        }));
-
-      if (catalogOptions.length > 0) {
-        return catalogOptions;
+      const roleKeys = roleCatalog.map((role) => role.key);
+      if (canManageDeveloperRole && !roleKeys.includes('developer')) {
+        roleKeys.unshift('developer');
       }
 
-      return (['developer', 'admin', 'operator'] as const)
+      const availableRoles = roleKeys.length > 0
+        ? roleKeys
+        : (['developer', 'admin', 'operator'] as const);
+
+      return availableRoles
         .filter((role) => canManageDeveloperRole || role !== 'developer')
         .map((role) => ({
           value: role,
@@ -144,10 +139,10 @@ function UserFormPanel({
     [canManageDeveloperRole, roleCatalog, t],
   );
 
-  const permissionIdByCode = useMemo(() => {
-    const mapped = new Map<string, string>();
+  const permissionByCode = useMemo(() => {
+    const mapped = new Map<string, UserPermission>();
     permissions.forEach((permission) => {
-      mapped.set(permission.code, permission.id);
+      mapped.set(permission.code, permission);
     });
     return mapped;
   }, [permissions]);
@@ -155,19 +150,26 @@ function UserFormPanel({
   const roleDefaults = useMemo(() => {
     const mapped = new Map<UserRole, string[]>();
     roleCatalog.forEach((role) => {
-      const resolvedIds = role.default_permissions
-        .map((permissionCode) => permissionIdByCode.get(permissionCode) ?? permissionCode)
-        .filter((permissionId) => permissionId.length > 0);
-      mapped.set(role.key, resolvedIds);
+      mapped.set(role.key, role.default_permissions.filter(Boolean));
     });
     return mapped;
-  }, [permissionIdByCode, roleCatalog]);
+  }, [roleCatalog]);
 
   const selectedRoleDefaultCount = roleDefaults.get(form.role)?.length ?? 0;
 
   const groupedPermissions = useMemo(() => {
     const groups = new Map<'viewing' | 'managing', UserPermission[]>();
-    permissions.forEach((permission) => {
+    const rolePermissions = (roleDefaults.get(form.role) ?? []).map(
+      (permissionCode) =>
+        permissionByCode.get(permissionCode) ?? {
+          id: permissionCode,
+          code: permissionCode,
+          name: permissionCode,
+          description: '',
+        },
+    );
+
+    rolePermissions.forEach((permission) => {
       const groupTitle = resolvePermissionGroupTitle(permission.code);
       const current = groups.get(groupTitle) ?? [];
       current.push(permission);
@@ -182,7 +184,7 @@ function UserFormPanel({
         title,
         items: [...items].sort((left, right) => left.name.localeCompare(right.name)),
       }));
-  }, [permissions]);
+  }, [form.role, permissionByCode, roleDefaults]);
 
   const canSubmit = useMemo(() => {
     const isPasswordValid = mode === 'edit' || form.password.trim().length >= 8;
@@ -193,30 +195,6 @@ function UserFormPanel({
       isPasswordValid
     );
   }, [form.email, form.fullName, form.password, form.username, mode]);
-
-  function togglePermission(permissionId: string) {
-    setForm((current) => {
-      const selected = current.customPermissionIds.includes(permissionId);
-      return {
-        ...current,
-        customPermissionIds: selected
-          ? current.customPermissionIds.filter((id) => id !== permissionId)
-          : [...current.customPermissionIds, permissionId],
-      };
-    });
-  }
-
-  function applyRoleDefaults(role: UserRole) {
-    const defaults = roleDefaults.get(role) ?? [];
-    if (!defaults.length) {
-      return;
-    }
-
-    setForm((current) => ({
-      ...current,
-      customPermissionIds: defaults,
-    }));
-  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -250,8 +228,6 @@ function UserFormPanel({
       phone: phone || null,
       role: form.role,
       is_active: form.isActive,
-      custom_permission_ids:
-        form.role === 'developer' ? [] : form.customPermissionIds,
     };
 
     if (mode === 'create') {
@@ -396,16 +372,10 @@ function UserFormPanel({
                 value={form.role}
                 options={roleOptions}
                 onChange={(value) =>
-                  setForm((current) => {
-                    const nextRole = value as UserRole;
-                    const defaultPermissions = roleDefaults.get(nextRole) ?? [];
-                    return {
-                      ...current,
-                      role: nextRole,
-                      customPermissionIds:
-                        nextRole === 'developer' ? [] : defaultPermissions,
-                    };
-                  })
+                  setForm((current) => ({
+                    ...current,
+                    role: value as UserRole,
+                  }))
                 }
                 disabled={isSubmitting}
               />
@@ -441,19 +411,13 @@ function UserFormPanel({
                   {t('users.form.permissionsDescription')}
                 </p>
                 </div>
-                {selectedRoleDefaultCount > 0 ? (
-                  <button
-                    type="button"
-                    className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-surface-subtle px-3 text-[12px] font-semibold text-text-primary ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-muted"
-                    onClick={() => applyRoleDefaults(form.role)}
-                    disabled={isSubmitting}
-                  >
-                    {t('users.form.applyRoleDefaults', { count: selectedRoleDefaultCount })}
-                  </button>
-                ) : null}
+                <span className="inline-flex min-h-8 items-center rounded-lg bg-surface-subtle px-3 text-[12px] font-semibold text-text-primary ring-1 ring-border-soft/40">
+                  {t('users.form.rolePermissionCount', { count: selectedRoleDefaultCount })}
+                </span>
               </div>
 
-              <div className="grid gap-3">
+              {groupedPermissions.length > 0 ? (
+                <div className="grid gap-3">
                 {groupedPermissions.map((group) => (
                   <div key={group.title} className="grid gap-2 rounded-xl bg-background-default/45 p-3 ring-1 ring-border-soft/30">
                     <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted">
@@ -461,33 +425,16 @@ function UserFormPanel({
                     </p>
                     <div className="grid gap-2 sm:grid-cols-2">
                       {group.items.map((permission) => {
-                        const isChecked = form.customPermissionIds.includes(permission.id);
                         return (
-                          <button
+                          <div
                             key={permission.id}
-                            type="button"
-                            className={[
-                              'flex items-start gap-2.5 rounded-lg px-3 py-2.5 text-left ring-1 transition duration-fast',
-                              isChecked
-                                ? 'bg-primary/10 text-text-primary ring-primary/30'
-                                : 'bg-surface-subtle text-text-secondary ring-border-soft/35 hover:bg-surface-muted',
-                            ].join(' ')}
-                            onClick={() => togglePermission(permission.id)}
-                            disabled={isSubmitting}
-                            aria-pressed={isChecked}
+                            className="flex items-start gap-2.5 rounded-lg bg-surface-subtle px-3 py-2.5 text-left text-text-secondary ring-1 ring-border-soft/35"
                           >
-                            <span
-                              className={[
-                                'mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded border',
-                                isChecked
-                                  ? 'border-primary bg-primary text-white'
-                                  : 'border-border-soft bg-background-default',
-                              ].join(' ')}
-                            >
-                              {isChecked ? (
-                                <span className="h-1.5 w-1.5 rounded-full bg-white" />
-                              ) : null}
-                            </span>
+                            <AppIcon
+                              name="check-circle"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-success"
+                              aria-hidden="true"
+                            />
                             <span className="grid gap-0.5">
                               <span className="text-sm font-semibold">
                                 {getUserPermissionLabel(
@@ -504,13 +451,18 @@ function UserFormPanel({
                                 )}
                               </span>
                             </span>
-                          </button>
+                          </div>
                         );
                       })}
                     </div>
                   </div>
                 ))}
-              </div>
+                </div>
+              ) : (
+                <p className="m-0 rounded-lg bg-surface-subtle px-3 py-2.5 text-sm text-text-secondary ring-1 ring-border-soft/35">
+                  {t('users.form.noRolePermissions')}
+                </p>
+              )}
             </div>
           ) : null}
 

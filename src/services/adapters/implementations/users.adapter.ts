@@ -218,16 +218,11 @@ function toMutationPayload(
 ): Record<string, unknown> {
 	const fullName = typeof input.full_name === 'string' ? input.full_name : ''
 	const { firstName, lastName } = splitFullName(fullName)
-	const permissions = Array.isArray(input.custom_permission_ids)
-		? input.custom_permission_ids
-		: []
-
 	const payload: Record<string, unknown> = {
 		email: input.email,
 		role: input.role,
 		is_active: input.is_active,
-		is_staff: input.role === 'developer' || input.role === 'admin',
-		permissions,
+		is_staff: true,
 		first_name: firstName || null,
 		last_name: lastName || null,
 	}

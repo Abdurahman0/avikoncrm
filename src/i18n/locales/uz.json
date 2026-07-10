@@ -598,6 +598,12 @@
     "newUser": "Yangi foydalanuvchi",
     "records": "foydalanuvchi",
     "activeFilters": "faol filtr",
+    "tabs": {
+      "staff": "CRM xodimlari",
+      "companyRoles": "Kompaniya rollari",
+      "staffHint": "Ichki CRM hisoblarini boshqaring",
+      "companyRolesHint": "E-commerce kompaniya kirishlarini boshqaring"
+    },
     "searchPlaceholder": "Email, ism yoki telefon bo'yicha qidirish...",
     "loadingTitle": "Foydalanuvchilar yuklanmoqda",
     "loadingDescription": "Hisoblar ro'yxati olinmoqda.",
@@ -672,8 +678,10 @@
       "role": "Rol",
       "activeUser": "Faol foydalanuvchi",
       "activeHint": "Nofaol foydalanuvchi tizimga kira olmaydi.",
-      "permissionsTitle": "Operator ruxsatlari",
-      "permissionsDescription": "Operator uchun kerakli ruxsat kodlarini tanlang.",
+      "permissionsTitle": "Rol ruxsatlari",
+      "permissionsDescription": "Bu ruxsatlar backend tomonidan rolga avtomatik biriktiriladi.",
+      "rolePermissionCount": "{{count}} ta ruxsat",
+      "noRolePermissions": "Bu rolga ruxsatlar biriktirilmagan.",
       "requiredError": "Majburiy maydonlarni to'ldiring.",
       "emailError": "To'g'ri email manzilini kiriting.",
       "passwordError": "Parol kamida 8 ta belgidan iborat bo'lishi kerak.",
@@ -697,6 +705,55 @@
       "description": "Ushbu amal qaytarilmaydi. Foydalanuvchi butunlay o'chiriladi.",
       "deleting": "O'chirilmoqda...",
       "confirm": "Ha, o'chirish"
+    }
+  },
+  "companyRoles": {
+    "title": "Kompaniya rollari va ruxsatlari",
+    "description": "E-commerce kompaniya a'zolari uchun tizim va maxsus rollar.",
+    "records": "rol",
+    "newRole": "Yangi rol",
+    "permissionCount": "{{count}} ta ruxsat",
+    "systemRole": "Tizim roli",
+    "customRole": "Maxsus rol",
+    "roleNames": {
+      "owner": "Egasi",
+      "director": "Direktor",
+      "admin": "Administrator",
+      "manager": "Menejer",
+      "operator": "Operator",
+      "warehouse": "Ombor mas'uli",
+      "accountant": "Hisobchi",
+      "sales": "Savdo mutaxassisi",
+      "courier": "Kuryer"
+    },
+    "loadingTitle": "Kompaniya rollari yuklanmoqda",
+    "loadingDescription": "Rollar va ruxsatlar katalogi olinmoqda.",
+    "errorTitle": "Kompaniya rollari mavjud emas",
+    "errorDescription": "Rollar yoki ruxsatlarni xizmatdan yuklab bo'lmadi.",
+    "emptyTitle": "Kompaniya rollari topilmadi",
+    "emptyDescription": "Kompaniya a'zolari kirishini belgilash uchun maxsus rol yarating.",
+    "modules": {
+      "company": "Kompaniya",
+      "members": "A'zolar",
+      "orders": "Buyurtmalar",
+      "products": "Mahsulotlar",
+      "reports": "Hisobotlar",
+      "roles": "Rollar",
+      "warehouse": "Ombor"
+    },
+    "form": {
+      "eyebrow": "Kompaniya kirishi",
+      "title": "Kompaniya rolini yaratish",
+      "subtitle": "Aniq nom va ushbu rolga kerakli ruxsatlarni tanlang.",
+      "close": "Rol formasini yopish",
+      "name": "Rol nomi",
+      "namePlaceholder": "Masalan: Hududiy menejer",
+      "nameRequired": "Rol nomini kiriting.",
+      "permissionsTitle": "Rol ruxsatlari",
+      "permissionsDescription": "{{count}} ta ruxsat tanlandi",
+      "saveError": "Kompaniya rolini yaratib bo'lmadi.",
+      "saving": "Yaratilmoqda...",
+      "submit": "Rol yaratish"
     }
   },
   "products": {
@@ -1892,13 +1949,41 @@
       "dashboard": {
         "view": "Boshqaruv paneli"
       },
+      "audit_logs": {
+        "view": "Audit jurnallarini ko'rish"
+      },
+      "company": {
+        "view": "Kompaniyani ko'rish",
+        "manage": "Kompaniyani boshqarish"
+      },
+      "members": {
+        "view": "A'zolarni ko'rish",
+        "manage": "A'zolarni boshqarish va taklif qilish"
+      },
+      "orders": {
+        "view": "Buyurtmalarni ko'rish",
+        "create": "Buyurtma yaratish",
+        "manage": "Buyurtmalarni boshqarish"
+      },
+      "reports": {
+        "view": "Hisobotlarni ko'rish"
+      },
+      "roles": {
+        "view": "Rollarni ko'rish",
+        "manage": "Rollarni boshqarish"
+      },
+      "warehouse": {
+        "view": "Omborni ko'rish",
+        "manage": "Omborni boshqarish"
+      },
       "leads": {
         "view": "Lidlarni ko'rish",
         "manage": "Lidlarni boshqarish"
       },
       "clients": {
         "view": "Mijozlarni ko'rish",
-        "manage": "Mijozlarni boshqarish"
+        "manage": "Mijozlarni boshqarish",
+        "verify": "Shoplarni tasdiqlash"
       },
       "products": {
         "view": "Mahsulotlarni ko'rish",
@@ -1957,13 +2042,41 @@
       "dashboard": {
         "view": "Boshqaruv paneli va KPI sahifalari"
       },
+      "audit_logs": {
+        "view": "CRM audit tarixini ko'rish"
+      },
+      "company": {
+        "view": "Kompaniya profili va ma'lumotlarini ko'rish",
+        "manage": "Kompaniya profili va sozlamalarini yangilash"
+      },
+      "members": {
+        "view": "Kompaniya a'zolarini ko'rish",
+        "manage": "Kompaniya a'zolarini taklif qilish va boshqarish"
+      },
+      "orders": {
+        "view": "Kompaniya buyurtmalari va tafsilotlarini ko'rish",
+        "create": "Yangi kompaniya buyurtmasini yaratish",
+        "manage": "Kompaniya buyurtmalarini yangilash va boshqarish"
+      },
+      "reports": {
+        "view": "Kompaniya hisobotlarini ko'rish"
+      },
+      "roles": {
+        "view": "Kompaniya rollari va ruxsatlarini ko'rish",
+        "manage": "Kompaniya rollarini yaratish va boshqarish"
+      },
+      "warehouse": {
+        "view": "Ombor qoldiqlari ma'lumotlarini ko'rish",
+        "manage": "Ombor operatsiyalari va qoldiqlarini boshqarish"
+      },
       "leads": {
         "view": "Lidlar ro'yxati va lid tafsilotini ko'rish",
         "manage": "Lidlarni yaratish, yangilash va boshqarish"
       },
       "clients": {
         "view": "Mijozlar ro'yxati va tafsilotlarini ko'rish",
-        "manage": "Mijozlarni yaratish, yangilash va boshqarish"
+        "manage": "Mijozlarni yaratish, yangilash va boshqarish",
+        "verify": "Shop tekshiruvlarini tasdiqlash yoki rad etish"
       },
       "products": {
         "view": "Mahsulotlar va katalog ma'lumotlarini ko'rish",
