@@ -19,7 +19,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '../../../components/ui/popover'
-import { getChannelLabel, getOrderStatusLabel } from '../../../i18n/labels'
+import { getChannelLabel, getLeadStatusLabel, getOrderStatusLabel } from '../../../i18n/labels'
 import {
 	formatLocalizedDate,
 	formatUzMonthYear,
@@ -453,10 +453,6 @@ function DashboardPage() {
 					label: t('routes.chat.title', { defaultValue: 'Chats' }),
 					color: 'rgb(var(--color-success))',
 				},
-				contracts: {
-					label: t('routes.contracts.title', { defaultValue: 'Contracts' }),
-					color: SOURCE_COLORS.instagram,
-				},
 			}) satisfies ChartConfig,
 		[t],
 	)
@@ -556,12 +552,19 @@ function DashboardPage() {
 				) > 0
 				? overview.breakdowns.contracts_by_status
 				: overview.breakdowns.leads_by_status
+	const usingClientStatuses =
+		(!Array.isArray(contractStatusDistribution) || contractStatusDistribution.length === 0) &&
+		overview.breakdowns.contracts_by_status.reduce(
+			(total, item) => total + item.count,
+			0,
+		) <= 0
 
 	const leadStatusData = pickForDisplay(contractStatusItems, 6).map(item => ({
 		...item,
-		label:
-			['all', 'contract', 'contracts'].includes(item.key) ||
-			['contract', 'contracts'].includes(item.label.trim().toLowerCase())
+		label: usingClientStatuses
+			? getLeadStatusLabel(t, item.key, item.label)
+			: ['all', 'contract', 'contracts'].includes(item.key) ||
+			  ['contract', 'contracts'].includes(item.label.trim().toLowerCase())
 				? t('routes.contracts.title', { defaultValue: item.label })
 				: t(`contractsPage.statuses.${item.key}`, {
 						defaultValue: getOrderStatusLabel(t, item.key, item.label),
@@ -861,13 +864,6 @@ function DashboardPage() {
 										strokeWidth={2.2}
 										dot={false}
 									/>
-									<Line
-										type='monotone'
-										dataKey='contracts'
-										stroke={SOURCE_COLORS.instagram}
-										strokeWidth={2}
-										dot={false}
-									/>
 								</LineChart>
 							</ChartContainer>
 						</div>
@@ -977,10 +973,14 @@ function DashboardPage() {
 
 					<article className='min-w-0 overflow-hidden rounded-xl bg-surface-card p-5 shadow-sm ring-1 ring-border-soft/40 transition duration-base hover:shadow-md hover:ring-border-soft/60'>
 						<h2 className='m-0 text-[1.14rem] font-semibold text-text-primary'>
-							{t('dashboard.sections.contractStatus')}
+							{usingClientStatuses
+								? t('dashboard.distributions.clientStatus')
+								: t('dashboard.sections.contractStatus')}
 						</h2>
 						<p className='mt-1 text-sm text-text-secondary'>
-							{t('dashboard.descriptions.contractStatus')}
+							{usingClientStatuses
+								? t('dashboard.descriptions.leadStatus')
+								: t('dashboard.descriptions.contractStatus')}
 						</p>
 						{leadStatusTotal <= 0 ? (
 							<div className='mt-6 flex items-center justify-center rounded-xl border border-border-soft/60 bg-surface-subtle/65 p-12'>

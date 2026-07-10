@@ -278,7 +278,7 @@
       "managerPerformance": "Menejerlar samaradorligi"
     },
     "descriptions": {
-      "trend": "Tanlangan davr bo'yicha mijozlar, chatlar va shartnomalar dinamikasi.",
+      "trend": "Tanlangan davr bo'yicha mijozlar va chatlar dinamikasi.",
       "source": "So'rovlarning kanal va platformalar bo'yicha taqsimoti.",
       "leadStatus": "So'rovlarning funnel bosqichlari bo'yicha taqsimoti.",
       "contractStatus": "Buyurtmalarning fulfillment holatlari bo'yicha taqsimoti.",

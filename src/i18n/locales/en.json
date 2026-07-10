@@ -278,7 +278,7 @@
       "managerPerformance": "Manager performance"
     },
     "descriptions": {
-      "trend": "Trends for leads, chats, and orders during the selected period.",
+      "trend": "Trends for clients and chats during the selected period.",
       "source": "Distribution of inquiries by channel and platform.",
       "leadStatus": "Distribution of inquiries across funnel stages.",
       "contractStatus": "Distribution of orders across fulfillment statuses.",
