@@ -171,7 +171,7 @@
       "signingIn": "Kirilmoqda...",
       "hidePassword": "Parolni yashirish",
       "showPassword": "Parolni ko'rsatish",
-      "footerRights": "В© 2026 Avikontex. Barcha huquqlar himoyalangan.",
+      "footerRights": "© 2026 Avikontex. Barcha huquqlar himoyalangan.",
       "footerPowered": "Ishlab chiquvchi"
     },
     "accessDenied": {
@@ -368,6 +368,9 @@
         "deye": "Deye",
         "solax": "Solax"
       }
+    },
+    "distributions": {
+      "clientStatus": "Mijoz holatlari"
     }
   },
   "leads": {
@@ -2410,7 +2413,52 @@
   },
   "clients": {
     "review": {
-      "openQueue": "Tasdiqlash navbati", "backToClients": "Mijozlarga qaytish", "search": "Qidiruv", "searchPlaceholder": "Ism, telefon, INN yoki kompaniya...", "status": "Tasdiqlash holati", "pending": "Tekshirilmoqda", "verifiedStatus": "Tasdiqlangan", "rejectedStatus": "Rad etilgan", "refresh": "Yangilash", "loadingTitle": "Tekshiruvlar yuklanmoqda", "loadingDescription": "Shop tasdiqlash navbati olinmoqda.", "errorTitle": "Tekshiruvlar yuklanmadi", "loadError": "Tekshiruvlar yuklanmadi.", "emptyTitle": "Shoplar topilmadi", "emptyDescription": "Tanlangan holat bo'yicha yozuvlar mavjud emas.", "notAvailable": "Tasdiqlash API mavjud emas.", "detailError": "Shop tafsilotlarini yuklab bo'lmadi.", "detailLoadingTitle": "Shop tafsilotlari yuklanmoqda", "detailLoadingDescription": "Mijoz, kompaniya va AI xulosasi olinmoqda.", "selectTitle": "Shopni tanlang", "selectDescription": "To'liq ma'lumot va tekshiruv amallarini ko'rish uchun shop tanlang.", "detailEyebrow": "Shop tasdiqlash", "aiSummary": "AI xulosasi", "companyDetails": "Kompaniya ma'lumotlari", "rejectionReason": "Rad etish sababi", "rejectReason": "Rad etish sababi", "rejectReasonPlaceholder": "Muammoni yozing...", "save": "Saqlash", "verify": "Tasdiqlash", "reject": "Rad etish", "saved": "O'zgarishlar saqlandi.", "saveError": "O'zgarishlarni saqlab bo'lmadi.", "verifyConfirm": "Ushbu shopni tasdiqlaysizmi?", "verified": "Shop tasdiqlandi.", "rejected": "Shop rad etildi.", "actionError": "Amalni bajarib bo'lmadi.", "reasonRequired": "Rad etish sababi majburiy.", "fields": {"full_name": "To'liq ism", "phone": "Telefon", "email": "Email", "region": "Hudud", "company_name": "Kompaniya", "inn": "INN", "notes": "Izohlar"}
+      "openQueue": "Tasdiqlash navbati",
+      "backToClients": "Mijozlarga qaytish",
+      "search": "Qidiruv",
+      "searchPlaceholder": "Ism, telefon, INN yoki kompaniya...",
+      "status": "Tasdiqlash holati",
+      "pending": "Tekshirilmoqda",
+      "verifiedStatus": "Tasdiqlangan",
+      "rejectedStatus": "Rad etilgan",
+      "refresh": "Yangilash",
+      "loadingTitle": "Tekshiruvlar yuklanmoqda",
+      "loadingDescription": "Shop tasdiqlash navbati olinmoqda.",
+      "errorTitle": "Tekshiruvlar yuklanmadi",
+      "loadError": "Tekshiruvlar yuklanmadi.",
+      "emptyTitle": "Shoplar topilmadi",
+      "emptyDescription": "Tanlangan holat bo'yicha yozuvlar mavjud emas.",
+      "notAvailable": "Tasdiqlash API mavjud emas.",
+      "detailError": "Shop tafsilotlarini yuklab bo'lmadi.",
+      "detailLoadingTitle": "Shop tafsilotlari yuklanmoqda",
+      "detailLoadingDescription": "Mijoz, kompaniya va AI xulosasi olinmoqda.",
+      "selectTitle": "Shopni tanlang",
+      "selectDescription": "To'liq ma'lumot va tekshiruv amallarini ko'rish uchun shop tanlang.",
+      "detailEyebrow": "Shop tasdiqlash",
+      "aiSummary": "AI xulosasi",
+      "companyDetails": "Kompaniya ma'lumotlari",
+      "rejectionReason": "Rad etish sababi",
+      "rejectReason": "Rad etish sababi",
+      "rejectReasonPlaceholder": "Muammoni yozing...",
+      "save": "Saqlash",
+      "verify": "Tasdiqlash",
+      "reject": "Rad etish",
+      "saved": "O'zgarishlar saqlandi.",
+      "saveError": "O'zgarishlarni saqlab bo'lmadi.",
+      "verifyConfirm": "Ushbu shopni tasdiqlaysizmi?",
+      "verified": "Shop tasdiqlandi.",
+      "rejected": "Shop rad etildi.",
+      "actionError": "Amalni bajarib bo'lmadi.",
+      "reasonRequired": "Rad etish sababi majburiy.",
+      "fields": {
+        "full_name": "To'liq ism",
+        "phone": "Telefon",
+        "email": "Email",
+        "region": "Hudud",
+        "company_name": "Kompaniya",
+        "inn": "INN",
+        "notes": "Izohlar"
+      }
     },
     "importExport": {
       "importClients": "Import",
