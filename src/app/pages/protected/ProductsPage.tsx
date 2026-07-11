@@ -510,34 +510,20 @@ function ProductsPage() {
         key: 'name',
         label: t('products.columns.product'),
         render: (product) => (
-          <div className="flex items-center gap-3">
-            {product.imageUrl ? (
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="h-9 w-9 rounded-full object-cover ring-1 ring-border-soft/50"
-                loading="lazy"
-              />
-            ) : (
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-surface-subtle text-xs font-semibold text-text-secondary ring-1 ring-border-soft/50">
-                -
-              </span>
-            )}
-            <div className="min-w-0 grid gap-0.5">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className={tablePrimaryTextClassName}>{product.name}</span>
-                {resolveStockStatus(product) !== 'in_stock' ? (
-                  <StatusBadge
-                    status={resolveStockStatus(product)}
-                    tone="danger"
-                    label={t(`products.stockStatus.${resolveStockStatus(product)}`)}
-                  />
-                ) : null}
-              </div>
-              <span className={tableSecondaryTextClassName}>
-                {product.description || t('products.noDescription')}
-              </span>
+          <div className="min-w-0 grid gap-0.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={tablePrimaryTextClassName}>{product.name}</span>
+              {resolveStockStatus(product) !== 'in_stock' ? (
+                <StatusBadge
+                  status={resolveStockStatus(product)}
+                  tone="danger"
+                  label={t(`products.stockStatus.${resolveStockStatus(product)}`)}
+                />
+              ) : null}
             </div>
+            <span className={tableSecondaryTextClassName}>
+              {product.description || t('products.noDescription')}
+            </span>
           </div>
         ),
       },
@@ -899,15 +885,37 @@ function ProductsPage() {
           />
 
           {!isCategoriesView ? (
-            <label className="grid min-w-[min(180px,100%)] flex-[1_1_180px] gap-1.5 min-[640px]:flex-[0_1_180px]">
+            <div className="grid min-w-0 flex-[0_0_auto] gap-1.5">
               <span className={labelClassName}>{t('products.status')}</span>
-              <FilterSelect
-                value={activeFilter}
-                options={activeFilterOptions}
-                onChange={(value) => setActiveFilter(value as ActiveFilter)}
-                disabled={isLoading}
-              />
-            </label>
+              <div
+                className="inline-flex min-h-[44px] items-center gap-1 rounded-lg bg-surface-subtle p-1"
+                role="radiogroup"
+                aria-label={t('products.status')}
+              >
+                {activeFilterOptions.map((option) => {
+                  const isSelected = option.value === activeFilter;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={[
+                        'rounded-md px-3 py-1.5 text-sm font-medium transition duration-fast',
+                        isSelected
+                          ? 'bg-surface-card text-text-primary shadow-sm'
+                          : 'text-text-secondary hover:text-text-primary',
+                        'disabled:cursor-not-allowed disabled:opacity-60',
+                      ].join(' ')}
+                      onClick={() => setActiveFilter(option.value as ActiveFilter)}
+                      disabled={isLoading}
+                      role="radio"
+                      aria-checked={isSelected}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           ) : null}
 
           {!isCategoriesView ? (

@@ -368,6 +368,9 @@
         "deye": "Deye",
         "solax": "Solax"
       }
+    },
+    "distributions": {
+      "clientStatus": "Client statuses"
     }
   },
   "leads": {
@@ -378,7 +381,7 @@
     "subtitle": "Manage Site, Telegram and Instagram requests in a single inbox.",
     "visible": "is visible",
     "filters": "filter",
-    "allStatuses": "All cases",
+    "allStatuses": "All statuses",
     "allChannels": "All channels",
     "allOperators": "All operators",
     "status": "Status",
@@ -627,7 +630,7 @@
     },
     "filters": {
       "allRoles": "All roles",
-      "allStatuses": "All cases",
+      "allStatuses": "All statuses",
       "role": "Role",
       "status": "Status"
     },
@@ -969,7 +972,7 @@
     "title": "Orders",
     "subtitle": "Manage and monitor the flow of orders in one panel.",
     "newOrder": "New order",
-    "allStatuses": "All cases",
+    "allStatuses": "All statuses",
     "allSources": "All sources",
     "allFulfillmentMethods": "All execution methods",
     "status": "Status",
@@ -1153,7 +1156,7 @@
       "inactive": "Inactive"
     },
     "orderStatus": {
-      "all": "All cases",
+      "all": "All statuses",
       "pending": "Waiting",
       "assigned": "Attached",
       "in_transit": "On the way",
@@ -1527,7 +1530,7 @@
     "followUpOn": "Follow-up is enabled",
     "followUpOff": "Follow-up is disabled",
     "filters": {
-      "allStatuses": "All cases",
+      "allStatuses": "All statuses",
       "status": "Status",
       "ordering": "Sorting"
     },
@@ -1654,7 +1657,7 @@
     },
     "filters": {
       "allProviders": "All providers",
-      "allStatuses": "All cases",
+      "allStatuses": "All statuses",
       "allTypes": "All species",
       "allPlatforms": "All platforms",
       "allProcessed": "Everything",
@@ -2206,7 +2209,7 @@
       "client": "Customer",
       "requestedPower": "Power (kW)",
       "ordering": "Sorting",
-      "allStatuses": "All cases",
+      "allStatuses": "All statuses",
       "allClients": "All customers",
       "clientPlaceholder": "Filter by customer name"
     },
@@ -2421,7 +2424,61 @@
       "organization": { "jismoniy": "Organization", "yatt": "Business name", "yuridik": "Company name", "budjet": "Institution name" }
     },
     "review": {
-      "openQueue": "Review queue", "backToClients": "Back to clients", "search": "Search", "searchPlaceholder": "Name, phone, tax ID or company...", "status": "Verification status", "pending": "Pending review", "verifiedStatus": "Verified", "rejectedStatus": "Rejected", "refresh": "Refresh", "loadingTitle": "Loading reviews", "loadingDescription": "Getting the shop verification queue.", "errorTitle": "Reviews could not be loaded", "loadError": "Reviews could not be loaded.", "emptyTitle": "No shops found", "emptyDescription": "There are no shops in the selected verification state.", "notAvailable": "The verification API is not available.", "detailError": "Shop details could not be loaded.", "detailLoadingTitle": "Loading shop details", "detailLoadingDescription": "Getting client, company and AI summary data.", "selectTitle": "Select a shop", "selectDescription": "Select a shop from the list to review its details and actions.", "detailEyebrow": "Shop verification", "aiSummary": "AI summary", "companyDetails": "Company details", "rejectionReason": "Rejection reason", "rejectReason": "Rejection reason", "rejectReasonPlaceholder": "Explain the issue...", "save": "Save", "verify": "Verify", "reject": "Reject", "saved": "Changes saved.", "saveError": "Changes could not be saved.", "verifyConfirm": "Verify this shop?", "verified": "Shop verified.", "rejected": "Shop rejected.", "actionError": "The action could not be completed.", "reasonRequired": "A rejection reason is required.", "companyFields": { "companyType": "Organization type", "legalName": "Legal name", "inn": "Tax ID", "director": "Director", "bank": "Bank", "mfo": "Bank code", "companyStatus": "Status" }, "fields": {"full_name": "Full name", "phone": "Phone", "email": "Email", "region": "Region", "company_name": "Company", "inn": "Tax ID", "notes": "Notes"}
+      "openQueue": "Review queue",
+      "backToClients": "Back to clients",
+      "search": "Search",
+      "searchPlaceholder": "Name, phone, tax ID or company...",
+      "status": "Verification status",
+      "pending": "Pending review",
+      "verifiedStatus": "Verified",
+      "rejectedStatus": "Rejected",
+      "refresh": "Refresh",
+      "loadingTitle": "Loading reviews",
+      "loadingDescription": "Getting the shop verification queue.",
+      "errorTitle": "Reviews could not be loaded",
+      "loadError": "Reviews could not be loaded.",
+      "emptyTitle": "No shops found",
+      "emptyDescription": "There are no shops in the selected verification state.",
+      "notAvailable": "The verification API is not available.",
+      "detailError": "Shop details could not be loaded.",
+      "detailLoadingTitle": "Loading shop details",
+      "detailLoadingDescription": "Getting client, company and AI summary data.",
+      "selectTitle": "Select a shop",
+      "selectDescription": "Select a shop from the list to review its details and actions.",
+      "detailEyebrow": "Shop verification",
+      "aiSummary": "AI summary",
+      "companyDetails": "Company details",
+      "rejectionReason": "Rejection reason",
+      "rejectReason": "Rejection reason",
+      "rejectReasonPlaceholder": "Explain the issue...",
+      "save": "Save",
+      "verify": "Verify",
+      "reject": "Reject",
+      "saved": "Changes saved.",
+      "saveError": "Changes could not be saved.",
+      "verifyConfirm": "Verify this shop?",
+      "verified": "Shop verified.",
+      "rejected": "Shop rejected.",
+      "actionError": "The action could not be completed.",
+      "reasonRequired": "A rejection reason is required.",
+      "companyFields": {
+        "companyType": "Organization type",
+        "legalName": "Legal name",
+        "inn": "Tax ID",
+        "director": "Director",
+        "bank": "Bank",
+        "mfo": "Bank code",
+        "companyStatus": "Status"
+      },
+      "fields": {
+        "full_name": "Full name",
+        "phone": "Phone",
+        "email": "Email",
+        "region": "Region",
+        "company_name": "Company",
+        "inn": "Tax ID",
+        "notes": "Notes"
+      }
     },
     "importExport": {
       "importClients": "Import",
