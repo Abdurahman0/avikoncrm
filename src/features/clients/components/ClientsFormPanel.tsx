@@ -4,6 +4,7 @@ import AppIcon from '../../../components/shared/icons/AppIcon';
 import { FilterSelect } from '../../../components/shared/data';
 import { services } from '../../../services';
 import type { Client, ClientStatusRecord, CreateClientInput, UpdateClientInput } from '../../../services/contracts';
+import { getClientTypeOptions, normalizeClientType, requiresOrganization } from '../client-types';
 
 export interface ClientsFormPanelProps {
   client?: Client;
@@ -22,7 +23,7 @@ const labelClassName =
   'text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted';
 
 export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPanelProps) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isRu = i18n.language === 'ru';
   const isEditing = Boolean(client);
 
@@ -75,7 +76,7 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
       };
 
   const [form, setForm] = useState<CreateClientInput>({
-    client_type: client?.client_type || 'individual',
+    client_type: normalizeClientType(client?.client_type),
     full_name: client?.full_name || '',
     phone: client?.phone || '',
     email: client?.email || '',
@@ -108,8 +109,10 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
     const fullNameOk = (form.full_name ?? '').trim().length > 0;
     const phoneOk = (form.phone ?? '').trim().length > 0;
     const statusOk = String(form.status ?? 'new').trim().length > 0;
-    return fullNameOk && phoneOk && statusOk;
-  }, [form.full_name, form.phone, form.status]);
+    const organizationOk = !requiresOrganization(form.client_type)
+      || ((form.company_name ?? '').trim().length > 0 && (form.inn ?? '').trim().length > 0);
+    return fullNameOk && phoneOk && statusOk && organizationOk;
+  }, [form.client_type, form.company_name, form.full_name, form.inn, form.phone, form.status]);
 
   const statusOptions = useMemo(
     () => statusCatalog.length > 0 ? statusCatalog.map(status => ({
@@ -131,16 +134,20 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
     [isRu, statusCatalog],
   );
 
-  const clientTypeOptions = useMemo(
-    () => [
-      { label: isRu ? 'Физ. лицо' : 'Jismoniy shaxs', value: 'individual' },
-      { label: isRu ? 'Компания' : 'Kompaniya', value: 'company' },
-    ],
-    [isRu],
-  );
+  const clientTypeOptions = useMemo(() => getClientTypeOptions(t), [t]);
+  const organizationRequired = requiresOrganization(form.client_type);
 
   function updateField<Key extends keyof CreateClientInput>(key: Key, value: CreateClientInput[Key]) {
     setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function updateClientType(value: string) {
+    const nextType = normalizeClientType(value);
+    setForm(current => ({
+      ...current,
+      client_type: nextType,
+      ...(nextType === 'jismoniy' ? { company_name: '', inn: '' } : {}),
+    }));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -157,6 +164,14 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
     }
     if (!form.status) {
       setErrorMessage(tx.requiredStatus);
+      return;
+    }
+    if (organizationRequired && !form.company_name?.trim()) {
+      setErrorMessage(t('clients.form.organizationRequired'));
+      return;
+    }
+    if (organizationRequired && !form.inn?.trim()) {
+      setErrorMessage(t('clients.form.innRequired'));
       return;
     }
     setIsSubmitting(true);
@@ -212,12 +227,13 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
             <input className={inputClassName} value={form.phone || ''} onChange={(e) => updateField('phone', e.target.value)} disabled={isSubmitting} />
           </div>
           <div className="grid gap-1.5">
-            <label className={labelClassName}>{isRu ? 'Тип клиента' : 'Mijoz turi'}</label>
+            <label className={labelClassName}>{t('clients.form.clientType')}</label>
             <FilterSelect
-              value={form.client_type || 'individual'}
+              value={normalizeClientType(form.client_type)}
               options={clientTypeOptions}
-              onChange={(value) => updateField('client_type', value as any)}
+              onChange={updateClientType}
               disabled={isSubmitting}
+              wideMenu
             />
           </div>
           <div className="grid gap-1.5">
@@ -241,14 +257,14 @@ export function ClientsFormPanel({ client, onClose, onSuccess }: ClientsFormPane
             <label className={labelClassName}>{isRu ? 'Удобное время связи' : 'Bog‘lanish vaqti'}</label>
             <input className={inputClassName} value={form.preferred_contact_time || ''} onChange={(e) => updateField('preferred_contact_time', e.target.value)} disabled={isSubmitting} />
           </div>
-          <div className="grid gap-1.5">
-            <label className={labelClassName}>{isRu ? 'Компания' : 'Kompaniya'}</label>
+          {organizationRequired ? <div className="grid gap-1.5">
+            <label className={labelClassName}>{t(`clients.form.organization.${normalizeClientType(form.client_type)}`)} *</label>
             <input className={inputClassName} value={form.company_name || ''} onChange={(e) => updateField('company_name', e.target.value)} disabled={isSubmitting} />
-          </div>
-          <div className="grid gap-1.5">
-            <label className={labelClassName}>INN</label>
+          </div> : null}
+          {organizationRequired ? <div className="grid gap-1.5">
+            <label className={labelClassName}>{t('clients.form.inn')} *</label>
             <input className={inputClassName} value={form.inn || ''} onChange={(e) => updateField('inn', e.target.value)} disabled={isSubmitting} />
-          </div>
+          </div> : null}
           <div className="grid gap-1.5 sm:col-span-2">
             <label className={labelClassName}>{isRu ? 'Интересующий продукт' : 'Qiziqtirgan mahsulot'}</label>
             <input className={inputClassName} value={form.interested_product || ''} onChange={(e) => updateField('interested_product', e.target.value)} disabled={isSubmitting} />

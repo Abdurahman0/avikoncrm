@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { FiCheck, FiRefreshCw, FiSave, FiSearch, FiX } from 'react-icons/fi'
 import { useTranslation } from 'react-i18next'
 import { EmptyState, LoadingState, PageCard } from '../../../components/shared/page'
-import { StatusBadge } from '../../../components/shared/data'
+import { FilterSelect, StatusBadge } from '../../../components/shared/data'
 import { services } from '../../../services'
 import type { Client, ClientReviewDetail } from '../../../services/contracts'
+import { getClientTypeLabel, getClientTypeOptions, normalizeClientType } from '../client-types'
 
 const inputClassName = 'w-full rounded-lg border border-border-soft/60 bg-surface-card px-3 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 disabled:opacity-60'
 const labelClassName = 'text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted'
@@ -18,6 +19,7 @@ function statusTone(status?: string): 'warning' | 'success' | 'danger' {
 export function ClientReviewQueue() {
 	const { t } = useTranslation()
 	const [status, setStatus] = useState<ReviewStatus>('pending')
+	const [clientType, setClientType] = useState('all')
 	const [search, setSearch] = useState('')
 	const [items, setItems] = useState<Client[]>([])
 	const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -28,6 +30,9 @@ export function ClientReviewQueue() {
 	const [error, setError] = useState<string | null>(null)
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 	const [rejectReason, setRejectReason] = useState('')
+	const visibleItems = clientType === 'all'
+		? items
+		: items.filter(item => normalizeClientType(item.client_type) === clientType)
 
 	async function loadReviews() {
 		setIsLoading(true)
@@ -144,21 +149,25 @@ export function ClientReviewQueue() {
 					</label>
 					<label className='grid min-w-[150px] gap-1.5'>
 						<span className={labelClassName}>{t('clients.review.status')}</span>
-						<select className={inputClassName} value={status} onChange={event => setStatus(event.target.value as ReviewStatus)}>
-							<option value='pending'>{t('clients.review.pending')}</option>
-							<option value='verified'>{t('clients.review.verifiedStatus')}</option>
-							<option value='rejected'>{t('clients.review.rejectedStatus')}</option>
-						</select>
+						<FilterSelect value={status} onChange={value => setStatus(value as ReviewStatus)} options={[
+							{ value: 'pending', label: t('clients.review.pending') },
+							{ value: 'verified', label: t('clients.review.verifiedStatus') },
+							{ value: 'rejected', label: t('clients.review.rejectedStatus') },
+						]} />
+					</label>
+					<label className='grid min-w-[180px] gap-1.5'>
+						<span className={labelClassName}>{t('clients.form.clientType')}</span>
+						<FilterSelect value={clientType} onChange={setClientType} options={getClientTypeOptions(t, true)} wideMenu />
 					</label>
 					<button type='button' className='inline-flex h-10 items-center gap-2 rounded-lg bg-surface-card px-3 text-sm font-semibold text-text-secondary ring-1 ring-border-soft/50 hover:bg-surface-subtle' onClick={() => void loadReviews()} disabled={isLoading}>
 						<FiRefreshCw className={isLoading ? 'h-4 w-4 animate-spin' : 'h-4 w-4'} />
 						{t('clients.review.refresh')}
 					</button>
 				</div>
-				{isLoading ? <LoadingState title={t('clients.review.loadingTitle')} description={t('clients.review.loadingDescription')} /> : error ? <EmptyState title={t('clients.review.errorTitle')} description={error} /> : items.length === 0 ? <EmptyState title={t('clients.review.emptyTitle')} description={t('clients.review.emptyDescription')} /> : <div className='grid gap-2'>
-					{items.map(item => <button key={item.id} type='button' onClick={() => void openReview(item.id)} className={`grid gap-2 rounded-xl p-3 text-left ring-1 transition hover:bg-surface-subtle ${selectedId === item.id ? 'bg-primary/8 ring-primary/35' : 'bg-surface-card ring-border-soft/45'}`}>
+				{isLoading ? <LoadingState title={t('clients.review.loadingTitle')} description={t('clients.review.loadingDescription')} /> : error ? <EmptyState title={t('clients.review.errorTitle')} description={error} /> : visibleItems.length === 0 ? <EmptyState title={t('clients.review.emptyTitle')} description={t('clients.review.emptyDescription')} /> : <div className='grid gap-2'>
+					{visibleItems.map(item => <button key={item.id} type='button' onClick={() => void openReview(item.id)} className={`grid gap-2 rounded-xl p-3 text-left ring-1 transition hover:bg-surface-subtle ${selectedId === item.id ? 'bg-primary/8 ring-primary/35' : 'bg-surface-card ring-border-soft/45'}`}>
 						<div className='flex items-start justify-between gap-3'><span className='min-w-0 truncate text-sm font-semibold text-text-primary'>{item.full_name}</span><StatusBadge status={item.verification_status ?? status} tone={statusTone(item.verification_status ?? status)} label={item.verification_status_display ?? status} /></div>
-						<div className='grid gap-0.5 text-xs text-text-secondary'><span>{item.company_name || item.client_type_display || item.client_type || '-'}</span><span>{item.phone || item.email || item.region || '-'}</span></div>
+						<div className='grid gap-0.5 text-xs text-text-secondary'><span>{item.company_name || getClientTypeLabel(t, item.client_type)}</span><span>{item.phone || item.email || item.region || '-'}</span></div>
 					</button>)}
 				</div>}
 			</PageCard>
@@ -166,7 +175,7 @@ export function ClientReviewQueue() {
 			<PageCard className='min-w-0'>
 				{isDetailLoading ? <LoadingState title={t('clients.review.detailLoadingTitle')} description={t('clients.review.detailLoadingDescription')} /> : !detail ? <EmptyState title={t('clients.review.selectTitle')} description={t('clients.review.selectDescription')} /> : <div className='grid gap-5'>
 					<div className='flex flex-wrap items-start justify-between gap-3'>
-						<div><p className='m-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary'>{t('clients.review.detailEyebrow')}</p><h2 className='mt-1 text-xl font-bold text-text-primary'>{detail.full_name}</h2><p className='mt-1 text-sm text-text-secondary'>{detail.client_type_display || detail.client_type || '-'}</p></div>
+						<div><p className='m-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary'>{t('clients.review.detailEyebrow')}</p><h2 className='mt-1 text-xl font-bold text-text-primary'>{detail.full_name}</h2><p className='mt-1 text-sm font-semibold text-primary'>{getClientTypeLabel(t, detail.client_type)}</p></div>
 						<StatusBadge status={detail.verification_status ?? 'pending'} tone={statusTone(detail.verification_status)} label={detail.verification_status_display ?? detail.verification_status ?? 'pending'} />
 					</div>
 					<div className='grid gap-3 sm:grid-cols-2'>
@@ -174,7 +183,17 @@ export function ClientReviewQueue() {
 						<label className='grid gap-1.5 sm:col-span-2'><span className={labelClassName}>{t('clients.review.fields.notes')}</span><textarea className={`${inputClassName} min-h-24 resize-y`} value={detail.notes ?? ''} onChange={event => updateDetail('notes', event.target.value)} disabled={isSaving} /></label>
 					</div>
 					{detail.ai_summary ? <div className='rounded-xl bg-primary/8 p-4 ring-1 ring-primary/15'><p className={labelClassName}>{t('clients.review.aiSummary')}</p><p className='mt-2 whitespace-pre-wrap text-sm leading-6 text-text-primary'>{detail.ai_summary}</p></div> : null}
-					{detail.company ? <div className='rounded-xl bg-surface-subtle p-4 ring-1 ring-border-soft/50'><p className={labelClassName}>{t('clients.review.companyDetails')}</p><div className='mt-2 grid gap-2 text-sm text-text-secondary sm:grid-cols-2'><span>{detail.company.legal_name || '-'}</span><span>{detail.company.bank || '-'}</span><span>{detail.company.inn || '-'}</span><span>{detail.company.mfo || '-'}</span></div></div> : null}
+					{detail.company ? <div className='rounded-xl bg-surface-subtle p-4 ring-1 ring-border-soft/50'><p className={labelClassName}>{t('clients.review.companyDetails')}</p><div className='mt-3 grid gap-3 sm:grid-cols-2'>
+						{[
+							['companyType', detail.company.company_type_display || (detail.company.company_type ? getClientTypeLabel(t, detail.company.company_type) : getClientTypeLabel(t, detail.client_type))],
+							['legalName', detail.company.legal_name],
+							['inn', detail.company.inn],
+							['director', detail.company.director_name || detail.company.director],
+							['bank', detail.company.bank],
+							['mfo', detail.company.mfo],
+							['companyStatus', detail.company.status],
+						].filter((entry): entry is [string, string] => Boolean(entry[1])).map(([label, value]) => <div key={label} className='rounded-lg bg-surface-card p-3 ring-1 ring-border-soft/40'><p className={labelClassName}>{t(`clients.review.companyFields.${label}`)}</p><p className='mt-1 text-sm font-semibold text-text-primary'>{value}</p></div>)}
+					</div></div> : null}
 					{detail.rejection_reason ? <p className='m-0 rounded-lg bg-danger-bg px-3 py-2 text-sm font-medium text-danger'>{t('clients.review.rejectionReason')}: {detail.rejection_reason}</p> : null}
 					{detail.verification_status === 'pending' ? <label className='grid gap-1.5'><span className={labelClassName}>{t('clients.review.rejectReason')}</span><textarea className={`${inputClassName} min-h-20 resize-y`} value={rejectReason} onChange={event => setRejectReason(event.target.value)} placeholder={t('clients.review.rejectReasonPlaceholder')} disabled={isSaving} /></label> : null}
 					{message ? <p className={`m-0 rounded-lg px-3 py-2 text-sm font-medium ${message.type === 'success' ? 'bg-success-bg text-success' : 'bg-danger-bg text-danger'}`}>{message.text}</p> : null}

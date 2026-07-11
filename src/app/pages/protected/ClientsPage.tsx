@@ -178,7 +178,7 @@ function ClientsPage() {
   function handleDownloadImportTemplate() {
     const sample = [
       {
-        client_type: 'individual',
+        client_type: 'jismoniy',
         full_name: 'Ali Valiyev',
         phone: '+998901234567',
         email: 'ali@example.com',

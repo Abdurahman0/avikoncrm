@@ -142,8 +142,17 @@ function normalizeClientResponse(
 
 	return {
 		...((record as unknown) as Client),
+		client_type: normalizeClientType(record.client_type) as Client['client_type'],
 		status: normalizedStatus as Client['status'],
 		status_label: rawStatusName || matchedStatus?.name || normalizedStatus,
+	}
+}
+
+function normalizeReviewDetail(value: unknown): ClientReviewDetail {
+	const record = toRecord(value) ?? {}
+	return {
+		...((record as unknown) as ClientReviewDetail),
+		client_type: normalizeClientType(record.client_type) as Client['client_type'],
 	}
 }
 
@@ -361,24 +370,24 @@ export const apiClientService = {
 	async getClientReview(id: string): Promise<ClientReviewDetail> {
 		const { data } = await apiClient.get<unknown>(`/api/clients/review/${id}/`)
 		const payload = toRecord(data) ?? {}
-		return (toRecord(payload.data) ?? payload) as unknown as ClientReviewDetail
+		return normalizeReviewDetail(toRecord(payload.data) ?? payload)
 	},
 
 	async updateClientReview(id: string, input: Partial<Pick<Client, 'full_name' | 'phone' | 'email' | 'region' | 'company_name' | 'inn' | 'notes'>>): Promise<ClientReviewDetail> {
 		const { data } = await apiClient.patch<unknown>(`/api/clients/review/${id}/`, input)
 		const payload = toRecord(data) ?? {}
-		return (toRecord(payload.data) ?? payload) as unknown as ClientReviewDetail
+		return normalizeReviewDetail(toRecord(payload.data) ?? payload)
 	},
 
 	async verifyClient(id: string): Promise<ClientReviewDetail> {
 		const { data } = await apiClient.post<unknown>(`/api/clients/review/${id}/verify/`)
 		const payload = toRecord(data) ?? {}
-		return (toRecord(payload.data) ?? payload) as unknown as ClientReviewDetail
+		return normalizeReviewDetail(toRecord(payload.data) ?? payload)
 	},
 
 	async rejectClient(id: string, reason: string): Promise<ClientReviewDetail> {
 		const { data } = await apiClient.post<unknown>(`/api/clients/review/${id}/reject/`, { reason })
 		const payload = toRecord(data) ?? {}
-		return (toRecord(payload.data) ?? payload) as unknown as ClientReviewDetail
+		return normalizeReviewDetail(toRecord(payload.data) ?? payload)
 	},
 }

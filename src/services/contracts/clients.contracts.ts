@@ -32,11 +32,15 @@ export interface ClientRecentContract {
 
 export interface ClientReviewDetail extends Client {
 	company?: {
+		company_type?: 'yatt' | 'yuridik' | 'budjet'
+		company_type_display?: string
 		legal_name?: string
 		inn?: string
 		bank?: string
 		mfo?: string
 		director?: string
+		director_name?: string
+		status?: string
 		documents?: Array<{ id?: string; type?: string; file?: string }>
 		addresses?: Array<Record<string, unknown>>
 		branches_count?: number
@@ -44,7 +48,7 @@ export interface ClientReviewDetail extends Client {
 }
 
 export interface Client extends BaseEntity {
-	client_type?: 'individual' | 'company' | 'jismoniy' | 'yuridik' | 'budjet'
+	client_type?: 'individual' | 'company' | 'jismoniy' | 'yatt' | 'yuridik' | 'budjet'
 	client_type_display?: string
 	lead?: string | null
 	lead_id?: string | null

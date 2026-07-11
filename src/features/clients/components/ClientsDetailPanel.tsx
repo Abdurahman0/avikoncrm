@@ -13,6 +13,7 @@ import {
   ClientRecallScheduleDisplay,
   readClientRecallAt,
 } from './ClientRecallSchedule';
+import { getClientTypeLabel, normalizeClientType } from '../client-types';
 
 export interface ClientsDetailPanelProps {
   clientId: string;
@@ -56,7 +57,7 @@ export function ClientsDetailPanel({
   onDelete,
   onRequestDelete,
 }: ClientsDetailPanelProps) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const isRu = i18n.language === 'ru';
   const locale = isRu ? 'ru-RU' : 'uz-UZ';
@@ -195,11 +196,16 @@ export function ClientsDetailPanel({
           </button>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-3 flex flex-wrap gap-2">
           <StatusBadge
             tone={getStatusTone(client.status ?? 'new')}
             status={client.status || 'new'}
             label={localizedStatusLabel}
+          />
+          <StatusBadge
+            tone={normalizeClientType(client.client_type) === 'yatt' ? 'warning' : 'info'}
+            status={normalizeClientType(client.client_type)}
+            label={getClientTypeLabel(t, client.client_type)}
           />
         </div>
       </header>
@@ -219,15 +225,15 @@ export function ClientsDetailPanel({
             <p className={`mt-1 ${valueClassName}`}>{client.email || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{isRu ? 'Тип клиента' : 'Mijoz turi'}</p>
-            <p className={`mt-1 ${valueClassName}`}>{client.client_type_display || client.client_type || '-'}</p>
+            <p className={labelClassName}>{t('clients.form.clientType')}</p>
+            <p className={`mt-1 ${valueClassName}`}>{getClientTypeLabel(t, client.client_type)}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
             <p className={labelClassName}>{isRu ? 'Удобное время связи' : 'Bog‘lanish vaqti'}</p>
             <p className={`mt-1 ${valueClassName}`}>{client.preferred_contact_time || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">
-            <p className={labelClassName}>{isRu ? 'Компания' : 'Kompaniya'}</p>
+            <p className={labelClassName}>{t(`clients.form.organization.${normalizeClientType(client.client_type)}`)}</p>
             <p className={`mt-1 ${valueClassName}`}>{client.company_name || '-'}</p>
           </div>
           <div className="rounded-lg bg-surface-subtle/80 p-3">

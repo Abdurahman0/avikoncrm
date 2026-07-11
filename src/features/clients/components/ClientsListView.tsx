@@ -13,6 +13,7 @@ import {
 import { useList } from '../../../components/hooks'
 import { services } from '../../../services'
 import type { Client, ClientsListParams, ClientStatusRecord } from '../../../services/contracts'
+import { getClientTypeLabel, getClientTypeOptions, normalizeClientType } from '../client-types'
 
 export interface ClientsListViewProps {
 	onRowClick?: (client: Client) => void
@@ -23,7 +24,7 @@ export interface ClientsListViewProps {
 	onStatsChange?: (stats: { visible: number; total: number; loading: boolean }) => void
 }
 
-type SelectOption = { value: string; label: string }
+type SelectOption = { value: string; label: string; description?: string }
 
 const labelClassName =
 	'text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted'
@@ -36,6 +37,15 @@ const tableSecondaryTextClassName =
 
 const actionButtonClassName =
 	'inline-flex h-8 w-8 items-center justify-center rounded-md bg-surface-card text-text-secondary shadow-sm ring-1 ring-border-soft/40 transition duration-fast hover:bg-surface-subtle hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20'
+
+function clientTypeTone(value?: Client['client_type']): 'info' | 'warning' | 'accent' | 'success' {
+	switch (normalizeClientType(value)) {
+		case 'yatt': return 'warning'
+		case 'yuridik': return 'accent'
+		case 'budjet': return 'success'
+		default: return 'info'
+	}
+}
 
 function statusTone(status?: string): 'info' | 'warning' | 'accent' | 'success' | 'danger' {
 	switch (status) {
@@ -68,7 +78,7 @@ export function ClientsListView({
 	canManageClients = false,
 	onStatsChange,
 }: ClientsListViewProps) {
-	const { i18n } = useTranslation()
+	const { t, i18n } = useTranslation()
 	const isRu = i18n.language === 'ru'
 
 	const tx = isRu
@@ -212,14 +222,7 @@ export function ClientsListView({
 		[statusCatalog, tx],
 	)
 
-	const sourceOptions = useMemo<SelectOption[]>(
-		() => [
-			{ value: 'all', label: isRu ? 'Все типы' : 'Barcha turlar' },
-			{ value: 'individual', label: isRu ? 'Физ. лицо' : 'Jismoniy shaxs' },
-			{ value: 'company', label: isRu ? 'Компания' : 'Kompaniya' },
-		],
-		[isRu],
-	)
+	const sourceOptions = useMemo<SelectOption[]>(() => getClientTypeOptions(t, true), [t])
 
 	const orderingOptions = useMemo<SelectOption[]>(
 		() => [
@@ -257,9 +260,11 @@ export function ClientsListView({
 				key: 'client_type',
 				label: isRu ? 'Тип' : 'Turi',
 				render: client => (
-					<span className={tablePrimaryTextClassName}>
-						{client.client_type_display || (client.client_type === 'company' ? (isRu ? 'Компания' : 'Kompaniya') : client.client_type === 'individual' ? (isRu ? 'Физ. лицо' : 'Jismoniy shaxs') : '-')}
-					</span>
+					<StatusBadge
+						status={normalizeClientType(client.client_type)}
+						label={getClientTypeLabel(t, client.client_type)}
+						tone={clientTypeTone(client.client_type)}
+					/>
 				),
 			},
 			{
@@ -313,7 +318,7 @@ export function ClientsListView({
 					]
 				: []),
 		],
-		[canManageClients, onDeleteClient, onEditClient, tx],
+		[canManageClients, isRu, onDeleteClient, onEditClient, t, tx],
 	)
 
 	const handleSearch = (value: string) => {
