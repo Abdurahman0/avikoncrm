@@ -15,7 +15,7 @@ declare module 'axios' {
   }
 }
 
-const DEFAULT_API_BASE_URL = 'https://463c-178-218-201-75.ngrok-free.app';
+const DEFAULT_API_BASE_URL = 'https://7227-178-218-201-75.ngrok-free.app';
 
 const configuredBaseUrl = (
   import.meta.env.VITE_API_BASE_URL ??
