@@ -16,6 +16,8 @@ import {
 	FiMessageSquare,
 	FiMoon,
 	FiPackage,
+	FiPhone,
+	FiPhoneCall,
 	FiPlus,
 	FiRefreshCw,
 	FiSearch,
@@ -50,6 +52,8 @@ export type AppIconName =
 	| 'payments'
 	| 'chat'
 	| 'chats'
+	| 'calls'
+	| 'phone'
 	| 'notifications'
 	| 'ai-settings'
 	| 'logs'
@@ -96,6 +100,8 @@ const ICON_MAP: Record<AppIconName, IconType> = {
 	payments: FiCreditCard,
 	chat: FiMessageSquare,
 	chats: FiMessageSquare,
+	calls: FiPhoneCall,
+	phone: FiPhone,
 	notifications: FiBell,
 	'ai-settings': FiZap,
 	logs: FiPackage,

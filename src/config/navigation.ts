@@ -9,6 +9,7 @@ export type NavigationIconKey =
   | 'clients'
   | 'products'
   | 'chats'
+  | 'calls'
   | 'contracts'
   | 'notifications'
   | 'users'
@@ -112,6 +113,16 @@ export const navigationConfig: NavigationGroupConfig[] = [
         iconKey: 'chats',
         group: 'operations',
         sortOrder: 3,
+        allowedRoles: ['developer', 'admin', 'operator'],
+      },
+      {
+        id: 'calls',
+        label: 'Calls',
+        path: '/calls',
+        moduleId: 'calls',
+        iconKey: 'calls',
+        group: 'operations',
+        sortOrder: 4,
         allowedRoles: ['developer', 'admin', 'operator'],
       },
       {

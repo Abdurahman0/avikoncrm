@@ -64,11 +64,6 @@ function ChatSessionFilters({
     },
     { value: 'telegram', label: 'Telegram', shortLabel: 'TG' },
     { value: 'instagram', label: 'Instagram', shortLabel: 'IG' },
-    {
-      value: 'phone',
-      label: t('chatPage.channels.phone'),
-      shortLabel: t('chatPage.filters.phoneShort'),
-    },
   ];
 
   const operatorOptions: Array<{ value: Exclude<OperatorFilterValue, 'all'>; label: string }> = [
@@ -88,7 +83,7 @@ function ChatSessionFilters({
         <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">
           {t('chatPage.filters.channel')}
         </p>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {channelOptions.map((option) => {
             const isActive = channelFilter === option.value;
 

@@ -85,6 +85,10 @@
       "title": "Chat",
       "description": "Conversation and message workspace."
     },
+    "calls": {
+      "title": "Calls",
+      "description": "IP telephony call log and live calls."
+    },
     "notifications": {
       "title": "Notifications",
       "description": "Important events and alerts."
@@ -140,6 +144,7 @@
       "agents": "Agents",
       "payments": "Payments",
       "chat": "Chats",
+      "calls": "IP telephony",
       "notifications": "Notifications",
       "ai-settings": "AI Settings",
       "logs": "Logs",
@@ -2666,6 +2671,63 @@
       "timeUnavailable": "Not available",
       "requestOperator": "Call operator",
       "operatorRequested": "Operator requested"
+    }
+  },
+  "callsPage": {
+    "eyebrow": "IP telephony",
+    "title": "Calls",
+    "subtitle": "Live calls and full call history from the phone integration.",
+    "unknownContact": "Unknown contact",
+    "answerHint": "Ringing — needs an operator",
+    "liveNow": "Live now",
+    "stats": {
+      "live": "Live calls",
+      "total": "Total contacts",
+      "missed": "Missed",
+      "unread": "Unread"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by name or number"
+    },
+    "status": {
+      "all": "All",
+      "live": "Live",
+      "answered": "Answered",
+      "missed": "Missed",
+      "ongoing": "Ongoing"
+    },
+    "direction": {
+      "all": "All",
+      "incoming": "Incoming",
+      "outgoing": "Outgoing",
+      "internal": "Internal"
+    },
+    "table": {
+      "contact": "Contact",
+      "direction": "Direction",
+      "status": "Status",
+      "duration": "Duration",
+      "operator": "Extension",
+      "time": "Time"
+    },
+    "empty": {
+      "title": "No calls found",
+      "description": "There are no phone calls matching the current filters."
+    },
+    "error": {
+      "title": "Failed to load calls",
+      "description": "Try refreshing the page."
+    },
+    "loadingTitle": "Loading calls",
+    "loadingDescription": "Fetching the call log.",
+    "detail": {
+      "title": "Call history",
+      "close": "Close",
+      "systemEvent": "Call event",
+      "emptyTitle": "No call events",
+      "emptyDescription": "There are no recorded events for this contact yet.",
+      "loadingTitle": "Loading history",
+      "loadingDescription": "Fetching call events."
     }
   }
 }

@@ -79,3 +79,90 @@ export function getSessionPhoneNumber(session: Conversation): string | null {
 export function isLivePhoneCall(session: Conversation): boolean {
   return session.channel === 'phone' && Boolean(session.operator_needed);
 }
+
+export function getCallExtension(message: ChatMessage): string | null {
+  const extension = readMeta(message).extension;
+  if (typeof extension === 'string' && extension.trim()) {
+    return extension.trim();
+  }
+  if (typeof extension === 'number' && Number.isFinite(extension)) {
+    return String(extension);
+  }
+  return null;
+}
+
+export function getCallDurationSeconds(message: ChatMessage): number | null {
+  const raw = readMeta(message).duration;
+  const value = typeof raw === 'number' ? raw : Number(raw);
+  return Number.isFinite(value) && value >= 0 ? value : null;
+}
+
+/** "68" -> "1:08", "9" -> "0:09", "3720" -> "1:02:00" */
+export function formatCallDuration(seconds: number | null): string {
+  if (seconds == null || seconds <= 0) {
+    return '0:00';
+  }
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  const pad = (value: number) => String(value).padStart(2, '0');
+
+  if (hours > 0) {
+    return `${hours}:${pad(minutes)}:${pad(secs)}`;
+  }
+
+  return `${minutes}:${pad(secs)}`;
+}
+
+export type CallStatus = 'live' | 'answered' | 'missed' | 'ongoing';
+
+/** Status of the latest call event on a message. */
+export function getCallStatus(message: ChatMessage): CallStatus {
+  const eventType = getCallEventType(message);
+
+  if (eventType === 'call_ended') {
+    return isMissedCall(message) ? 'missed' : 'answered';
+  }
+
+  // started / connecting / answered / recording / transferred = still in progress
+  return 'ongoing';
+}
+
+export interface CallSummary {
+  direction: CallDirection | null;
+  status: CallStatus;
+  durationSeconds: number | null;
+  extension: string | null;
+  at: string | null;
+  content: string | null;
+}
+
+/** Summarize a phone session from its latest call event (for the call log row). */
+export function summarizeSessionCall(session: Conversation): CallSummary {
+  const message = session.last_message_payload ?? null;
+
+  if (!message) {
+    return {
+      direction: null,
+      status: session.operator_needed ? 'live' : 'ongoing',
+      durationSeconds: null,
+      extension: null,
+      at: session.last_message_at ?? null,
+      content: session.last_message ?? null,
+    };
+  }
+
+  const baseStatus = getCallStatus(message);
+  const status: CallStatus =
+    session.operator_needed && baseStatus === 'ongoing' ? 'live' : baseStatus;
+
+  return {
+    direction: getCallDirection(message),
+    status,
+    durationSeconds: getCallDurationSeconds(message),
+    extension: getCallExtension(message),
+    at: message.created_at ?? session.last_message_at ?? null,
+    content: message.content || session.last_message || null,
+  };
+}

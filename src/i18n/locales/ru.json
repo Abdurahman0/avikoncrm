@@ -85,6 +85,10 @@
       "title": "Чат",
       "description": "Окно общения и сообщений."
     },
+    "calls": {
+      "title": "Звонки",
+      "description": "Журнал звонков IP-телефонии и живые звонки."
+    },
     "notifications": {
       "title": "Уведомления",
       "description": "Важные события и предупреждения."
@@ -140,6 +144,7 @@
       "agents": "Агенты",
       "payments": "Транзакции",
       "chat": "Сообщения",
+      "calls": "IP-телефония",
       "notifications": "Оповещения",
       "ai-settings": "Рабочее место",
       "logs": "Аудит",
@@ -2666,6 +2671,63 @@
       "timeUnavailable": "Недоступно",
       "requestOperator": "Вызвать оператора",
       "operatorRequested": "Запрос оператора отправлен"
+    }
+  },
+  "callsPage": {
+    "eyebrow": "IP-телефония",
+    "title": "Звонки",
+    "subtitle": "Живые звонки и полная история из телефонной интеграции.",
+    "unknownContact": "Неизвестный контакт",
+    "answerHint": "Звонок — нужен оператор",
+    "liveNow": "Сейчас в эфире",
+    "stats": {
+      "live": "Живые звонки",
+      "total": "Всего контактов",
+      "missed": "Пропущенные",
+      "unread": "Непрочитанные"
+    },
+    "filters": {
+      "searchPlaceholder": "Поиск по имени или номеру"
+    },
+    "status": {
+      "all": "Все",
+      "live": "В эфире",
+      "answered": "Отвечен",
+      "missed": "Пропущен",
+      "ongoing": "Идёт"
+    },
+    "direction": {
+      "all": "Все",
+      "incoming": "Входящий",
+      "outgoing": "Исходящий",
+      "internal": "Внутренний"
+    },
+    "table": {
+      "contact": "Контакт",
+      "direction": "Направление",
+      "status": "Статус",
+      "duration": "Длительность",
+      "operator": "Внутренний номер",
+      "time": "Время"
+    },
+    "empty": {
+      "title": "Звонки не найдены",
+      "description": "Нет звонков, соответствующих текущим фильтрам."
+    },
+    "error": {
+      "title": "Не удалось загрузить звонки",
+      "description": "Попробуйте обновить страницу."
+    },
+    "loadingTitle": "Загрузка звонков",
+    "loadingDescription": "Получение журнала звонков.",
+    "detail": {
+      "title": "История звонков",
+      "close": "Закрыть",
+      "systemEvent": "Событие звонка",
+      "emptyTitle": "Нет событий",
+      "emptyDescription": "Для этого контакта пока нет записей.",
+      "loadingTitle": "Загрузка истории",
+      "loadingDescription": "Получение событий звонков."
     }
   }
 }

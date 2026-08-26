@@ -10,6 +10,7 @@ export const backendCapabilities = {
     canWrite: false,
   },
   chats: { available: true },
+  calls: { available: true },
   contracts: {
     available: false,
     canWrite: false,
@@ -35,6 +36,7 @@ const moduleAvailability: Record<string, boolean> = {
   clients: backendCapabilities.clients.available,
   products: backendCapabilities.products.available,
   chats: backendCapabilities.chats.available,
+  calls: backendCapabilities.calls.available,
   contracts: backendCapabilities.contracts.available,
   notifications: backendCapabilities.notifications.available,
   users: backendCapabilities.users.available,

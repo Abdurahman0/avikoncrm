@@ -85,6 +85,10 @@
       "title": "Chat",
       "description": "Muloqot va xabarlar oynasi."
     },
+    "calls": {
+      "title": "Qo'ng'iroqlar",
+      "description": "IP-telefoniya qo'ng'iroqlar jurnali va jonli qo'ng'iroqlar."
+    },
     "notifications": {
       "title": "Bildirishnomalar",
       "description": "Muhim hodisalar va ogohlantirishlar."
@@ -140,6 +144,7 @@
       "agents": "Agentlar",
       "payments": "Tranzaksiyalar",
       "chat": "Xabarlar",
+      "calls": "IP-telefoniya",
       "notifications": "Ogohlantirishlar",
       "ai-settings": "Ish joyi",
       "logs": "Audit",
@@ -2666,6 +2671,63 @@
       "timeUnavailable": "Mavjud emas",
       "requestOperator": "Operator chaqirish",
       "operatorRequested": "Operator so'rovi yuborilgan"
+    }
+  },
+  "callsPage": {
+    "eyebrow": "IP-telefoniya",
+    "title": "Qo'ng'iroqlar",
+    "subtitle": "Telefon integratsiyasidan jonli qo'ng'iroqlar va to'liq tarix.",
+    "unknownContact": "Noma'lum kontakt",
+    "answerHint": "Qo'ng'iroq — operator kerak",
+    "liveNow": "Hozir jonli",
+    "stats": {
+      "live": "Jonli qo'ng'iroqlar",
+      "total": "Jami kontaktlar",
+      "missed": "Javobsiz",
+      "unread": "O'qilmagan"
+    },
+    "filters": {
+      "searchPlaceholder": "Ism yoki raqam bo'yicha qidirish"
+    },
+    "status": {
+      "all": "Barchasi",
+      "live": "Jonli",
+      "answered": "Javob berilgan",
+      "missed": "Javobsiz",
+      "ongoing": "Davom etmoqda"
+    },
+    "direction": {
+      "all": "Barchasi",
+      "incoming": "Kiruvchi",
+      "outgoing": "Chiquvchi",
+      "internal": "Ichki"
+    },
+    "table": {
+      "contact": "Kontakt",
+      "direction": "Yo'nalish",
+      "status": "Holat",
+      "duration": "Davomiylik",
+      "operator": "Ichki raqam",
+      "time": "Vaqt"
+    },
+    "empty": {
+      "title": "Qo'ng'iroqlar topilmadi",
+      "description": "Tanlangan filtrlarga mos qo'ng'iroqlar yo'q."
+    },
+    "error": {
+      "title": "Qo'ng'iroqlarni yuklab bo'lmadi",
+      "description": "Sahifani yangilab ko'ring."
+    },
+    "loadingTitle": "Qo'ng'iroqlar yuklanmoqda",
+    "loadingDescription": "Qo'ng'iroqlar jurnali olinmoqda.",
+    "detail": {
+      "title": "Qo'ng'iroqlar tarixi",
+      "close": "Yopish",
+      "systemEvent": "Qo'ng'iroq hodisasi",
+      "emptyTitle": "Hodisalar yo'q",
+      "emptyDescription": "Bu kontakt uchun hozircha yozuvlar yo'q.",
+      "loadingTitle": "Tarix yuklanmoqda",
+      "loadingDescription": "Qo'ng'iroq hodisalari olinmoqda."
     }
   }
 }

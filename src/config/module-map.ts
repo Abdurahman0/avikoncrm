@@ -135,6 +135,25 @@ export const moduleMap: AppModule[] = [
     notes: 'Real-time client messaging with WebSocket support.',
   },
   {
+    id: 'calls',
+    label: 'Calls',
+    description: 'IP telephony call log and live calls.',
+    category: 'operational',
+    priority: 'medium',
+    priorityOrder: 6,
+    allowedRoles: ['developer', 'admin', 'operator'],
+    accessStrategy: 'permission-based',
+    pages: [
+      {
+        id: 'calls-list',
+        label: 'Calls',
+        kind: 'log',
+        path: '/calls',
+      },
+    ],
+    notes: 'IP-telephony (Utel) phone sessions shown as a call log with live-call tracking.',
+  },
+  {
     id: 'contracts',
     label: 'Contracts',
     description: 'Contract management and document handling.',

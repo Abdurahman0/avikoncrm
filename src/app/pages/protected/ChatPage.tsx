@@ -124,6 +124,11 @@ function matchesSessionFilters(
   channelFilter: ChannelFilter,
   operatorFilter: OperatorFilter,
 ): boolean {
+  // Phone calls have their own dedicated "Calls" page — never show them in Chats.
+  if (session.channel === 'phone') {
+    return false;
+  }
+
   const channelMatches =
     channelFilter === ALL_CHANNEL_VALUE || session.channel === channelFilter;
   const operatorMatches =
