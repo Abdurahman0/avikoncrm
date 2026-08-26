@@ -162,6 +162,7 @@ export const apiConversationService: ConversationService = {
         page_size: params?.pageSize,
         search: params?.search,
         channel: params?.channel,
+        platform: params?.channel,
         assigned_operator: params?.assigned_operator,
         is_operator_active: params?.is_operator_active,
         ordering: params?.ordering,

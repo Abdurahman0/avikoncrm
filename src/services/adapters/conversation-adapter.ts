@@ -358,7 +358,13 @@ function mapMetadata(
 }
 
 function resolveChannel(value: unknown): Conversation['channel'] {
-  if (value === 'telegram' || value === 'instagram' || value === 'web' || value === 'manual') {
+  if (
+    value === 'telegram' ||
+    value === 'instagram' ||
+    value === 'web' ||
+    value === 'manual' ||
+    value === 'phone'
+  ) {
     return value;
   }
 

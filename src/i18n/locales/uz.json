@@ -2595,11 +2595,13 @@
       "operator": "Operator",
       "activeOperator": "Faol operator",
       "inactiveOperator": "Nofaol operator",
-      "sorting": "Saralash"
+      "sorting": "Saralash",
+      "phoneShort": "Qo'ng'iroq"
     },
     "channels": {
       "web": "Veb",
-      "manual": "Qo'lda"
+      "manual": "Qo'lda",
+      "phone": "Telefon"
     },
     "states": {
       "open": "Ochiq",
@@ -2616,7 +2618,8 @@
       "unknownChat": "Noma'lum chat",
       "noTime": "Vaqt yo'q",
       "noMessage": "Xabar yo'q",
-      "operatorRequired": "Operator kerak"
+      "operatorRequired": "Operator kerak",
+      "liveCall": "Jonli qo'ng'iroq"
     },
     "workspace": {
       "selectDate": "Sana tanlang",
@@ -2646,6 +2649,8 @@
       "noMessagesDescription": "Bu sessiya uchun hozircha xabarlar mavjud emas.",
       "messagePlaceholder": "Xabar yozing...",
       "sendAria": "Yuborish",
+      "phoneCallOnlyTitle": "Qo'ng'iroq tarixi",
+      "phoneCallOnlyDescription": "Bu qo'ng'iroqlar jurnali — bu yerdan javob yozib bo'lmaydi.",
       "unknownCustomer": "Noma'lum mijoz",
       "person": {
         "client": "Mijoz",

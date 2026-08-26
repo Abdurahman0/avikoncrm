@@ -2595,11 +2595,13 @@
       "operator": "Оператор",
       "activeOperator": "Активный оператор",
       "inactiveOperator": "Неактивный оператор",
-      "sorting": "Сортировка"
+      "sorting": "Сортировка",
+      "phoneShort": "Звонок"
     },
     "channels": {
       "web": "Веб",
-      "manual": "Вручную"
+      "manual": "Вручную",
+      "phone": "Телефон"
     },
     "states": {
       "open": "Открыт",
@@ -2616,7 +2618,8 @@
       "unknownChat": "Неизвестный чат",
       "noTime": "Нет времени",
       "noMessage": "Нет сообщений",
-      "operatorRequired": "Нужен оператор"
+      "operatorRequired": "Нужен оператор",
+      "liveCall": "Живой звонок"
     },
     "workspace": {
       "selectDate": "Выберите дату",
@@ -2646,6 +2649,8 @@
       "noMessagesDescription": "Для этой сессии пока нет сообщений.",
       "messagePlaceholder": "Напишите сообщение...",
       "sendAria": "Отправить",
+      "phoneCallOnlyTitle": "Журнал звонков",
+      "phoneCallOnlyDescription": "Это история звонков — здесь нельзя ответить.",
       "unknownCustomer": "Неизвестный клиент",
       "person": {
         "client": "Клиент",

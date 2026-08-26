@@ -31,6 +31,18 @@ export function getConversationDisplayName(
   session: Conversation,
   fallbackUnknown: string,
 ): string {
+  // Phone calls: prefer the linked CRM client's name over the raw "Tel: +998..." title.
+  if (session.channel === 'phone') {
+    const clientName = normalizeVisibleText(session.client?.fullName ?? '');
+    if (clientName) {
+      return clientName;
+    }
+
+    const phoneTitle = normalizeVisibleText(session.title ?? '');
+    const phoneNumber = normalizeVisibleText(session.external_id ?? '');
+    return phoneTitle || phoneNumber || fallbackUnknown;
+  }
+
   const title = normalizeVisibleText(session.title ?? '');
   if (title) {
     return title;

@@ -2595,11 +2595,13 @@
       "operator": "Operator",
       "activeOperator": "Active operator",
       "inactiveOperator": "Inactive operator",
-      "sorting": "Sorting"
+      "sorting": "Sorting",
+      "phoneShort": "Call"
     },
     "channels": {
       "web": "Web",
-      "manual": "By hand"
+      "manual": "By hand",
+      "phone": "Phone"
     },
     "states": {
       "open": "Open",
@@ -2616,7 +2618,8 @@
       "unknownChat": "Unknown chat",
       "noTime": "There is no time",
       "noMessage": "There is no message",
-      "operatorRequired": "Operator required"
+      "operatorRequired": "Operator required",
+      "liveCall": "Live call"
     },
     "workspace": {
       "selectDate": "Select a date",
@@ -2646,6 +2649,8 @@
       "noMessagesDescription": "There are currently no messages for this session.",
       "messagePlaceholder": "Write a message...",
       "sendAria": "Sending",
+      "phoneCallOnlyTitle": "Phone call log",
+      "phoneCallOnlyDescription": "This is a call history — you cannot reply here.",
       "unknownCustomer": "Unknown customer",
       "person": {
         "client": "Customer",

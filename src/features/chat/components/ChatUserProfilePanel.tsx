@@ -253,6 +253,7 @@ function ChatUserProfilePanel({
 			statePayload?.structured_extraction?.phone ??
 			session.client?.phone ??
 			session.lead?.phone ??
+			(session.channel === 'phone' ? session.external_id : null) ??
 			null
 		const address =
 			statePayload?.address ??
@@ -275,7 +276,9 @@ function ChatUserProfilePanel({
 							? 'Telegram'
 							: session.channel === 'instagram'
 								? 'Instagram'
-								: labels.unknownChannel,
+								: session.channel === 'phone'
+									? labels.phone
+									: labels.unknownChannel,
 			lastActivity,
 		}
 	}, [i18n.language, labels, locale, session])

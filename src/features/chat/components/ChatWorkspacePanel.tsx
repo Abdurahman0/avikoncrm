@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import {
 	FiImage,
+	FiInfo,
 	FiPause,
+	FiPhone,
+	FiPhoneForwarded,
+	FiPhoneIncoming,
+	FiPhoneMissed,
+	FiPhoneOutgoing,
 	FiPlay,
 	FiSend,
 	FiTrash2,
 	FiUser,
 } from 'react-icons/fi'
+import type { IconType } from 'react-icons'
 import { useTranslation } from 'react-i18next'
 import chatBackground from '../../../assets/chat-background.svg'
 import { FilterSelect } from '../../../components/shared/data'
@@ -25,6 +32,12 @@ import {
 import { resolveDateFnsLocale, resolveIntlLocale } from '../../../i18n/locale'
 import ChatUserProfilePanel from './ChatUserProfilePanel'
 import { getConversationDisplayName } from '../utils/conversation-display'
+import {
+	getCallDirection,
+	getSessionPhoneNumber,
+	isCallMessage,
+	isMissedCall,
+} from '../utils/call-event'
 import type { ChatMessage, Conversation } from '../../../types/domain'
 
 interface ChatWorkspacePanelProps {
@@ -228,6 +241,58 @@ function getAttachmentWrapperClassName(count: number): string {
 	return 'w-full max-w-[330px]'
 }
 
+interface SystemMessageVisual {
+	Icon: IconType
+	iconClassName: string
+	chipClassName: string
+}
+
+function getSystemMessageVisual(message: ChatMessage): SystemMessageVisual {
+	const neutralChip =
+		'bg-surface-card/90 text-text-secondary ring-border-soft/55 dark:bg-surface-subtle/85'
+
+	if (!isCallMessage(message)) {
+		return {
+			Icon: FiInfo,
+			iconClassName: 'text-text-muted',
+			chipClassName: neutralChip,
+		}
+	}
+
+	if (isMissedCall(message)) {
+		return {
+			Icon: FiPhoneMissed,
+			iconClassName: 'text-danger',
+			chipClassName: 'bg-danger/10 text-danger ring-danger/25',
+		}
+	}
+
+	const direction = getCallDirection(message)
+
+	if (direction === 'incoming') {
+		return {
+			Icon: FiPhoneIncoming,
+			iconClassName: 'text-info',
+			chipClassName: 'bg-info-bg text-info ring-info/25',
+		}
+	}
+
+	if (direction === 'outgoing') {
+		return {
+			Icon: FiPhoneOutgoing,
+			iconClassName: 'text-success',
+			chipClassName: 'bg-success-bg text-success ring-success/25',
+		}
+	}
+
+	return {
+		Icon: FiPhoneForwarded,
+		iconClassName: 'text-[rgb(109_40_217)]',
+		chipClassName:
+			'bg-[rgb(139_92_246_/_0.12)] text-[rgb(109_40_217)] ring-[rgb(139_92_246_/_0.3)]',
+	}
+}
+
 function ChatWorkspacePanel({
 	session,
 	messages,
@@ -278,6 +343,8 @@ function ChatWorkspacePanel({
 		noMessagesDescription: t('chatPage.workspace.noMessagesDescription'),
 		messagePlaceholder: t('chatPage.workspace.messagePlaceholder'),
 		sendAria: t('chatPage.workspace.sendAria'),
+		phoneCallOnlyTitle: t('chatPage.workspace.phoneCallOnlyTitle'),
+		phoneCallOnlyDescription: t('chatPage.workspace.phoneCallOnlyDescription'),
 		timeUnavailable: t('chatPage.workspace.timeUnavailable'),
 		personClient: t('chatPage.workspace.person.client'),
 		personLead: t('chatPage.workspace.person.lead'),
@@ -390,6 +457,8 @@ function ChatWorkspacePanel({
 
 	const activeSession = session
 	const sessionTitle = getSessionTitle(activeSession, labels.unknownCustomer)
+	const isPhoneSession = activeSession.channel === 'phone'
+	const phoneNumber = isPhoneSession ? getSessionPhoneNumber(activeSession) : null
 	const aiPaused = isAIPaused(activeSession)
 	const pauseDateLabel = pauseDate
 		? formatLocalizedDate(pauseDate, i18n.language, {
@@ -439,24 +508,37 @@ function ChatWorkspacePanel({
 						onClick={() => setIsProfilePanelOpen(true)}
 						title={labels.openProfile}
 					>
-						<span className='inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-[16px] font-bold text-white shadow-[0_12px_28px_-20px_rgba(16,185,129,0.85)]'>
-							{getInitial(sessionTitle)}
+						<span
+							className={[
+								'inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-[16px] font-bold text-white',
+								isPhoneSession
+									? 'bg-gradient-to-br from-violet-500 to-indigo-600 shadow-[0_12px_28px_-20px_rgba(139,92,246,0.85)]'
+									: 'bg-gradient-to-br from-emerald-500 to-teal-600 shadow-[0_12px_28px_-20px_rgba(16,185,129,0.85)]',
+							].join(' ')}
+						>
+							{isPhoneSession && !activeSession.client ? (
+								<FiPhone className='h-5 w-5' />
+							) : (
+								getInitial(sessionTitle)
+							)}
 						</span>
 						<div className='min-w-0'>
 							<h3 className='m-0 truncate text-[1rem] font-semibold text-text-primary'>
 								{sessionTitle}
 							</h3>
-							<p className='m-0 mt-0.5 text-sm font-medium text-text-secondary'>
-								{getSessionPersonType(session, {
-									client: labels.personClient,
-									lead: labels.personLead,
-									contact: labels.personContact,
-								})}
+							<p className='m-0 mt-0.5 truncate text-sm font-medium text-text-secondary'>
+								{isPhoneSession && phoneNumber
+									? phoneNumber
+									: getSessionPersonType(session, {
+											client: labels.personClient,
+											lead: labels.personLead,
+											contact: labels.personContact,
+										})}
 							</p>
 						</div>
 					</button>
 					<div className='flex shrink-0 items-center gap-2'>
-						{aiPaused ? (
+						{isPhoneSession ? null : aiPaused ? (
 							<button
 								type='button'
 								className='inline-flex h-10 items-center gap-1.5 rounded-full bg-success-bg px-3 text-success transition duration-fast hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success/30 disabled:cursor-not-allowed disabled:opacity-60'
@@ -669,6 +751,40 @@ function ChatWorkspacePanel({
 					) : messages.length ? (
 						<div className='grid gap-3'>
 							{messages.map(message => {
+								if (message.sender_type === 'system') {
+									const visual = getSystemMessageVisual(message)
+									const SystemIcon = visual.Icon
+									const systemText = message.content.trim()
+
+									return (
+										<div key={message.id} className='flex justify-center px-2'>
+											<div
+												className={[
+													'inline-flex max-w-[92%] items-center gap-2 rounded-full px-3.5 py-1.5 text-[12px] font-medium shadow-sm ring-1',
+													visual.chipClassName,
+												].join(' ')}
+											>
+												<SystemIcon
+													className={['h-3.5 w-3.5 shrink-0', visual.iconClassName].join(' ')}
+													aria-hidden='true'
+												/>
+												{systemText ? (
+													<span className='whitespace-pre-wrap text-left leading-5'>
+														{systemText}
+													</span>
+												) : null}
+												<span className='shrink-0 text-[10px] font-semibold opacity-70'>
+													{formatDateTime(
+														message.created_at,
+														i18n.language,
+														labels.timeUnavailable,
+													)}
+												</span>
+											</div>
+										</div>
+									)
+								}
+
 								const outgoing = message.direction === 'outgoing'
 								const hasTextContent = message.content.trim().length > 0
 								const imageUrls = message.image_urls
@@ -780,37 +896,53 @@ function ChatWorkspacePanel({
 				</div>
 			</div>
 
-			<div className='rounded-xl bg-background-subtle/80 p-3 ring-1 ring-border-soft/55 dark:bg-surface-card/92'>
-				<label className='sr-only' htmlFor='chat-message-input'>
-					{labels.messageLabel}
-				</label>
-				<div className='flex items-end gap-2'>
-					<textarea
-						id='chat-message-input'
-						value={draftMessage}
-						onChange={event => setDraftMessage(event.target.value)}
-						onKeyDown={handleComposerKeyDown}
-						className='min-h-[56px] max-h-[132px] w-full flex-1 resize-y rounded-xl border-0 bg-surface-card/85 px-3 py-3 text-sm text-text-primary outline-none transition duration-fast placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-primary/35 dark:bg-background-subtle/85'
-						placeholder={labels.messagePlaceholder}
-						disabled={isSending}
-					/>
-					<button
-						type='button'
-						className='inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35 disabled:cursor-not-allowed disabled:opacity-60'
-						onClick={() => {
-							void submitMessage()
-						}}
-						disabled={!canSend}
-						aria-label={labels.sendAria}
-					>
-						<FiSend
-							className={['h-4.5 w-4.5', isSending ? 'animate-pulse' : ''].join(
-								' ',
-							)}
-						/>
-					</button>
+			{isPhoneSession ? (
+				<div className='flex items-center gap-3 rounded-xl bg-background-subtle/80 p-3.5 ring-1 ring-border-soft/55 dark:bg-surface-card/92'>
+					<span className='inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[rgb(139_92_246_/_0.14)] text-[rgb(109_40_217)]'>
+						<FiPhone className='h-4.5 w-4.5' />
+					</span>
+					<div className='min-w-0'>
+						<p className='m-0 text-sm font-semibold text-text-primary'>
+							{labels.phoneCallOnlyTitle}
+						</p>
+						<p className='m-0 mt-0.5 text-[12px] text-text-secondary'>
+							{labels.phoneCallOnlyDescription}
+						</p>
+					</div>
 				</div>
-			</div>
+			) : (
+				<div className='rounded-xl bg-background-subtle/80 p-3 ring-1 ring-border-soft/55 dark:bg-surface-card/92'>
+					<label className='sr-only' htmlFor='chat-message-input'>
+						{labels.messageLabel}
+					</label>
+					<div className='flex items-end gap-2'>
+						<textarea
+							id='chat-message-input'
+							value={draftMessage}
+							onChange={event => setDraftMessage(event.target.value)}
+							onKeyDown={handleComposerKeyDown}
+							className='min-h-[56px] max-h-[132px] w-full flex-1 resize-y rounded-xl border-0 bg-surface-card/85 px-3 py-3 text-sm text-text-primary outline-none transition duration-fast placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-primary/35 dark:bg-background-subtle/85'
+							placeholder={labels.messagePlaceholder}
+							disabled={isSending}
+						/>
+						<button
+							type='button'
+							className='inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition duration-fast hover:bg-primary-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/35 disabled:cursor-not-allowed disabled:opacity-60'
+							onClick={() => {
+								void submitMessage()
+							}}
+							disabled={!canSend}
+							aria-label={labels.sendAria}
+						>
+							<FiSend
+								className={['h-4.5 w-4.5', isSending ? 'animate-pulse' : ''].join(
+									' ',
+								)}
+							/>
+						</button>
+					</div>
+				</div>
+			)}
 
 			<ChatUserProfilePanel
 				session={activeSession}

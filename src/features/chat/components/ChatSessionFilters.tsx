@@ -1,5 +1,5 @@
 import { FaInstagram, FaTelegramPlane } from 'react-icons/fa';
-import { FiLayers } from 'react-icons/fi';
+import { FiLayers, FiPhone } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { FilterSelect, SearchInput } from '../../../components/shared/data';
 import type { ChatChannel, SelectOption } from '../../../types/domain';
@@ -35,6 +35,10 @@ function ChannelFilterIcon({ value }: { value: ChannelFilterValue }) {
     return <FaInstagram className="h-3.5 w-3.5 text-rose-500" />;
   }
 
+  if (value === 'phone') {
+    return <FiPhone className="h-3.5 w-3.5 text-violet-500" />;
+  }
+
   return <FiLayers className="h-3.5 w-3.5 text-text-muted" />;
 }
 
@@ -60,6 +64,11 @@ function ChatSessionFilters({
     },
     { value: 'telegram', label: 'Telegram', shortLabel: 'TG' },
     { value: 'instagram', label: 'Instagram', shortLabel: 'IG' },
+    {
+      value: 'phone',
+      label: t('chatPage.channels.phone'),
+      shortLabel: t('chatPage.filters.phoneShort'),
+    },
   ];
 
   const operatorOptions: Array<{ value: Exclude<OperatorFilterValue, 'all'>; label: string }> = [
@@ -79,7 +88,7 @@ function ChatSessionFilters({
         <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.1em] text-text-muted">
           {t('chatPage.filters.channel')}
         </p>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           {channelOptions.map((option) => {
             const isActive = channelFilter === option.value;
 

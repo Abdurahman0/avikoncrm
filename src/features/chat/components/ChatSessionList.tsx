@@ -1,5 +1,5 @@
 import { FaInstagram, FaTelegramPlane } from 'react-icons/fa';
-import { FiAlertTriangle, FiEdit3, FiGlobe } from 'react-icons/fi';
+import { FiAlertTriangle, FiEdit3, FiGlobe, FiPhone, FiPhoneCall } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { EmptyState, LoadingState } from '../../../components/shared/page';
 import { resolveIntlLocale } from '../../../i18n/locale';
@@ -20,6 +20,7 @@ const channelClassNameByValue: Record<Conversation['channel'], string> = {
   instagram: 'bg-[rgb(225_48_108_/_0.14)] text-[rgb(176_32_87)]',
   web: 'bg-info-bg text-info',
   manual: 'bg-surface-subtle text-text-secondary',
+  phone: 'bg-[rgb(139_92_246_/_0.14)] text-[rgb(109_40_217)]',
 };
 
 const channelDotClassNameByValue: Record<Conversation['channel'], string> = {
@@ -27,6 +28,7 @@ const channelDotClassNameByValue: Record<Conversation['channel'], string> = {
   instagram: 'bg-[rgb(225_48_108_/_0.92)] text-white',
   web: 'bg-info text-white',
   manual: 'bg-neutral text-white',
+  phone: 'bg-[rgb(139_92_246_/_0.92)] text-white',
 };
 
 const avatarGradientByChannel: Record<Conversation['channel'], string> = {
@@ -34,6 +36,7 @@ const avatarGradientByChannel: Record<Conversation['channel'], string> = {
   instagram: 'from-fuchsia-500 to-pink-600',
   web: 'from-teal-500 to-cyan-600',
   manual: 'from-amber-500 to-orange-600',
+  phone: 'from-violet-500 to-indigo-600',
 };
 
 function formatSessionTime(value: string | null, locale: string, emptyLabel: string): string {
@@ -87,6 +90,10 @@ function ChannelIcon({
     return <FiGlobe className={className} />;
   }
 
+  if (channel === 'phone') {
+    return <FiPhone className={className} />;
+  }
+
   return <FiEdit3 className={className} />;
 }
 
@@ -111,6 +118,7 @@ function ChatSessionList({
     noTime: t('chatPage.sessionList.noTime'),
     noMessage: t('chatPage.sessionList.noMessage'),
     operatorRequired: t('chatPage.sessionList.operatorRequired'),
+    liveCall: t('chatPage.sessionList.liveCall'),
     aiPaused: t('chatPage.workspace.aiPausedStatus'),
   };
   const channelLabels: Record<Conversation['channel'], string> = {
@@ -118,6 +126,7 @@ function ChatSessionList({
     instagram: 'Instagram',
     web: t('chatPage.channels.web'),
     manual: t('chatPage.channels.manual'),
+    phone: t('chatPage.channels.phone'),
   };
   const stateLabels: Record<Conversation['state'], string> = {
     open: t('chatPage.states.open'),
@@ -125,10 +134,16 @@ function ChatSessionList({
     resolved: t('chatPage.states.resolved'),
   };
 
+  const liveCallSessions: Conversation[] = [];
   const prioritizedSessions: Conversation[] = [];
   const regularSessions: Conversation[] = [];
 
   sessions.forEach((session) => {
+    if (session.channel === 'phone' && session.operator_needed) {
+      liveCallSessions.push(session);
+      return;
+    }
+
     if (session.operator_needed) {
       prioritizedSessions.push(session);
       return;
@@ -137,7 +152,11 @@ function ChatSessionList({
     regularSessions.push(session);
   });
 
-  const visibleSessions = [...prioritizedSessions, ...regularSessions];
+  const visibleSessions = [
+    ...liveCallSessions,
+    ...prioritizedSessions,
+    ...regularSessions,
+  ];
 
   if (isLoading) {
     return (
@@ -173,6 +192,9 @@ function ChatSessionList({
         const unreadCount = unreadBySessionId[session.id] ?? 0;
         const aiPaused = hasAiPause(session);
         const title = getSessionTitle(session, labels.unknownChat);
+        const isPhone = session.channel === 'phone';
+        const isLiveCall = isPhone && session.operator_needed;
+        const showPhoneAvatar = isPhone && !session.client;
 
         return (
           <button
@@ -196,20 +218,31 @@ function ChatSessionList({
                 className={[
                   'relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[15px] font-bold text-white',
                   `bg-gradient-to-br ${avatarGradientByChannel[session.channel]}`,
+                  isLiveCall ? 'ring-2 ring-danger/70 ring-offset-2 ring-offset-surface-card' : '',
                 ].join(' ')}
                 aria-hidden='true'
               >
-                {getInitial(title)}
+                {showPhoneAvatar ? (
+                  <FiPhone className='h-5 w-5' />
+                ) : (
+                  getInitial(title)
+                )}
                 <span
                   className={[
                     'absolute -bottom-1 -right-1 inline-flex h-4 w-4 items-center justify-center rounded-full ring-2 ring-surface-card',
-                    channelDotClassNameByValue[session.channel],
+                    isLiveCall
+                      ? 'animate-pulse bg-danger text-white'
+                      : channelDotClassNameByValue[session.channel],
                   ].join(' ')}
                 >
-                  <ChannelIcon
-                    channel={session.channel}
-                    className='h-2.5 w-2.5'
-                  />
+                  {isLiveCall ? (
+                    <FiPhoneCall className='h-2.5 w-2.5' />
+                  ) : (
+                    <ChannelIcon
+                      channel={session.channel}
+                      className='h-2.5 w-2.5'
+                    />
+                  )}
                 </span>
               </span>
 
@@ -253,7 +286,13 @@ function ChatSessionList({
               <span className='inline-flex min-h-6 items-center rounded-pill bg-surface-card px-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-text-secondary ring-1 ring-border-soft/45'>
                 {stateLabels[session.state]}
               </span>
-              {session.operator_needed ? (
+              {isLiveCall ? (
+                <span className='inline-flex min-h-6 items-center gap-1 rounded-pill bg-danger/12 px-2 text-[10px] font-bold uppercase tracking-[0.08em] text-danger ring-1 ring-danger/35'>
+                  <span className='inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-danger' aria-hidden='true' />
+                  <FiPhoneCall className='h-3 w-3' aria-hidden='true' />
+                  {labels.liveCall}
+                </span>
+              ) : session.operator_needed ? (
                 <span className='inline-flex min-h-6 items-center gap-1 rounded-pill bg-warning-bg px-2 text-[10px] font-semibold uppercase tracking-[0.08em] text-warning ring-1 ring-warning/30'>
                   <FiAlertTriangle className='h-3 w-3' aria-hidden='true' />
                   {labels.operatorRequired}

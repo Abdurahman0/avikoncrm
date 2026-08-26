@@ -3,7 +3,7 @@ import type { ClientSummary } from './client'
 import type { LeadSummary } from './lead'
 import type { UserSummary } from './user'
 
-export type ChatChannel = 'telegram' | 'instagram' | 'web' | 'manual'
+export type ChatChannel = 'telegram' | 'instagram' | 'web' | 'manual' | 'phone'
 
 export type ConversationState = 'open' | 'pending' | 'resolved'
 
