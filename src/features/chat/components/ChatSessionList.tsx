@@ -2,6 +2,7 @@ import { FaInstagram, FaTelegramPlane } from 'react-icons/fa';
 import { FiAlertTriangle, FiEdit3, FiGlobe, FiPhone, FiPhoneCall } from 'react-icons/fi';
 import { useTranslation } from 'react-i18next';
 import { EmptyState, LoadingState } from '../../../components/shared/page';
+import { formatLocalizedDate } from '../../../i18n/date-format';
 import { resolveIntlLocale } from '../../../i18n/locale';
 import { getConversationDisplayName } from '../utils/conversation-display';
 import type { Conversation, EntityId } from '../../../types/domain';
@@ -39,15 +40,19 @@ const avatarGradientByChannel: Record<Conversation['channel'], string> = {
   phone: 'from-violet-500 to-indigo-600',
 };
 
-function formatSessionTime(value: string | null, locale: string, emptyLabel: string): string {
-  if (!value) {
-    return emptyLabel;
-  }
-
-  return new Intl.DateTimeFormat(locale, {
-    dateStyle: 'short',
-    timeStyle: 'short',
-  }).format(new Date(value));
+function formatSessionTime(
+  value: string | null,
+  language: string,
+  locale: string,
+  emptyLabel: string,
+): string {
+  return formatLocalizedDate(value, language, {
+    locale,
+    withYear: true,
+    withTime: true,
+    shortMonth: true,
+    fallback: emptyLabel,
+  });
 }
 
 function getSessionTitle(session: Conversation, fallbackUnknown: string): string {
@@ -262,6 +267,7 @@ function ChatSessionList({
                   <span className='inline-flex min-h-6 items-center rounded-pill bg-surface-subtle px-2 text-[11px] font-semibold text-text-secondary ring-1 ring-border-soft/45'>
                     {formatSessionTime(
                       session.last_message_at,
+                      i18n.language,
                       locale,
                       labels.noTime,
                     )}

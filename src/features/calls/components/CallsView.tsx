@@ -10,6 +10,7 @@ import {
 } from 'react-icons/fi'
 import { EmptyState, LoadingState } from '../../../components/shared/page'
 import StatCard from '../../../components/shared/data/StatCard'
+import { formatLocalizedDate } from '../../../i18n/date-format'
 import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import {
@@ -176,13 +177,13 @@ function CallsView() {
 	]
 
 	function formatTime(value: string | null): string {
-		if (!value) {
-			return '—'
-		}
-		return new Intl.DateTimeFormat(locale, {
-			dateStyle: 'short',
-			timeStyle: 'short',
-		}).format(new Date(value))
+		return formatLocalizedDate(value, i18n.language, {
+			locale,
+			withYear: true,
+			withTime: true,
+			shortMonth: true,
+			fallback: '—',
+		})
 	}
 
 	return (

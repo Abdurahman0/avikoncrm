@@ -11,6 +11,7 @@ import {
 } from 'react-icons/fi'
 import type { IconType } from 'react-icons'
 import { EmptyState, LoadingState } from '../../../components/shared/page'
+import { formatLocalizedDate } from '../../../i18n/date-format'
 import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import {
@@ -222,12 +223,13 @@ function CallDetailDrawer({ session, isOpen, onClose }: CallDetailDrawerProps) {
 								const durationSeconds = getCallDurationSeconds(message)
 								const extension = getCallExtension(message)
 								const isLast = index === callEvents.length - 1
-								const time = message.created_at
-									? new Intl.DateTimeFormat(locale, {
-											dateStyle: 'medium',
-											timeStyle: 'short',
-										}).format(new Date(message.created_at))
-									: ''
+								const time = formatLocalizedDate(message.created_at, i18n.language, {
+									locale,
+									withYear: true,
+									withTime: true,
+									shortMonth: true,
+									fallback: '',
+								})
 
 								return (
 									<li key={message.id} className='relative grid grid-cols-[auto_minmax(0,1fr)] gap-3 pb-5 last:pb-0'>
