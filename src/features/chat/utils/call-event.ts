@@ -112,6 +112,20 @@ export function getCallExtension(message: ChatMessage): string | null {
   return null;
 }
 
+/**
+ * Recording file name from the call payload (e.g. "2026/08/26/....wav").
+ * NOTE: this is a file name only — NOT a playable URL. Utel exposes no
+ * documented endpoint to fetch it yet, so it is shown as a static marker.
+ */
+export function getCallRecordingFilename(message: ChatMessage): string | null {
+  const value = readMeta(message).record_filename;
+  return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+export function hasCallRecording(message: ChatMessage): boolean {
+  return getCallRecordingFilename(message) != null;
+}
+
 export function getCallDurationSeconds(message: ChatMessage): number | null {
   const raw = readMeta(message).duration;
   const value = typeof raw === 'number' ? raw : Number(raw);
@@ -155,6 +169,7 @@ export interface CallSummary {
   extension: string | null;
   at: string | null;
   content: string | null;
+  hasRecording: boolean;
 }
 
 /** Summarize a phone session from its latest call event (for the call log row). */
@@ -169,6 +184,7 @@ export function summarizeSessionCall(session: Conversation): CallSummary {
       extension: null,
       at: session.last_message_at ?? null,
       content: session.last_message ?? null,
+      hasRecording: false,
     };
   }
 
@@ -183,5 +199,6 @@ export function summarizeSessionCall(session: Conversation): CallSummary {
     extension: getCallExtension(message),
     at: message.created_at ?? session.last_message_at ?? null,
     content: message.content || session.last_message || null,
+    hasRecording: hasCallRecording(message),
   };
 }

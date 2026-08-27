@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import {
+	FiMic,
 	FiPhone,
 	FiPhoneForwarded,
 	FiPhoneIncoming,
@@ -20,6 +21,7 @@ import {
 	getCallDurationSeconds,
 	getCallExtension,
 	getSessionPhoneNumber,
+	hasCallRecording,
 	isCallMessage,
 	isMissedCall,
 } from '../../chat/utils/call-event'
@@ -263,6 +265,12 @@ function CallDetailDrawer({ session, isOpen, onClose }: CallDetailDrawerProps) {
 													</span>
 												) : null}
 											</div>
+											{hasCallRecording(message) ? (
+												<span className='mt-2 inline-flex items-center gap-1.5 rounded-pill bg-surface-subtle px-2.5 py-1 text-[11px] font-semibold text-text-secondary ring-1 ring-border-soft/50'>
+													<FiMic className='h-3 w-3' aria-hidden='true' />
+													{t('callsPage.recordingUnplayable')}
+												</span>
+											) : null}
 										</div>
 									</li>
 								)

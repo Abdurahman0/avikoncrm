@@ -2679,6 +2679,7 @@
     "subtitle": "Live calls and full call history from the phone integration.",
     "unknownContact": "Unknown contact",
     "answerHint": "Ringing — needs an operator",
+    "recordingUnplayable": "Recording saved (not playable yet)",
     "liveNow": "Live now",
     "stats": {
       "live": "Live calls",

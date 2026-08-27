@@ -2679,6 +2679,7 @@
     "subtitle": "Telefon integratsiyasidan jonli qo'ng'iroqlar va to'liq tarix.",
     "unknownContact": "Noma'lum kontakt",
     "answerHint": "Qo'ng'iroq — operator kerak",
+    "recordingUnplayable": "Yozuv mavjud (hali eshitib bo'lmaydi)",
     "liveNow": "Hozir jonli",
     "stats": {
       "live": "Jonli qo'ng'iroqlar",

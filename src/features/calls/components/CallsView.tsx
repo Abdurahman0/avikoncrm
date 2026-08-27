@@ -6,6 +6,7 @@ import {
 	FiPhoneIncoming,
 	FiPhoneMissed,
 	FiPhoneOutgoing,
+	FiMic,
 	FiSearch,
 } from 'react-icons/fi'
 import { EmptyState, LoadingState } from '../../../components/shared/page'
@@ -387,9 +388,22 @@ function CallsView() {
 												</span>
 											</td>
 											<td className='px-4 py-3 text-[13px] font-semibold text-text-primary'>
-												{summary.status === 'missed'
-													? '—'
-													: formatCallDuration(summary.durationSeconds)}
+												<div className='flex items-center gap-2'>
+													<span>
+														{summary.status === 'missed'
+															? '—'
+															: formatCallDuration(summary.durationSeconds)}
+													</span>
+													{summary.hasRecording ? (
+														<span
+															className='inline-flex h-5 w-5 items-center justify-center rounded-full bg-surface-subtle text-text-muted ring-1 ring-border-soft/50'
+															title={t('callsPage.recordingUnplayable')}
+															aria-label={t('callsPage.recordingUnplayable')}
+														>
+															<FiMic className='h-3 w-3' aria-hidden='true' />
+														</span>
+													) : null}
+												</div>
 											</td>
 											<td className='px-4 py-3 text-[13px] text-text-secondary'>
 												{summary.extension ?? '—'}
