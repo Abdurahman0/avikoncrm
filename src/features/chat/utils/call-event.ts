@@ -42,6 +42,14 @@ export function getCallEventType(message: ChatMessage): string | null {
   return typeof eventType === 'string' ? eventType : null;
 }
 
+/** Terminal events mean the call is finished (not live), even if `operator_needed` lingers. */
+const TERMINAL_CALL_EVENTS = new Set(['call_ended', 'call_saved']);
+
+export function isTerminalCallEvent(message: ChatMessage): boolean {
+  const eventType = getCallEventType(message);
+  return eventType != null && TERMINAL_CALL_EVENTS.has(eventType);
+}
+
 /** A finished call that was never answered / connected. */
 export function isMissedCall(message: ChatMessage): boolean {
   const meta = readMeta(message);
@@ -75,9 +83,22 @@ export function getSessionPhoneNumber(session: Conversation): string | null {
   return match ? match[0].trim() : null;
 }
 
-/** Live phone call = a phone session currently waiting for an operator. */
+/**
+ * Live phone call = a phone session waiting for an operator whose latest event
+ * is NOT terminal. Backend may leave `operator_needed: true` after a call ends
+ * (e.g. recording saved), so a terminal last event must override it.
+ */
 export function isLivePhoneCall(session: Conversation): boolean {
-  return session.channel === 'phone' && Boolean(session.operator_needed);
+  if (session.channel !== 'phone' || !session.operator_needed) {
+    return false;
+  }
+
+  const message = session.last_message_payload ?? null;
+  if (message && isTerminalCallEvent(message)) {
+    return false;
+  }
+
+  return true;
 }
 
 export function getCallExtension(message: ChatMessage): string | null {
@@ -119,9 +140,7 @@ export type CallStatus = 'live' | 'answered' | 'missed' | 'ongoing';
 
 /** Status of the latest call event on a message. */
 export function getCallStatus(message: ChatMessage): CallStatus {
-  const eventType = getCallEventType(message);
-
-  if (eventType === 'call_ended') {
+  if (isTerminalCallEvent(message)) {
     return isMissedCall(message) ? 'missed' : 'answered';
   }
 
@@ -145,7 +164,7 @@ export function summarizeSessionCall(session: Conversation): CallSummary {
   if (!message) {
     return {
       direction: null,
-      status: session.operator_needed ? 'live' : 'ongoing',
+      status: isLivePhoneCall(session) ? 'live' : 'ongoing',
       durationSeconds: null,
       extension: null,
       at: session.last_message_at ?? null,
@@ -153,9 +172,9 @@ export function summarizeSessionCall(session: Conversation): CallSummary {
     };
   }
 
-  const baseStatus = getCallStatus(message);
-  const status: CallStatus =
-    session.operator_needed && baseStatus === 'ongoing' ? 'live' : baseStatus;
+  const status: CallStatus = isLivePhoneCall(session)
+    ? 'live'
+    : getCallStatus(message);
 
   return {
     direction: getCallDirection(message),
