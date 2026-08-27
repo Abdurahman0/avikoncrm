@@ -112,18 +112,29 @@ export function getCallExtension(message: ChatMessage): string | null {
   return null;
 }
 
-/**
- * Recording file name from the call payload (e.g. "2026/08/26/....wav").
- * NOTE: this is a file name only — NOT a playable URL. Utel exposes no
- * documented endpoint to fetch it yet, so it is shown as a static marker.
- */
+/** Raw recording file name from the call payload (e.g. "2026/08/26/....wav"). */
 export function getCallRecordingFilename(message: ChatMessage): string | null {
   const value = readMeta(message).record_filename;
   return typeof value === 'string' && value.trim() ? value.trim() : null;
 }
 
+/**
+ * Full, playable (tokenless) recording URL from the call payload.
+ * May be empty for unanswered/very short calls with no recording.
+ */
+export function getCallRecordingUrl(message: ChatMessage): string | null {
+  const value = readMeta(message).recording_url;
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return /^https?:\/\//i.test(trimmed) ? trimmed : null;
+}
+
+/** True when a playable recording URL is available. */
 export function hasCallRecording(message: ChatMessage): boolean {
-  return getCallRecordingFilename(message) != null;
+  return getCallRecordingUrl(message) != null;
 }
 
 export function getCallDurationSeconds(message: ChatMessage): number | null {

@@ -6,7 +6,7 @@ import {
 	FiPhoneIncoming,
 	FiPhoneMissed,
 	FiPhoneOutgoing,
-	FiMic,
+	FiPlayCircle,
 	FiSearch,
 } from 'react-icons/fi'
 import { EmptyState, LoadingState } from '../../../components/shared/page'
@@ -396,11 +396,11 @@ function CallsView() {
 													</span>
 													{summary.hasRecording ? (
 														<span
-															className='inline-flex h-5 w-5 items-center justify-center rounded-full bg-surface-subtle text-text-muted ring-1 ring-border-soft/50'
-															title={t('callsPage.recordingUnplayable')}
-															aria-label={t('callsPage.recordingUnplayable')}
+															className='inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary/12 text-primary ring-1 ring-primary/25'
+															title={t('callsPage.recordingAvailable')}
+															aria-label={t('callsPage.recordingAvailable')}
 														>
-															<FiMic className='h-3 w-3' aria-hidden='true' />
+															<FiPlayCircle className='h-3.5 w-3.5' aria-hidden='true' />
 														</span>
 													) : null}
 												</div>

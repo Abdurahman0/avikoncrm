@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import {
-	FiMic,
+	FiDownload,
 	FiPhone,
 	FiPhoneForwarded,
 	FiPhoneIncoming,
@@ -20,8 +20,8 @@ import {
 	getCallDirection,
 	getCallDurationSeconds,
 	getCallExtension,
+	getCallRecordingUrl,
 	getSessionPhoneNumber,
-	hasCallRecording,
 	isCallMessage,
 	isMissedCall,
 } from '../../chat/utils/call-event'
@@ -224,6 +224,7 @@ function CallDetailDrawer({ session, isOpen, onClose }: CallDetailDrawerProps) {
 								const EventIcon = visual.Icon
 								const durationSeconds = getCallDurationSeconds(message)
 								const extension = getCallExtension(message)
+								const recordingUrl = getCallRecordingUrl(message)
 								const isLast = index === callEvents.length - 1
 								const time = formatLocalizedDate(message.created_at, i18n.language, {
 									locale,
@@ -265,11 +266,28 @@ function CallDetailDrawer({ session, isOpen, onClose }: CallDetailDrawerProps) {
 													</span>
 												) : null}
 											</div>
-											{hasCallRecording(message) ? (
-												<span className='mt-2 inline-flex items-center gap-1.5 rounded-pill bg-surface-subtle px-2.5 py-1 text-[11px] font-semibold text-text-secondary ring-1 ring-border-soft/50'>
-													<FiMic className='h-3 w-3' aria-hidden='true' />
-													{t('callsPage.recordingUnplayable')}
-												</span>
+											{recordingUrl ? (
+												<div className='mt-2 flex items-center gap-2 rounded-xl bg-surface-subtle/70 p-2 ring-1 ring-border-soft/50'>
+													<audio
+														controls
+														preload='none'
+														src={recordingUrl}
+														className='h-9 w-full min-w-0'
+													>
+														<track kind='captions' />
+													</audio>
+													<a
+														href={recordingUrl}
+														download
+														target='_blank'
+														rel='noreferrer'
+														className='inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-card text-text-secondary ring-1 ring-border-soft/55 transition duration-fast hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30'
+														title={t('callsPage.downloadRecording')}
+														aria-label={t('callsPage.downloadRecording')}
+													>
+														<FiDownload className='h-4 w-4' aria-hidden='true' />
+													</a>
+												</div>
 											) : null}
 										</div>
 									</li>
