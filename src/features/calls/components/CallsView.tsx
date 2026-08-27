@@ -15,7 +15,6 @@ import { formatLocalizedDate } from '../../../i18n/date-format'
 import { resolveIntlLocale } from '../../../i18n/locale'
 import { services } from '../../../services'
 import {
-	formatCallDuration,
 	getSessionPhoneNumber,
 	isLivePhoneCall,
 	summarizeSessionCall,
@@ -326,7 +325,6 @@ function CallsView() {
 									<th className='px-4 py-3 font-semibold'>{t('callsPage.table.contact')}</th>
 									<th className='px-4 py-3 font-semibold'>{t('callsPage.table.direction')}</th>
 									<th className='px-4 py-3 font-semibold'>{t('callsPage.table.status')}</th>
-									<th className='px-4 py-3 font-semibold'>{t('callsPage.table.duration')}</th>
 									<th className='px-4 py-3 font-semibold'>{t('callsPage.table.operator')}</th>
 									<th className='px-4 py-3 font-semibold'>{t('callsPage.table.time')}</th>
 								</tr>
@@ -373,26 +371,19 @@ function CallsView() {
 												</span>
 											</td>
 											<td className='px-4 py-3'>
-												<span
-													className={[
-														'inline-flex min-h-6 items-center gap-1 rounded-pill px-2.5 text-[11px] font-bold uppercase tracking-[0.06em] ring-1',
-														STATUS_BADGE_CLASS[summary.status],
-													].join(' ')}
-												>
-													{summary.status === 'live' ? (
-														<span className='inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-danger' aria-hidden='true' />
-													) : summary.status === 'missed' ? (
-														<FiPhoneMissed className='h-3 w-3' aria-hidden='true' />
-													) : null}
-													{t(`callsPage.status.${summary.status}`)}
-												</span>
-											</td>
-											<td className='px-4 py-3 text-[13px] font-semibold text-text-primary'>
 												<div className='flex items-center gap-2'>
-													<span>
-														{summary.status === 'missed'
-															? '—'
-															: formatCallDuration(summary.durationSeconds)}
+													<span
+														className={[
+															'inline-flex min-h-6 items-center gap-1 rounded-pill px-2.5 text-[11px] font-bold uppercase tracking-[0.06em] ring-1',
+															STATUS_BADGE_CLASS[summary.status],
+														].join(' ')}
+													>
+														{summary.status === 'live' ? (
+															<span className='inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-danger' aria-hidden='true' />
+														) : summary.status === 'missed' ? (
+															<FiPhoneMissed className='h-3 w-3' aria-hidden='true' />
+														) : null}
+														{t(`callsPage.status.${summary.status}`)}
 													</span>
 													{summary.hasRecording ? (
 														<span
